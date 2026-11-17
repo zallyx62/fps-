@@ -65,6 +65,20 @@ tout ce qui compte (dégâts, morts, scores, fin de manche) ; les clients envoie
   au lieu du contrôleur, qui n'existe pas pour les autres joueurs ; plus d'erreurs « Accès à None » et
   l'inclinaison de l'arme suit la visée des autres joueurs.
 
+## Équipes joueurs contre joueurs
+
+- **Répartition** : `ChoosePlayerStart` (`BP_ShooterGameMode`) place chaque joueur dans une équipe selon son
+  ordre d'arrivée (1er Rouge, 2e Bleu, 3e Rouge…) puis le fait apparaître sur un point d'apparition de son
+  camp (`PlayerStart` marqués `RED` / `BLUE`), aussi après chaque mort.
+- **Bots** : seulement en solo (entraînement contre l'équipe Bleue). Dès qu'un deuxième joueur arrive,
+  `OnPostLogin` supprime les bots et `Should Spawn Enemy NPCs` n'en crée plus : la partie devient du
+  joueurs contre joueurs, comme XDefiant.
+- **Pas de tir ami** : `RixeFriendly` (`BP_ShooterProjectileBase`) annule les dégâts entre deux joueurs de la
+  même équipe (côté serveur).
+- **Couleurs** : les joueurs et les bots sont teints en rouge ou en bleu (`ApplyTeamColor`, paramètre
+  « Paint Tint » du mannequin), mis à jour chez tout le monde grâce à `OnRep_Team Byte`.
+- **Interface** : « ÉQUIPE ROUGE » ou « ÉQUIPE BLEUE » sous le score, dans la couleur de l'équipe.
+
 ## Score et fin de manche
 
 Le modèle compte les morts de chaque équipe (`TeamScores`). L'interface affiche les **éliminations** :
@@ -137,6 +151,14 @@ Multijoueur testé dans l'éditeur à 2 joueurs (serveur d'écoute + 1 client) :
   6 secondes plus tard, le client reconnecté, scores remis à 0 ;
 - touche V : commandes `ToggleSpeaking 1` puis `0` envoyées ;
 - journal : aucune erreur de script pendant les parties.
+
+Équipes testées dans l'éditeur à 2 joueurs : serveur en Rouge sur un point `RED`, client en Bleu sur un
+point `BLUE`, aucun bot, chacun voit l'autre dans sa couleur ; le joueur Rouge blesse puis élimine le Bleu,
+le score passe à Rouge 1, le Bleu réapparaît côté Bleu avec 500 PV. En solo, les bots apparaissent en bleu.
+
+Correctif trouvé à la revérification : deux branches « HasAuthority » envoyaient aussi le cas client vers
+le même nœud (dégâts des projectiles appliqués chez les clients, apparition des bots demandée chez les
+clients). Le cas client ne fait plus rien.
 
 ## Remarque
 
