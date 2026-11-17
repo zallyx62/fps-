@@ -95,6 +95,19 @@ Configuration :
 
 Ces réglages sont lus au démarrage de l'éditeur ou du jeu.
 
+Le vocal d'Unreal n'enregistre les joueurs (« talkers ») que dans une **session en ligne**. Le jeu en crée donc
+une (sous-système `Null`, réseau local, 8 places) :
+
+- avant d'héberger et avant de rejoindre une adresse IP (boutons du menu), pour que la session existe
+  quand les autres joueurs arrivent ;
+- au début de chaque partie (`RixeVoiceSession` dans `BP_ShooterPlayerController`, relancé toutes les
+  0,5 seconde tant que l'état du joueur n'est pas encore arrivé), utile pour les tests dans l'éditeur.
+
+Testé dans l'éditeur : micro ouvert puis fermé sans erreur chez le serveur et chez le client
+(`StartLocalProcessing(0) returned 0x00000000`), le serveur enregistre le client comme interlocuteur,
+et le client enregistre le serveur à partir de la deuxième manche. Avec les boutons Héberger / Rejoindre,
+l'enregistrement est fait dès la première manche.
+
 ## Anti-triche
 
 Ce qui est protégé, parce que décidé par le serveur : dégâts, points de vie, morts, scores, victoire,
