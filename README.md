@@ -13,11 +13,16 @@ fourni avec le moteur, puis est adapté : arène, règles de match par équipes,
 
 1. Installer Unreal Engine 5.8 (Epic Games Launcher).
 2. Cloner ce dépôt.
-3. Ouvrir le fichier `.uproject` à la racine du dépôt.
+3. Ouvrir `fps.uproject` à la racine du dépôt. Le jeu démarre sur l'arène `Variant_Shooter/Lvl_ArenaShooter`.
 
 ## Licence
 
-GPL-3.0, voir [LICENSE](LICENSE).
+Le code et les ressources créés pour RIXE (dossier `Content/Rixe`, documentation, `prototype-web/`)
+sont sous GPL-3.0, voir [LICENSE](LICENSE).
+
+Les ressources issues des modèles d'Epic Games (mannequins, armes, animations, niveaux du modèle
+First Person) restent couvertes par le contrat de licence d'Unreal Engine et ne sont pas
+soumises à la GPL.
 
 ## Dossier `prototype-web`
 
