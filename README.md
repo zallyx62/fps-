@@ -30,7 +30,7 @@ fourni avec le moteur, puis est adapté : arène, règles de match par équipes,
 | Sauter | Espace |
 | Sprinter | maintenir Maj gauche |
 | S'accroupir | C (appui) ou maintenir Ctrl gauche |
-| Tirer | clic gauche |
+| Tirer / recharger | clic gauche / R |
 | Arme principale / secondaire | 1 / 2 (touches & / é en AZERTY), molette pour alterner |
 | Chat écrit | Entrée (Entrée pour envoyer, Échap pour annuler) |
 | Chat vocal | maintenir V |

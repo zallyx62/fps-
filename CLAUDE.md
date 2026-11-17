@@ -39,4 +39,4 @@
 
 ## Réseau
 Serveur d'écoute. `ServerRixeAction(Action, Text)` dans `BP_ShooterPlayerController` : 0/1 tir, 2 arme,
-3 chat, 4/5 sprint. Équipes : `ChoosePlayerStart` (GameMode), `Team Byte` en RepNotify.
+3 chat, 4/5 sprint, 6 rechargement (`RixeReloading`). Équipes : `ChoosePlayerStart` (GameMode), `Team Byte` en RepNotify.

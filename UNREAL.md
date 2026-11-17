@@ -89,6 +89,10 @@ tout ce qui compte (dégâts, morts, scores, fin de manche) ; les clients envoie
   `BP_FirstPersonCharacter`, appelée à l'appui et au relâchement).
 - **Armes** : 1 = fusil (principale), 2 = pistolet (secondaire), molette = alterner ; Maj ne change plus d'arme.
   Sur un clavier AZERTY, Unreal lit la touche « 1 » comme « & » et « 2 » comme « é » : les deux sont reliées.
+- **Rechargement** : R envoie l'action 6 ; le serveur coupe le tir, attend 1,6 seconde, remplit le chargeur
+  (`Current Bullets` = `Mag Size`) et met l'interface à jour. Pendant ce temps, l'ordre de tirer est refusé
+  (`RixeReloading` dans `BP_ShooterPlayerController`). Le rechargement instantané du modèle, chargeur vide,
+  reste en place.
 
 ## Score et fin de manche
 
@@ -171,7 +175,8 @@ Touches testées dans l'éditeur à 2 joueurs, chez le serveur puis chez le clie
 le voit, capsule abaissée), « & » / « é » passent au fusil / pistolet, la molette alterne ; en 1 seconde,
 Maj + déplacement fait parcourir environ 1,3 fois plus de distance qu'en marchant (position lue côté serveur,
 donc acceptée par le serveur). Le zoom du clic droit n'a pas pu être essayé : l'outil de test ne sait pas
-maintenir ce bouton. Aucune erreur de script.
+maintenir ce bouton. R : 37 balles sur 40 après trois tirs, 40 après le rechargement, chez le serveur ;
+chargeur aussi rempli pour le client. Aucune erreur de script.
 
 Correctif trouvé à la revérification : deux branches « HasAuthority » envoyaient aussi le cas client vers
 le même nœud (dégâts des projectiles appliqués chez les clients, apparition des bots demandée chez les
