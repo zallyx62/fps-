@@ -36,6 +36,10 @@ fourni avec le moteur, puis est adapté : arène, règles de match par équipes,
 | Chat vocal | maintenir V |
 | Menu et réglages | M (ou Échap en jeu compilé) |
 
+Toutes les touches se changent dans **Menu > Touches** (clic sur la case, puis appui sur la nouvelle touche) ;
+elles sont enregistrées et rechargées au prochain lancement. La visée peut se faire en maintenant ou en
+basculant (Menu > Commandes).
+
 ## Licence
 
 Le code et les ressources créés pour RIXE (dossier `Content/Rixe`, documentation, `prototype-web/`)
