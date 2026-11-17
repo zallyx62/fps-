@@ -4,6 +4,8 @@ FPS d'arène par équipes, en cours de construction sous **Unreal Engine 5.8** (
 
 ## État
 
+Voir [UNREAL.md](UNREAL.md) pour le détail des modifications faites dans Unreal.
+
 Le dépôt accueille le projet Unreal du jeu. Le projet part du modèle « First Person / Arena Shooter »
 fourni avec le moteur, puis est adapté : arène, règles de match par équipes, bots, interface, réglages.
 
