@@ -13,11 +13,33 @@ fourni avec le moteur, puis est adapté : arène, règles de match par équipes,
 
 1. Installer Unreal Engine 5.8 (Epic Games Launcher).
 2. Cloner ce dépôt.
-3. Ouvrir le fichier `.uproject` à la racine du dépôt.
+3. Ouvrir `fps.uproject` à la racine du dépôt. Le jeu démarre sur l'arène `Variant_Shooter/Lvl_ArenaShooter`.
+
+## Jouer à plusieurs
+
+1. Un joueur ouvre le menu (**M**), saisit son pseudo et clique sur « Héberger ».
+2. Les autres saisissent l'adresse IP de l'hôte et cliquent sur « Rejoindre » (port UDP 7777).
+   Hors réseau local : ouvrir le port 7777 chez l'hôte, ou passer par ZeroTier / Radmin VPN.
+
+## Touches
+
+| Action | Touche |
+| --- | --- |
+| Se déplacer / viser | WASD ou flèches / souris |
+| Sauter | Espace |
+| Tirer / changer d'arme | clic gauche / Maj gauche |
+| Chat écrit | Entrée (Entrée pour envoyer, Échap pour annuler) |
+| Chat vocal | maintenir V |
+| Menu et réglages | M (ou Échap en jeu compilé) |
 
 ## Licence
 
-GPL-3.0, voir [LICENSE](LICENSE).
+Le code et les ressources créés pour RIXE (dossier `Content/Rixe`, documentation, `prototype-web/`)
+sont sous GPL-3.0, voir [LICENSE](LICENSE).
+
+Les ressources issues des modèles d'Epic Games (mannequins, armes, animations, niveaux du modèle
+First Person) restent couvertes par le contrat de licence d'Unreal Engine et ne sont pas
+soumises à la GPL.
 
 ## Dossier `prototype-web`
 
