@@ -79,6 +79,17 @@ tout ce qui compte (dégâts, morts, scores, fin de manche) ; les clients envoie
   « Paint Tint » du mannequin), mis à jour chez tout le monde grâce à `OnRep_Team Byte`.
 - **Interface** : « ÉQUIPE ROUGE » ou « ÉQUIPE BLEUE » sous le score, dans la couleur de l'équipe.
 
+## Touches façon XDefiant
+
+- **ZQSD** : `IMC_Default` accepte aussi Z (avancer) et Q (gauche) pour les claviers AZERTY, en plus de WASD.
+- **Sprint** : maintenir Maj gauche passe la vitesse de 600 à 900 (`BP_ShooterCharacter`). Le serveur applique
+  la même vitesse grâce à `ServerRixeAction` (actions 4 = sprint, 5 = marche), sinon il corrigerait la position.
+- **Accroupi** : C bascule, Ctrl gauche maintenu ; `bCanCrouch` activé sur le `CharMoveComp` (300 accroupi).
+- **Visée** : clic droit maintenu → champ de vision × 0,7 (variable `bRixeADS` lue par la fonction `Aim` de
+  `BP_FirstPersonCharacter`, appelée à l'appui et au relâchement).
+- **Armes** : 1 = fusil (principale), 2 = pistolet (secondaire), molette = alterner ; Maj ne change plus d'arme.
+  Sur un clavier AZERTY, Unreal lit la touche « 1 » comme « & » et « 2 » comme « é » : les deux sont reliées.
+
 ## Score et fin de manche
 
 Le modèle compte les morts de chaque équipe (`TeamScores`). L'interface affiche les **éliminations** :
@@ -155,6 +166,12 @@ Multijoueur testé dans l'éditeur à 2 joueurs (serveur d'écoute + 1 client) :
 Équipes testées dans l'éditeur à 2 joueurs : serveur en Rouge sur un point `RED`, client en Bleu sur un
 point `BLUE`, aucun bot, chacun voit l'autre dans sa couleur ; le joueur Rouge blesse puis élimine le Bleu,
 le score passe à Rouge 1, le Bleu réapparaît côté Bleu avec 500 PV. En solo, les bots apparaissent en bleu.
+
+Touches testées dans l'éditeur à 2 joueurs, chez le serveur puis chez le client : C accroupit (l'autre joueur
+le voit, capsule abaissée), « & » / « é » passent au fusil / pistolet, la molette alterne ; en 1 seconde,
+Maj + déplacement fait parcourir environ 1,3 fois plus de distance qu'en marchant (position lue côté serveur,
+donc acceptée par le serveur). Le zoom du clic droit n'a pas pu être essayé : l'outil de test ne sait pas
+maintenir ce bouton. Aucune erreur de script.
 
 Correctif trouvé à la revérification : deux branches « HasAuthority » envoyaient aussi le cas client vers
 le même nœud (dégâts des projectiles appliqués chez les clients, apparition des bots demandée chez les

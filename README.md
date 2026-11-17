@@ -25,9 +25,13 @@ fourni avec le moteur, puis est adapté : arène, règles de match par équipes,
 
 | Action | Touche |
 | --- | --- |
-| Se déplacer / viser | WASD ou flèches / souris |
+| Se déplacer | ZQSD ou WASD, ou flèches |
+| Regarder / viser (zoom) | souris / maintenir clic droit |
 | Sauter | Espace |
-| Tirer / changer d'arme | clic gauche / Maj gauche |
+| Sprinter | maintenir Maj gauche |
+| S'accroupir | C (appui) ou maintenir Ctrl gauche |
+| Tirer | clic gauche |
+| Arme principale / secondaire | 1 / 2 (touches & / é en AZERTY), molette pour alterner |
 | Chat écrit | Entrée (Entrée pour envoyer, Échap pour annuler) |
 | Chat vocal | maintenir V |
 | Menu et réglages | M (ou Échap en jeu compilé) |
