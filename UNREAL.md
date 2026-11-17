@@ -93,6 +93,10 @@ tout ce qui compte (dégâts, morts, scores, fin de manche) ; les clients envoie
   (`Current Bullets` = `Mag Size`) et met l'interface à jour. Pendant ce temps, l'ordre de tirer est refusé
   (`RixeReloading` dans `BP_ShooterPlayerController`). Le rechargement instantané du modèle, chargeur vide,
   reste en place.
+- **Munitions chez le client** : le serveur tire à la place du client, donc le compteur de balles du client
+  ne bougeait pas. `Current Bullets` (`BP_ShooterWeaponBase`) est maintenant répliqué ; `OnRep_Current Bullets`
+  met à jour l'interface du joueur qui tient l'arme. Testé : 35 balles côté serveur et côté client après
+  cinq tirs du client.
 
 ## Score et fin de manche
 
