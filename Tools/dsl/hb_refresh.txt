@@ -1,0 +1,19 @@
+(fn Refresh (Owner)
+  (bind viewer (Utilities|Casting|CastToBP_FirstPersonCharacter (Game|GetPlayerPawn 0))
+    (:then
+      (if (== viewer Owner)
+        (Widget|SetVisibility self "Collapsed")
+        (else
+          (bind ally (== (Class|BPFirstPersonCharacter|GetRixeTeamRep viewer) (Class|BPFirstPersonCharacter|GetRixeTeamRep Owner)))
+          (bind frac (Class|BPFirstPersonCharacter|GetRixeHPFrac Owner))
+          (bind st (+ (Transformation|GetActorLocation viewer) (Math|Vector|MakeVector 0.0 0.0 60.0)))
+          (bind en (+ (Transformation|GetActorLocation Owner) (Math|Vector|MakeVector 0.0 0.0 60.0)))
+          (bind (hit blocked) (Collision|LineTraceByChannel st (- en (* (Math|Vector|Normalize (- en st)) 70.0)) "TraceTypeQuery1" false (Utilities|Array|MakeArray viewer)))
+          (if (and (> frac 0.0) (or ally (and (< frac 0.999) (not blocked))))
+            (Widget|SetVisibility self "HitTestInvisible")
+            (CallFunction|SetAlly :A ally)
+            (CallFunction|SetFrac :F frac)
+            (else
+              (Widget|SetVisibility self "Collapsed"))))))
+    (:CastFailed
+      (Widget|SetVisibility self "Collapsed"))))

@@ -1,0 +1,7 @@
+(event UserInterface|EventTick (MyGeometry InDeltaTime)
+  (bind now (Utilities|Time|GetGameTimeinSeconds))
+  (bind since (- now (Variables|Default|GetHitTime)))
+  (if (> since 0.45)
+    (Variables|Default|SetGhostFrac (Math|Interpolation|FInterptoConstant (Variables|Default|GetGhostFrac) (Variables|Default|GetTargetFrac) InDeltaTime 0.9)))
+  (Progress|SetPercent (Variables|WBP_RixeHealthBar|GetGhost) (Math|Float|Max(Float) (Variables|Default|GetGhostFrac) (Variables|Default|GetTargetFrac)))
+  (Widget|SetRenderOpacity self (select (Variables|Default|GetAlly) 0.85 (Math|Float|MapRangeClamped since 5.0 6.5 1.0 0.0))))

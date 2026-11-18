@@ -1,0 +1,7 @@
+(fn RixeIsEnemy (Other)
+  (bind me (Variables|Context|GetCharacter))
+  (bind o (Utilities|Casting|CastToBP_FirstPersonCharacter Other)
+    (:then
+      (return (and (!= (Class|BPFirstPersonCharacter|GetRixeTeamRep o) (Class|BPShooterNPC|GetTeamByte me)) (> (Class|BPFirstPersonCharacter|GetRixeHPFrac o) 0.0))))
+    (:CastFailed
+      (return false))))

@@ -1,0 +1,12 @@
+(fn RixeFriendly (HitActor)
+  (Variables|Default|SetIsFriendly false)
+  (bind me (Utilities|Casting|CastToBP_FirstPersonCharacter (Game|GetInstigator))
+    (:then
+      (bind other (Utilities|Casting|CastToBP_FirstPersonCharacter HitActor)
+        (:then
+          (Variables|Default|SetIsFriendly (and (!= me other) (and (== (Class|BPFirstPersonCharacter|GetRixeTeamRep me) (Class|BPFirstPersonCharacter|GetRixeTeamRep other)) (> (Class|BPFirstPersonCharacter|GetRixeHPFrac other) 0.0))))
+          (return (Variables|Default|GetIsFriendly)))
+        (:CastFailed
+          (return false))))
+    (:CastFailed
+      (return false))))

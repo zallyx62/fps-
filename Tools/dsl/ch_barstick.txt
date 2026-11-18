@@ -1,0 +1,7 @@
+(fn RixeBarsTick (Dt)
+  (Variables|Default|SetRixeBarsAccum (+ (Variables|Default|GetRixeBarsAccum) Dt))
+  (if (> (Variables|Default|GetRixeBarsAccum) 0.25)
+    (Variables|Default|SetRixeBarsAccum 0.0)
+    (bind all (Actor|GetAllActorsOfClass "/Game/FirstPerson/Blueprints/BP_FirstPersonCharacter.BP_FirstPersonCharacter_C"))
+    (for a all
+      (CallFunction|RixeUpdateBar :self a))))

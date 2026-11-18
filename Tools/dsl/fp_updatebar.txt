@@ -1,0 +1,7 @@
+(fn RixeUpdateBar ()
+  (bind w (Variables|Default|GetRixeHPWidget))
+  (Rendering|SetVisibility w true false)
+  (bind hb (Utilities|Casting|CastToWBP_RixeHealthBar (UserInterface|GetUserWidgetObject w))
+    (:then
+      (Class|WBPRixeHealthBar|Refresh :self hb :Owner self))
+    (:CastFailed)))

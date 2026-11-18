@@ -1,0 +1,13 @@
+(fn SpawnBot (Team)
+  (bind red (== Team 0))
+  (bind starts (Actor|GetAllActorsOfClasswithTag "/Script/Engine.PlayerStart" (select red "RED" "BLUE")))
+  (if (Utilities|Array|IsNotEmpty starts)
+    (bind st (Utilities|Array|RandomArrayItem starts))
+    (bind loc (+ (Transformation|GetActorLocation st) (Math|Vector|MakeVector (Math|Random|RandomFloatinRange -180.0 180.0) (Math|Random|RandomFloatinRange -180.0 180.0) 30.0)))
+    (bind bot (Game|SpawnActorfromClass "/Game/Variant_Shooter/Blueprints/AI/BP_ShooterNPC.BP_ShooterNPC_C" (Math|Transform|MakeTransform loc (Transformation|GetActorRotation st)) "AdjustIfPossibleButAlwaysSpawn"))
+    (Utilities|IsValid bot
+      (:"Is Valid"
+        (Class|BPShooterNPC|SetTeamByte Team bot)
+        (Class|BPFirstPersonCharacter|RixeSetHP :self bot :Frac 1.0 :Team Team)
+        (Rendering|Material|SetVectorParameterValueonMaterials (Class|Character|GetMesh bot) "Paint Tint" (Math|Vector|SelectVector "0.85,0.07,0.05" "0.05,0.22,0.95" red)))
+      (:"Is Not Valid"))))
