@@ -5,18 +5,43 @@
 - Dépôt : branche `jeu-unreal`. Sauvegarder dans l'éditeur, `device_stage_files` des `.uasset`, copier depuis
   `/mnt/user-data/uploads/fps 5.8/Content/...` vers `Content/...`, commit, `git -c push.negotiate=true push`.
 
-## Feuille de route (demandes de l'utilisateur, novembre 2026)
-Autonomica est abandonné : seul RIXE compte. Mode visé : **Domination 10 contre 10** façon XDefiant
-(zones A/B/C, bots pour compléter les équipes). Contenu fait maison uniquement (pas de packs Fab).
-1. Réglages : menu à onglets futuriste, touches réassignables (Enhanced Input user settings, IMC_Rixe),
-   sensibilité normale + en visée, mode de visée maintenir/basculer, tout sauvegardé (slot `RixeReglages`).
-2. Visée à travers le viseur (caméra placée derrière `RixeSightOffset` de l'arme, zoom `RixeAdsFov`).
-3. Arsenal : fusil d'assaut, mitraillette, mitrailleuse, fusil tactique, précision, pompe, 2 pistolets ;
-   stats équilibrées (pas d'arme abusive) ; maillages futuristes générés (Python) puis importés.
-4. Progression par arme (XP sauvegardée) : accessoires et skins débloqués ; écran Arsenal.
-5. 3 cartes moyennes pour 10c10, style futuriste néon ; choix de carte et rotation.
-6. HUD et menus futuristes. 7. Tout vérifier à 2 joueurs, corriger, documenter, publier.
-Fait : touches façon XDefiant, rechargement R, munitions client, IMC_Rixe + IA_* (Content/Rixe/Input).
+## Cahier des charges (15 modules, 18/11/2026) et ordre proposé
+Autonomica abandonné : seul RIXE compte. FPS arcade façon XDefiant/CoD, 10 contre 10, contenu fait maison
+(pas de packs Fab). Chaque étape se termine par une version jouable, testée à 2 joueurs, poussée sur `jeu-unreal`.
+1. Socle rendu/perf/UI : Lumen, Nanite, post-process contrasté, exposition verrouillée, pas d'ombres noires (M1) ;
+   kit UI coins arrondis 8-16, flou d'arrière-plan, liserés lumineux (M2) ; qualité Basse→Ultra, limite FPS,
+   V-Sync, TSR, Basse = sans Lumen (M3) ; champ de vision 80-120 (M9).
+2. Armes + stand de tir : 8 armes (maillages faits, voir plus bas), TTK moyen, recul, vitesse par arme,
+   hitmarkers corps/tête, barre de vie flottante (M4) ; accessoires qui changent les stats (M9) ; stand de tir (M8) ;
+   validation serveur de la cadence (M11).
+3. Mouvement : glissade, slide-cancel, jump-shot, escalade rapide (M4) ; input buffering (M11) ; prédiction client
+   (C++ si Visual Studio dispo, sinon Blueprint).
+4. Cartes et premiers modes : 3 cartes à 3 voies (M1) ; TDM, Domination, modificateur Hardcore (M6) ; bots pour
+   remplir le 10c10 (M8) ; apparitions anti-spawnkill (M9).
+5. Interface de match : tableau des scores + ping (M10), killfeed avec icônes, vote de carte (M15), podium MVP (M13),
+   ping rapide, killcam (M8).
+6. Factions : 1 compétence active (recharge) + 1 ultime (score) (M5).
+7. Progression : XP compte/armes, accessoires et skins (MI dynamiques) (M7) ; double sauvegarde, éditeur de réticule
+   (M14) ; stats de carrière, couleurs de contours (M10) ; passe de combat gratuit (M12) ; défis quotidiens (M8) ;
+   inspection d'arme, scorestreaks (drone radar) (M13).
+8. Autres modes + classé : Occupation, Hot Shot, CTF, Escorte, Contrôle de zone, Recherche & Destruction (M6) ;
+   RP et rangs Bronze→Légende (M7) ; backfill, pénalité d'abandon (M14).
+9. En ligne : Steam (OnlineSubsystemSteam, AppID 480), invitations/lobbies (plugin Advanced Sessions, à faire valider),
+   spectateur (M12, M10) ; anti-triche serveur vitesse/cadence, logs de crash (M11).
+10. Finition : MetaSounds spatialisé + occlusion (M11), manette + aim assist (M12), accessibilité (M15),
+    build Shipping optimisé (M10).
+Déjà fait : multijoueur (serveur d'écoute), chat, vocal, équipes, rechargement, menu à onglets, touches
+réassignables, sensibilités, visée au viseur, maintenir/basculer.
+
+## Reprise (armes, 17/11 au soir)
+- Maillages générés par `Tools/rixe_weapons.py` (OBJ dans `D:\fps 5.8\RixeSource\Weapons`, repère Y = canon,
+  Z = haut, poignée à l'origine), importés dans `/Game/Rixe/Weapons/Meshes` ; matériaux `M_RixeSurface` et
+  `MI_Skin0..6_Body/Accent`, `MI_Wpn_Detail`, `MI_Wpn_Glass` dans `/Game/Rixe/Weapons/Materials`.
+  **Peut-être pas sauvegardés** : vérifier, sinon réimporter (`StaticMeshTools.import_file`) puis `save_assets`.
+- Points de visée, montages d'accessoires : `Tools/weapons_meta.json`. Variables déjà ajoutées à
+  `BP_ShooterWeaponBase` : RixeSightOffset, RixeAdsFov, RixeEyeDist, RixeDamage, RixeHeadMul, RixePellets…
+- Dégâts : `ProcessHit` de `BP_ShooterProjectileBase` (ApplyDamage avec `Damage`) ; tir : `Fire Bullet` /
+  `Calculate Bullet Spawn Transform` de `BP_ShooterWeaponBase`.
 
 ## Unreal MCP : `ProgrammaticToolset.execute_tool_script`
 - `def run(): ... return {dict}` ; `execute_tool(nom, json.dumps(args))` ; imports : json, math, re, time.
