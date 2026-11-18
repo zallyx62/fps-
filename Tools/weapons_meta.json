@@ -1,0 +1,206 @@
+{
+ "AR": {
+  "sight": [
+   0,
+   1.5,
+   19.0
+  ],
+  "eye": 14,
+  "fov": 0.85,
+  "mount_sight": [
+   0,
+   8,
+   16.9
+  ],
+  "mount_muzzle": [
+   0,
+   51.5,
+   9.9
+  ],
+  "mount_under": [
+   0,
+   32,
+   4.2
+  ],
+  "mount_mag": [
+   0,
+   12.4,
+   -15.9
+  ],
+  "tris": 1632
+ },
+ "SMG": {
+  "sight": [
+   0,
+   0.0,
+   17.6
+  ],
+  "eye": 14,
+  "fov": 0.85,
+  "mount_sight": [
+   0,
+   7,
+   16.0
+  ],
+  "mount_muzzle": [
+   0,
+   51.2,
+   9.9
+  ],
+  "mount_under": [
+   0,
+   22,
+   3.0
+  ],
+  "mount_mag": [
+   0,
+   11.8,
+   -17.7
+  ],
+  "tris": 1684
+ },
+ "LMG": {
+  "sight": [
+   0,
+   -1.0,
+   23.4
+  ],
+  "eye": 14,
+  "fov": 0.85,
+  "mount_sight": [
+   0,
+   12,
+   22.3
+  ],
+  "mount_muzzle": [
+   0,
+   52.2,
+   9.9
+  ],
+  "mount_under": [
+   0,
+   30,
+   6.0
+  ],
+  "mount_mag": [
+   0,
+   12,
+   -8.6
+  ],
+  "tris": 1224
+ },
+ "DMR": {
+  "sight": [
+   0,
+   -1.0,
+   20.0
+  ],
+  "eye": 9,
+  "fov": 0.55,
+  "mount_sight": null,
+  "mount_muzzle": [
+   0,
+   52.2,
+   9.9
+  ],
+  "mount_under": [
+   0,
+   32,
+   4.2
+  ],
+  "mount_mag": [
+   0,
+   11.5,
+   -8.6
+  ],
+  "tris": 2004
+ },
+ "Sniper": {
+  "sight": [
+   0,
+   -2.0,
+   20.5
+  ],
+  "eye": 7,
+  "fov": 0.3,
+  "mount_sight": null,
+  "mount_muzzle": [
+   0,
+   51.8,
+   9.9
+  ],
+  "mount_under": [
+   0,
+   30,
+   4.6
+  ],
+  "mount_mag": null,
+  "tris": 2292
+ },
+ "Shotgun": {
+  "sight": [
+   0,
+   2.0,
+   16.6
+  ],
+  "eye": 14,
+  "fov": 0.9,
+  "mount_sight": null,
+  "mount_muzzle": [
+   0,
+   51.6,
+   9.9
+  ],
+  "mount_under": null,
+  "mount_mag": null,
+  "tris": 1316
+ },
+ "Pistol": {
+  "sight": [
+   0,
+   -3.6,
+   12.7
+  ],
+  "eye": 18,
+  "fov": 0.9,
+  "tris": 468
+ },
+ "Revolver": {
+  "sight": [
+   0,
+   -1.0,
+   12.3
+  ],
+  "eye": 18,
+  "fov": 0.85,
+  "tris": 816
+ },
+ "att_RedDot": {
+  "line": 3.6,
+  "tris": 444
+ },
+ "att_Scope2x": {
+  "line": 3.4,
+  "tris": 980
+ },
+ "att_Comp": {
+  "line": 0,
+  "tris": 212
+ },
+ "att_Supp": {
+  "line": 0,
+  "tris": 468
+ },
+ "att_VGrip": {
+  "line": 0,
+  "tris": 72
+ },
+ "att_Laser": {
+  "line": 0,
+  "tris": 136
+ },
+ "att_ExtMag": {
+  "line": 0,
+  "tris": 88
+ }
+}

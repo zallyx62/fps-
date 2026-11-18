@@ -1,0 +1,22 @@
+(fn RixeApplyHit (HitActor HitComp HitLoc)
+  (bind head (CallFunction|RixeIsHead :HitActor HitActor :HitComp HitComp :HitLoc HitLoc))
+  (bind fall (CallFunction|RixeFalloff :HitLoc HitLoc))
+  (bind dmg (* (* (Variables|Projectile|Hit|GetDamage) fall) (select head (select (> (Variables|Default|GetRixeHeadMul) 0.0) (Variables|Default|GetRixeHeadMul) 1.0) 1.0)))
+  (bind tgt (Utilities|Casting|CastToBP_RixeTarget HitActor)
+    (:then
+      (Class|BPRixeTarget|RixeTargetHit tgt dmg head)
+      (CallFunction|RixeHitmarker :Kind (select head 2 1)))
+    (:CastFailed
+      (Game|Damage|ApplyDamage HitActor dmg (Game|GetInstigatorController) self (Variables|Projectile|Hit|GetDamageType))
+      (bind ch (Utilities|Casting|CastToBP_ShooterCharacter HitActor)
+        (:then
+          (bind hp (Class|BPShooterCharacter|GetCurrentHP ch))
+          (Class|BPFirstPersonCharacter|RixeSetHP :self ch :Frac (Math|Float|Max(Float) 0.0 (/ hp (Math|Float|Max(Float) 1.0 (Class|BPShooterCharacter|GetMaxHP ch)))) :Team (Class|BPShooterCharacter|GetTeamByte ch))
+          (CallFunction|RixeHitmarker :Kind (select (<= hp 0.0) 3 (select head 2 1))))
+        (:CastFailed
+          (bind npc (Utilities|Casting|CastToBP_ShooterNPC HitActor)
+            (:then
+              (bind hp2 (Class|BPShooterNPC|GetCurrentHP npc))
+              (Class|BPFirstPersonCharacter|RixeSetHP :self npc :Frac (Math|Float|Max(Float) 0.0 (/ hp2 100.0)) :Team (Class|BPShooterNPC|GetTeamByte npc))
+              (CallFunction|RixeHitmarker :Kind (select (<= hp2 0.0) 3 (select head 2 1))))
+            (:CastFailed)))))))

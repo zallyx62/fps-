@@ -1,0 +1,7 @@
+(fn SetFrac (F)
+  (if (< F (Variables|Default|GetTargetFrac))
+    (Variables|Default|SetHitTime (Utilities|Time|GetGameTimeinSeconds)))
+  (if (> F (Variables|Default|GetGhostFrac))
+    (Variables|Default|SetGhostFrac F))
+  (Variables|Default|SetTargetFrac F)
+  (Progress|SetPercent (Variables|WBP_RixeHealthBar|GetBar) F))

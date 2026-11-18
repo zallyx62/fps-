@@ -1,0 +1,8 @@
+(fn CountHumans (Team)
+  (Variables|Default|SetSpawnCounter 0)
+  (bind pcs (Actor|GetAllActorsOfClass "/Script/Engine.PlayerController"))
+  (for pc pcs
+    (bind tb (Class|BPITeammate|GetTeam(Message) pc))
+    (if (== tb Team)
+      (Variables|Default|SetSpawnCounter (+ (Variables|Default|GetSpawnCounter) 1))))
+  (return (Variables|Default|GetSpawnCounter)))

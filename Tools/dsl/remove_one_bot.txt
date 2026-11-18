@@ -1,0 +1,12 @@
+(fn RemoveOneBot (Team)
+  (Variables|Default|SetSpawnCounter 0)
+  (bind bots (Actor|GetAllActorsOfClass "/Game/Variant_Shooter/Blueprints/AI/BP_ShooterNPC.BP_ShooterNPC_C"))
+  (for b bots
+    (if (and (== (Variables|Default|GetSpawnCounter) 0) (and (== (Class|BPShooterNPC|GetTeamByte b) Team) (> (Class|BPShooterNPC|GetCurrentHP b) 0.0)))
+      (Variables|Default|SetSpawnCounter 1)
+      (bind c (Pawn|GetController b))
+      (Actor|DestroyActor b)
+      (Utilities|IsValid c
+        (:"Is Valid"
+          (Actor|DestroyActor c))
+        (:"Is Not Valid")))))

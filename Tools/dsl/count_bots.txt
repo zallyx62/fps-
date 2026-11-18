@@ -1,0 +1,7 @@
+(fn CountBots (Team AliveOnly)
+  (Variables|Default|SetSpawnCounter 0)
+  (bind bots (Actor|GetAllActorsOfClass "/Game/Variant_Shooter/Blueprints/AI/BP_ShooterNPC.BP_ShooterNPC_C"))
+  (for b bots
+    (if (and (== (Class|BPShooterNPC|GetTeamByte b) Team) (or (not AliveOnly) (> (Class|BPShooterNPC|GetCurrentHP b) 0.0)))
+      (Variables|Default|SetSpawnCounter (+ (Variables|Default|GetSpawnCounter) 1))))
+  (return (Variables|Default|GetSpawnCounter)))

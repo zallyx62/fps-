@@ -1,0 +1,13 @@
+(fn SyncPawns ()
+  (bind chars (Actor|GetAllActorsOfClass "/Game/Variant_Shooter/Blueprints/BP_ShooterCharacter.BP_ShooterCharacter_C"))
+  (for c chars
+    (bind tb (Class|BPShooterCharacter|GetTeamByte c))
+    (bind fr (Math|Float|Max(Float) 0.0 (/ (Class|BPShooterCharacter|GetCurrentHP c) (Math|Float|Max(Float) 1.0 (Class|BPShooterCharacter|GetMaxHP c)))))
+    (if (or (!= (Class|BPFirstPersonCharacter|GetRixeTeamRep c) tb) (> (Math|Float|Absolute(Float) (- (Class|BPFirstPersonCharacter|GetRixeHPFrac c) fr)) 0.01))
+      (Class|BPFirstPersonCharacter|RixeSetHP :self c :Frac fr :Team tb)))
+  (bind bots (Actor|GetAllActorsOfClass "/Game/Variant_Shooter/Blueprints/AI/BP_ShooterNPC.BP_ShooterNPC_C"))
+  (for b bots
+    (bind tb2 (Class|BPShooterNPC|GetTeamByte b))
+    (bind fr2 (Math|Float|Max(Float) 0.0 (/ (Class|BPShooterNPC|GetCurrentHP b) 100.0)))
+    (if (or (!= (Class|BPFirstPersonCharacter|GetRixeTeamRep b) tb2) (> (Math|Float|Absolute(Float) (- (Class|BPFirstPersonCharacter|GetRixeHPFrac b) fr2)) 0.01))
+      (Class|BPFirstPersonCharacter|RixeSetHP :self b :Frac fr2 :Team tb2))))
