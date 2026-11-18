@@ -31,7 +31,8 @@ Autonomica abandonné : seul RIXE compte. FPS arcade façon XDefiant/CoD, 10 con
 10. Finition : MetaSounds spatialisé + occlusion (M11), manette + aim assist (M12), accessibilité (M15),
     build Shipping optimisé (M10).
 Déjà fait : multijoueur (serveur d'écoute), chat, vocal, équipes, rechargement, menu à onglets, touches
-réassignables, sensibilités, visée au viseur, maintenir/basculer.
+réassignables, sensibilités, visée au viseur, maintenir/basculer. **Étape 1 terminée** (18/11, poussée).
+Visual Studio 2022 Community 17.14 installé (vérifier MSVC v143 + SDK Windows avant l'étape 3).
 
 ## Reprise (armes, 17/11 au soir)
 - Maillages générés par `Tools/rixe_weapons.py` (OBJ dans `D:\fps 5.8\RixeSource\Weapons`, repère Y = canon,
@@ -88,4 +89,4 @@ réassignables, sensibilités, visée au viseur, maintenir/basculer.
 
 ## Réseau
 Serveur d'écoute. `ServerRixeAction(Action, Text)` dans `BP_ShooterPlayerController` : 0/1 tir, 2 arme,
-3 chat, 4/5 sprint, 6 rechargement (`RixeReloading`). Équipes : `ChoosePlayerStart` (GameMode), `Team Byte` en RepNotify.
+3 chat, 4/5 sprint, 6 rechargement (`RixeReloading`), 7/8 visée (`RixeAdsSrv`, vitesse 420). Équipes : `ChoosePlayerStart` (GameMode), `Team Byte` en RepNotify.

@@ -114,6 +114,22 @@ futuriste (fond sombre, liserés cyan). Le bouton de l'option active est surlign
 - **Sauvegarde** : `BP_RixeSaveSettings` (emplacement `RixeReglages`) garde sensibilités, champ de vision,
   volume, inversion, mode de visée, compteur FPS et pseudo ; les graphismes passent par `GameUserSettings`.
 
+## Étape 1 : rendu, performances, interface
+
+- **Rendu** : Lumen (éclairage global et reflets), Nanite, ombres virtuelles et TSR restent actifs par défaut.
+  Le volume de post-traitement de l'arène verrouille l'exposition (min = max = -0,5 EV, plus de
+  « pompage » de la luminosité), limite les fuites du ciel (`LumenSkylightLeaking` 0,1), éclaircit les
+  ombres sans les rendre noires (exposition locale : ombres 0,75, hautes lumières 0,9) et pousse un peu le
+  contraste (1,15) et la saturation (1,08 à 1,12).
+- **Qualité** Basse / Moyenne / Haute / Ultra (`GameUserSettings`) ; en **Basse**, Lumen est coupé
+  (`r.Lumen.DiffuseIndirect.Allow 0`, `r.Lumen.Reflections.Allow 0`) pour les petites cartes graphiques.
+  Anticrénelage au choix **TSR / TAA / FXAA** (`r.AntiAliasingMethod` 4 / 2 / 1), limite d'images par seconde
+  (60 / 120 / 144 / sans limite), synchro verticale, mode d'affichage, champ de vision **80 à 120**.
+  `ApplyGraphicsPrefs` (`BP_RixeGameInstance`) réapplique ces choix au lancement ; l'anticrénelage est
+  enregistré avec les autres réglages (`AAMethod`).
+- **Kit d'interface** : panneaux à coins arrondis (8 à 16 px), fond flou (`BackgroundBlur`), liseré cyan
+  lumineux de 1,5 px, onglet actif surligné ; même style pour le score et le chat du HUD.
+
 ## Visée au viseur
 
 En visée, `RixeAdsTick` (`BP_ShooterCharacter`, chaque image, joueur local) place la caméra derrière le point
@@ -204,6 +220,11 @@ donc acceptée par le serveur). Le zoom du clic droit n'a pas pu être essayé :
 maintenir ce bouton (depuis, le mode « basculer » permet de le tester : la caméra passe derrière
 le viseur du fusil). R : 37 balles sur 40 après trois tirs, 40 après le rechargement, chez le serveur ;
 chargeur aussi rempli pour le client. Aucune erreur de script.
+
+Étape 1 testée dans l'éditeur à 2 joueurs (fenêtre du client) : onglet Graphismes, « Basse » coupe Lumen
+(les deux variables passent à 0, qualité 0), « Ultra » le rallume ; « TAA » met `r.AntiAliasingMethod` à 2,
+« TSR » le remet à 4 ; le message d'état et le bouton actif suivent ; le curseur du champ de vision agrandit
+la vue. Menu, score et chat au nouveau style. Aucune erreur de script.
 
 Correctif trouvé à la revérification : deux branches « HasAuthority » envoyaient aussi le cas client vers
 le même nœud (dégâts des projectiles appliqués chez les clients, apparition des bots demandée chez les
