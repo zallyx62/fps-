@@ -18,6 +18,8 @@ Le cahier des charges est la source de vérité pour les fonctionnalités, déci
 - Ne jamais transformer un objectif planifié en fonctionnalité « terminée » sans preuve de code, test et build.
 - Maintenir une matrice d'état : **existant vérifié / partiellement fonctionnel / planifié / bloqué / non vérifié**.
 - Mettre à jour le cahier des charges uniquement pour corriger une erreur factuelle ou enregistrer une décision approuvée. Ne pas ajouter de nouvelles fonctionnalités sans autorisation.
+- `CAHIER_DES_CHARGES_RIXE.md` décrit la cible approuvée ; `UNREAL.md` décrit l'état observé du prototype. Si leurs contenus diffèrent, ne pas transformer l'état actuel en exigence : créer ou mettre à jour une tâche d'écart et suivre la chronologie du cahier.
+- La présence de `LICENSE` ne prouve pas que la distribution est autorisée : respecter l'audit de compatibilité Unreal/Epic de la section 25. Le développement et les tests locaux ne valent pas autorisation de publication publique.
 
 ## 2. Objectif et expérience de jeu
 
