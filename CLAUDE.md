@@ -126,3 +126,22 @@ Visual Studio 2022 Community 17.14 installé (vérifier MSVC v143 + SDK Windows 
 ## Réseau
 Serveur d'écoute. `ServerRixeAction(Action, Text)` dans `BP_ShooterPlayerController` : 0/1 tir, 2 arme,
 3 chat, 4/5 sprint, 6 rechargement (`RixeReloading`), 7/8 visée (`RixeAdsSrv`, vitesse 420). Équipes : `ChoosePlayerStart` (GameMode), `Team Byte` en RepNotify.
+
+
+## Livraison testable à chaque mise à jour — exigence du propriétaire
+
+Le propriétaire souhaite recevoir un lien utilisable pour tester chaque mise à jour. À la fin de chaque étape qui modifie le jeu :
+
+1. Si le projet peut être compilé et empaqueté correctement, produire une build jouable (priorité à une build Windows x64 Shipping ou Development adaptée aux tests).
+2. Publier le paquet comme artefact GitHub Actions ou comme asset d'une GitHub Release, puis fournir un lien direct de téléchargement et indiquer la version, la branche, le commit, la plateforme, les contrôles effectués et les limites connues.
+3. Si la build n'est pas encore fiable, ne pas la présenter comme jouable : fournir le rapport de test et expliquer précisément ce qui bloque.
+4. Ne jamais remplacer le jeu Unreal par l'ancien dossier `prototype-web` ni présenter `prototype-web/demo.html` comme une version jouable de RIXE.
+5. Un lien vers les fichiers source GitHub ne constitue pas un lien de test du jeu. Pour Unreal, fournir une build installable/téléchargeable ; un lancement dans le navigateur n'est pas attendu sauf si une véritable version web distincte est développée et validée.
+6. Ne pas publier automatiquement une version publique ou une Release officielle sans vérifier le contenu, les licences, les données incluses et l'accord du propriétaire. Un artefact de test privé ou une Release de préversion peut être privilégié selon les permissions disponibles.
+7. Si la taille de la build ou les contraintes GitHub empêchent l'hébergement, proposer une solution gratuite compatible avec le budget de 0 € et expliquer ses limites. Ne jamais prétendre qu'un lien existe tant qu'il n'a pas été créé et vérifié.
+
+Dans chaque compte rendu, ajouter obligatoirement :
+- **Lien de test/téléchargement :** URL vérifiée, ou « indisponible » avec la raison.
+- **Version testée :** branche + commit.
+- **Tests :** lancement, carte, contrôles, réseau si pertinent.
+- **État :** jouable / jouable avec limites / non jouable.
