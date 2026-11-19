@@ -4,6 +4,14 @@ Projet de base : modèle « First Person », variante « Arena Shooter » (Bluep
 
 > **Portée de ce document :** journal de l'implémentation observée dans le prototype, et non cahier des charges fonctionnel. Les comportements décrits ici ne deviennent pas automatiquement des règles finales. En cas d'écart, suivre `CAHIER_DES_CHARGES_RIXE.md` et consigner l'écart comme tâche à corriger. Les tests mentionnés sont des tests historiques dans l'éditeur ; ils ne prouvent pas une validation sur build empaquetée ni sur Internet.
 
+## Écarts de configuration détectés — à auditer, non validés
+
+- `Config/DefaultEngine.ini` active actuellement `r.RayTracing=True`, avec DX12 comme RHI Windows par défaut. Le ray tracing ne doit pas être considéré comme un prérequis de jeu : mesurer son coût et vérifier son activation par profil avant de décider de le conserver par défaut.
+- La configuration déclare D3D11/SM5 ainsi que des cibles Linux et Mac en SM6. Leur présence dans le fichier ne prouve ni la compilation ni le fonctionnement de ces plateformes ; Windows reste la cible initiale.
+- Des entrées de configuration apparaissent répétées (notamment `DefaultGraphicsRHI` et des variables d'exposition). Les examiner avec Unreal avant tout nettoyage, sans supprimer une valeur dont la provenance ou l'effet n'est pas compris.
+- `fps.uproject` active `GameplayStateTree`, `ModelContextProtocol`, `MCPClientToolset` et `AllToolsets`, en plus de `ModelingToolsEditorMode` limité à l'éditeur. Vérifier les dépendances, licences, modules Editor/Runtime et le comportement lors du packaging Shipping ; ne pas retirer les outils MCP utilisés pour le développement sans vérifier leur portée.
+
+
 ## Fait dans l'éditeur
 
 - **Projet** : nom « RIXE », carte de démarrage et carte du jeu = `Variant_Shooter/Lvl_ArenaShooter`,
