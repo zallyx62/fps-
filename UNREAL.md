@@ -72,9 +72,7 @@ tout ce qui compte (dégâts, morts, scores, fin de manche) ; les clients envoie
 - **Répartition** : `ChoosePlayerStart` (`BP_ShooterGameMode`) place chaque joueur dans une équipe selon son
   ordre d'arrivée (1er Rouge, 2e Bleu, 3e Rouge…) puis le fait apparaître sur un point d'apparition de son
   camp (`PlayerStart` marqués `RED` / `BLUE`), aussi après chaque mort.
-- **Bots** : seulement en solo (entraînement contre l'équipe Bleue). Dès qu'un deuxième joueur arrive,
-  `OnPostLogin` supprime les bots et `Should Spawn Enemy NPCs` n'en crée plus : la partie devient du
-  joueurs contre joueurs, comme XDefiant.
+- **Bots — écart connu avec la cible produit** : l'implémentation documentée les utilise seulement en solo (entraînement contre l'équipe Bleue) et `OnPostLogin` les supprime dès qu'un deuxième joueur arrive. C'est un comportement actuel du prototype, **pas une règle finale**. Le cahier des charges, notamment sa section 28.1, prévoit des préférences explicites humains/bots, un remplissage transparent selon la playlist et des statistiques distinctes. Remplacer cette suppression automatique par les règles du mode concerné avant de considérer le matchmaking ou le remplissage des équipes comme terminé.
 - **Pas de tir ami** : `RixeFriendly` (`BP_ShooterProjectileBase`) annule les dégâts entre deux joueurs de la
   même équipe (côté serveur).
 - **Couleurs** : les joueurs et les bots sont teints en rouge ou en bleu (`ApplyTeamColor`, paramètre
