@@ -13,6 +13,9 @@ Prendre en compte la section 17 du cahier des charges : réseau compétitif (dia
 ## Plateforme unifiée, compte joueur et cross-play — exigences approuvées
 Respecter la section 18 de `CAHIER_DES_CHARGES_RIXE.md`. RIXE doit viser une plateforme multiplateforme avec un compte RIXE unique : le joueur retrouve son profil, sa progression, ses statistiques, ses déblocages et ses paramètres compatibles sur PC, navigateur et les autres plateformes effectivement prises en charge. Concevoir liaison sécurisée des comptes de plateforme, sauvegarde/synchronisation, récupération et résolution des conflits. Le cross-play doit être activable ou désactivable par le joueur ; le matchmaking et les groupes doivent respecter ce choix sans mélange silencieux. Les amis doivent pouvoir jouer ensemble entre plateformes compatibles. Garder progression/rangs/récompenses validés côté serveur, préserver l'équité clavier/souris/manette/tactile et la parité de gameplay. Étudier EOS et les solutions compatibles, sans présumer qu'un service cloud est gratuit. Budget 0 € : aucun coût récurrent ou service payant sans accord. Développer par étapes et ne déclarer ces fonctions livrées qu'après tests de bout en bout sur plusieurs clients réels.
 
+## Ajouts approuvés A, B et E
+Appliquer les exigences de la section 19 du cahier des charges : A) consolider les services multijoueur et le parcours complet salons/invitations/recherche/connexion/classements ; B) compléter le level design par un anti-camping contextuel, équitable et non punitif envers la défense légitime ; E) fournir des statistiques de fin de partie transparentes, détaillées et explicables, cohérentes avec le profil et validées côté serveur. Ne pas confondre fonctionnalités planifiées et fonctionnalités livrées.
+
 ## PRIORITÉ ABSOLUE N°1 : audit et clarification de la licence
 Traiter la licence comme le tout premier chantier, avant les nouvelles fonctionnalités et avant toute publication.
 
