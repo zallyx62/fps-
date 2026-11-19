@@ -1,3 +1,39 @@
+# CONSIGNES PRIORITAIRES POUR CLAUDE — RIXE
+
+## Démarrage obligatoire : lire le cahier des charges
+Avant toute modification, lire intégralement `CAHIER_DES_CHARGES_RIXE.md` à la racine du dépôt. Ce document est la référence fonctionnelle consolidée du projet. Le présent fichier conserve aussi des notes techniques historiques : en cas de contradiction, ne pas appliquer aveuglément une ancienne note ou une ancienne feuille de route ; comparer les deux, privilégier les décisions les plus récentes du cahier des charges et signaler tout conflit réel.
+
+## PRIORITÉ ABSOLUE N°1 : audit et clarification de la licence
+Traiter la licence comme le tout premier chantier, avant les nouvelles fonctionnalités et avant toute publication.
+
+1. Examiner `LICENSE`, les mentions de licence du README, les fichiers de configuration, les plugins, les dépendances, les assets et les dossiers du projet Unreal.
+2. Faire l'inventaire des provenances et droits, en distinguant au minimum : code original RIXE, code/contenu du template Unreal, contenu Epic/Fab/Quixel, plugins, bibliothèques et ressources tierces.
+3. Identifier précisément ce qui est couvert par la GPL-3.0 actuelle, qui en détient les droits, et si le dépôt mélange des éléments soumis à des licences incompatibles ou à des conditions spécifiques.
+4. Vérifier les conditions officielles Unreal/Epic applicables aux versions et aux contenus réellement utilisés. Ne pas se fier à une supposition ni à une simple recherche de nom de fichier.
+5. Proposer une stratégie de licences séparées si nécessaire : par exemple licence permissive pour le seul code original RIXE, notices/exclusions explicites pour le contenu Unreal/Epic et respect des licences tierces. MIT n'est qu'une piste à évaluer, jamais une décision automatique.
+6. Ne pas remplacer, supprimer ou réécrire `LICENSE`, les notices de copyright ou les mentions de tiers tant que l'inventaire n'est pas établi. Ne pas prétendre que RIXE est entièrement open source ou redistribuable tant que ce n'est pas vérifié.
+7. Produire un rapport clair : fichiers concernés, détenteurs/provenances identifiés, licences applicables, incompatibilités/risques, éléments non vérifiables et stratégie recommandée.
+8. Préparer ensuite les modifications de licence dans un commit distinct et les appliquer uniquement après avoir établi que les droits le permettent. Toute décision juridique incertaine doit être signalée au propriétaire pour validation ; ne pas inventer de droits ni donner une garantie juridique.
+
+## Autonomie d'exécution
+Le propriétaire autorise Claude à avancer de manière autonome avec les outils disponibles, y compris terminal, navigateur, éditeur Unreal et contrôle du PC, dans la limite des autorisations réellement accordées par le système. Utiliser ces accès pour inspecter, tester, sauvegarder et faire progresser le projet sans demander une confirmation à chaque opération technique réversible.
+
+Limites impératives :
+- Budget autorisé : **0 €**. Aucun achat, abonnement, plugin/asset payant, serveur, publicité, domaine ou frais de boutique sans accord explicite préalable.
+- Ne jamais exposer de mot de passe, jeton, clé API, donnée privée ou secret dans le dépôt, les logs ou les rapports.
+- Sauvegarder avant les opérations risquées ; ne jamais supprimer/écraser des données sans sauvegarde vérifiée.
+- Demander l'accord avant dépense, publication publique, action irréversible, engagement juridique, changement de propriété/licence ou utilisation d'identifiants/paiements.
+- Ne pas prétendre avoir exécuté une action si l'outil ne l'a pas confirmée.
+
+## Après l'audit de licence
+Une fois le rapport de licence établi et les changements sûrs traités/validés :
+1. Faire un état des lieux Git : branche active, remote, commits non poussés et différences entre `main` et `jeu-unreal`. Ne pas supposer que ces branches sont synchronisées.
+2. Reproduire le problème bloquant actuel et le corriger avant d'ajouter des fonctionnalités.
+3. Continuer selon les priorités et critères de test du cahier des charges.
+4. Pour chaque étape, consigner les fichiers changés, sauvegardes, tests exécutés, résultats, limites et prochaine étape. Ne déclarer terminé que ce qui a été effectivement testé.
+
+---
+
 # Notes de travail (RIXE, UE 5.8 Blueprint)
 
 ## Chemins
