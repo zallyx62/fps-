@@ -2,6 +2,8 @@
 
 Projet de base : modèle « First Person », variante « Arena Shooter » (Blueprint).
 
+> **Portée de ce document :** journal de l'implémentation observée dans le prototype, et non cahier des charges fonctionnel. Les comportements décrits ici ne deviennent pas automatiquement des règles finales. En cas d'écart, suivre `CAHIER_DES_CHARGES_RIXE.md` et consigner l'écart comme tâche à corriger. Les tests mentionnés sont des tests historiques dans l'éditeur ; ils ne prouvent pas une validation sur build empaquetée ni sur Internet.
+
 ## Fait dans l'éditeur
 
 - **Projet** : nom « RIXE », carte de démarrage et carte du jeu = `Variant_Shooter/Lvl_ArenaShooter`,
