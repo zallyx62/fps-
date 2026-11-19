@@ -42,12 +42,9 @@ basculant (Menu > Commandes).
 
 ## Licence
 
-Le code et les ressources créés pour RIXE (dossier `Content/Rixe`, documentation, `prototype-web/`)
-sont sous GPL-3.0, voir [LICENSE](LICENSE).
+Le dépôt contient actuellement un fichier [LICENSE](LICENSE) rédigé sous GNU GPL-3.0. **La compatibilité de cette licence avec l'intégration à Unreal Engine et aux contenus Epic n'est pas encore établie** ; elle fait l'objet de l'audit décrit à la section 25 de `CAHIER_DES_CHARGES_RIXE.md`.
 
-Les ressources issues des modèles d'Epic Games (mannequins, armes, animations, niveaux du modèle
-First Person) restent couvertes par le contrat de licence d'Unreal Engine et ne sont pas
-soumises à la GPL.
+Ne pas considérer la présence du fichier `LICENSE` comme une validation juridique de la redistribution du projet. Les contenus Epic, plugins et ressources tierces restent soumis à leurs propres conditions. Aucune publication ou distribution publique ne doit être faite avant la clôture de cet audit et une décision explicite du propriétaire.
 
 ## Dossier `prototype-web`
 
