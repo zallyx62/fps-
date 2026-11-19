@@ -1151,3 +1151,40 @@ Les sept idées suivantes sont approuvées et ajoutées au cahier des charges. E
 - Ne pas modifier les règles d'un mode sans l'indiquer ; certaines fonctionnalités peuvent être limitées à des modes si les tests montrent un risque pour l'équilibre.
 - Conserver la priorité de livraison : audit/licences/sécurité, build jouable, stabilité combat et réseau, puis extensions.
 - Respecter le budget de 0 € ; aucun plugin, asset, outil, hébergement ou service payant sans accord explicite.
+
+
+## 34. Sélection compétitive et circulation sans blocage entre alliés — deux décisions approuvées le 19 novembre 2026
+
+Cette section formalise le veto compétitif approuvé et la règle de circulation entre coéquipiers précisée par le propriétaire. Ces systèmes restent planifiés jusqu'à leur implémentation et validation en jeu.
+
+### 34.1 Veto des cartes et équipements en compétitif
+- Prévoir une phase de sélection/bannissement pour les playlists compétitives organisées qui l'activent.
+- Permettre aux équipes de bannir alternativement des cartes parmi une sélection annoncée avant la procédure.
+- Autoriser, uniquement dans les formats qui le prévoient, le bannissement de certaines armes ou catégories d'équipements ; publier à l'avance la liste éligible et les restrictions.
+- Définir un ordre alterné, des délais raisonnables, une résolution automatique en cas d'absence de choix et une présentation identique pour les deux équipes.
+- Afficher la sélection, les choix déjà effectués, les options restantes et la carte/les règles finales avant le lancement.
+- Éviter les choix impossibles : conserver un nombre suffisant de cartes et d'équipements disponibles et prévoir une solution de secours déterministe.
+- Ne pas imposer cette procédure au matchmaking public classique ; elle doit être réservée aux playlists compétitives, parties privées ou formats organisés compatibles.
+- Enregistrer le résultat du veto dans les données de partie et les replays afin que les statistiques comparent des configurations équivalentes.
+- Tester les abandons, déconnexions, égalités, délais expirés et désaccords de version ; ne pas permettre de modifier la sélection après le début de la partie.
+
+### 34.2 Circulation entre alliés : aucun body block, aucune superposition exacte
+- Désactiver le body block entre coéquipiers : un allié ne doit jamais pouvoir empêcher un autre allié d'avancer, reculer, franchir un passage ou quitter une zone dangereuse par une collision physique bloquante.
+- Empêcher également les tirs alliés de blesser ou tuer un coéquipier dans les modes où le tir ami est désactivé ; les projectiles et impacts alliés ne doivent pas provoquer de dégâts indirects non prévus par les règles.
+- Ne pas autoriser deux personnages alliés à occuper exactement la même position au même instant. Maintenir une séparation spatiale minimale raisonnable entre leurs capsules/personnages, sans transformer cette séparation en mur invisible.
+- Utiliser de préférence un système souple de séparation/évitement : ajustement progressif des trajectoires, anticipation des déplacements et léger décalage latéral ou longitudinal lorsque deux alliés convergent vers le même emplacement.
+- Ne jamais immobiliser un joueur, le repousser brutalement, le téléporter ou lui retirer le contrôle pour appliquer cette séparation.
+- Dans les passages étroits et les zones encombrées, privilégier la fluidité : autoriser le croisement et le passage rapproché, réduire temporairement la séparation souhaitée si nécessaire, et éviter toute file d'attente forcée.
+- Si deux joueurs visent le même point précis, répartir leurs positions vers les emplacements libres les plus proches, sans réserver durablement une zone à un joueur ni empêcher un allié d'atteindre un objectif.
+- Conserver les collisions et interactions ennemies prévues par chaque mode ; cette règle concerne la circulation entre alliés et ne doit pas supprimer les collisions de gameplay avec les adversaires.
+- Assurer un comportement cohérent en réseau : le serveur arbitre les positions valides, les clients prédisent le mouvement sans créer de blocage local, et les corrections réseau restent discrètes.
+- Tester les regroupements à plusieurs joueurs, couloirs, portes, escaliers, objectifs, apparitions, sauts, mouvements rapides et connexions à latence élevée.
+- Mesurer les superpositions, blocages, changements de trajectoire, corrections réseau et cas où un joueur est involontairement dévié de son objectif.
+- Ne pas introduire d'avantage de collision, de protection contre les tirs ennemis ou de traversée des adversaires. La séparation souple ne doit jamais permettre de se cacher dans un allié ni de traverser un ennemi.
+
+### Priorités et critères communs
+- Prototyper la circulation alliée avec plusieurs personnages dans des couloirs étroits avant de l'étendre à toutes les cartes.
+- Vérifier que le système ne crée ni body block, ni superposition exacte, ni déplacement forcé, ni avantage défensif artificiel.
+- Développer le veto après stabilisation des playlists compétitives, du système de groupes et de la sélection de cartes.
+- Conserver le matchmaking public simple et rapide ; ne pas retarder la première build jouable.
+- Respecter le budget de 0 € et ne pas ajouter de dépendance payante sans accord explicite.
