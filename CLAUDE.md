@@ -35,8 +35,8 @@ Respecter les décisions approuvées du cahier des charges : trois cartes maximu
 
 - **Ordre général obligatoire :** suivre la section 12 du cahier des charges et ses critères de passage.
 - **Livraison rapprochée :** appliquer la section 24 pour obtenir d'abord une build Windows jouable. Les douze jours sont indicatifs ; aucune validation ne peut être sautée pour tenir le calendrier.
-- **Ordre multijoueur obligatoire :** respecter également la section 27.10. Avant le matchmaking public, stabiliser le combat, le hit registration, l'autorité réseau, les bots et les cartes de lancement. Ensuite seulement valider EOS et les lobbies privés entre amis, puis construire le matchmaking public, le lobby BO2 et la continuité des parties.
-- **Séquence de référence :** audit/sauvegarde/licences/blocages → première build Windows jouable sur une carte pilote → combat/réseau/autorité serveur/bots et référence de performances → EOS et parties privées avec protections communautaires minimales → matchmaking public/lobby/continuité et finalisation des cartes/modes de lancement → statistiques persistantes/progression/modération avancée et fonctions dépendantes → validation qualité/performance/alpha → extensions.
+- **Ordre multijoueur obligatoire :** respecter également les sections 12 et 27.10. Avant EOS, stabiliser le combat, le hit registration, l'autorité réseau, les bots et **une seule carte pilote**. Les autres cartes du lancement ne bloquent ni EOS ni les premiers prototypes internes du matchmaking : elles sont finalisées et validées en phase 4, avant l'alpha publique. Après la phase 2, valider EOS et les lobbies privés ; ensuite, construire le matchmaking public, le lobby BO2 et la continuité des parties.
+- **Séquence de référence :** audit/sauvegarde/licences/blocages → première build Windows jouable sur une carte pilote → combat/réseau/autorité serveur/bots et référence de performances sur cette carte → EOS et parties privées avec protections communautaires minimales → prototypes internes puis validation du matchmaking public/lobby/continuité pendant que les autres cartes et modes de lancement sont finalisés → validation de toutes les cartes/modes retenus avant l'alpha → statistiques persistantes/progression/modération avancée et fonctions dépendantes → validation qualité/performance/alpha → extensions.
 - **Priorité en cas de concurrence :** protéger d'abord les données, secrets et licences ; corriger ensuite tout blocage empêchant de compiler, lancer ou jouer ; avancer sur le jalon courant et ses dépendances ; reporter les extensions indépendantes.
 - **Aucune avance artificielle :** ne commence pas une étape ultérieure si un prérequis critique échoue. Les préparatifs indépendants ne sont permis que s'ils sont réversibles, à faible risque et ne détournent pas le travail prioritaire.
 - **Pas de suppression silencieuse :** une fonctionnalité reportée reste planifiée dans le cahier des charges. Ne la supprime pas, ne la déclare pas abandonnée et ne la marque pas comme réalisée.
@@ -51,10 +51,14 @@ Au début de chaque session, puis après chaque jalon :
 3. Identifier la phase active, ses critères de passage, les prérequis validés, le blocage principal et la prochaine action vérifiable.
 4. Choisir une tâche courte qui débloque le jalon actif. Ne lance pas plusieurs grands systèmes en parallèle.
 5. Ne franchir un jalon qu'avec des preuves adaptées : implémentation réelle, compilation, tests fonctionnels, réseau/performance si concernés et build empaquetée lorsque requise.
-6. Mettre à jour le suivi de travail avec statut, preuves, limites, tâches restantes et prochaine action ; référencer les sections du cahier sans recopier leur contenu.
+6. Mettre à jour `SUIVI_PHASES_RIXE.md` avec statut, commit du code testé, build, protocole, résultats, preuves, limites, blocages et prochaine action ; référencer les sections du cahier sans recopier leur contenu. Ne jamais assimiler un commit documentaire ou un ancien titre d'étape à une validation.
 7. Si le jalon est bloqué, consigner la cause et traiter le meilleur travail non bloqué de même priorité, sans sauter l'ordre de dépendance.
 
-Rapport de session bref : **phase active / tâche réalisée / preuves et tests / blocage / prochaine action**. La section 12 reste la chronologie générale ; la section 24 reste le plan de première livraison.
+Rapport de session bref : **phase active / tâche réalisée / preuves et tests / blocage / prochaine action**. La section 12 reste la chronologie générale ; la section 24 reste le plan de première livraison ; `SUIVI_PHASES_RIXE.md` est le registre des statuts réellement démontrés. Au démarrage, lire ce registre et revalider ses preuves sur le commit courant avant de reprendre un statut.
+
+### Correspondance historique — ne pas confondre les anciennes étapes avec les phases actuelles
+
+Les commits et titres de `UNREAL.md` du 18 novembre 2026 (« Étape 1 : rendu, performances, interface » et « Étape 2 : armes, stand de tir, arsenal ») sont des lots de travail historiques. Ils ne prouvent pas la phase 1 actuelle (build Windows exécutable et partie complète) ni la phase 2 actuelle (combat, autorité réseau et tests réseau). Consulter `SUIVI_PHASES_RIXE.md` ; aucun jalon ne peut être déclaré franchi sur la seule base de ces intitulés.
 
 ## 4. Architecture multijoueur et hébergement — décision technique à respecter
 
