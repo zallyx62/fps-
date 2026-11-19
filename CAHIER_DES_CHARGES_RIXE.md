@@ -168,18 +168,111 @@ Règles :
 - Ne déclarer une fonctionnalité terminée qu'après build/test approprié.
 - À chaque étape, rapporter fichiers modifiés, tests, résultats, problèmes restants et prochaine action.
 
-## 12. Ordre de réalisation
+## 12. Chronologie maîtresse et ordre obligatoire de réalisation
 
-1. Audit complet du dépôt, plugins, secrets, licences et Blueprints.
-2. Reproduire et corriger le problème bloquant actuel ; établir une build de référence.
-3. Sécuriser l'autorité serveur et le gameplay réseau.
-4. Prototyper EOS : identité, salons, invitations, découverte et connexion de bout en bout.
-5. Tester latence, NAT, déconnexion de l'hôte et reconnexion.
-6. Implémenter score de contribution et anti-farming.
-7. Ajouter tableau de statistiques.
-8. Équilibrer cartes, armes et bots.
-9. Expérimenter Learning Agents isolément et mesurer les résultats.
-10. Optimiser, tester sur plusieurs machines, produire une build Shipping et publier une alpha.
+Cette section constitue **la feuille de route générale de RIXE**. Elle organise les dépendances entre les exigences du document sans remplacer ni réduire les fonctionnalités approuvées. La section 24 définit uniquement la livraison rapprochée ; les ordres des sections spécialisées s'appliquent à l'intérieur de leur chantier, sous réserve des règles d'arbitrage ci-dessous.
+
+### 12.1 Règles de pilotage et d'arbitrage
+
+- **Priorité absolue :** préserver le dépôt et les données, protéger les secrets, vérifier les licences et corriger tout blocage empêchant de travailler ou de lancer le jeu.
+- **Priorité de livraison :** obtenir d'abord une boucle FPS Windows réellement jouable, testable et reproductible. Ne pas attendre EOS, le matchmaking public, les statistiques avancées, les fonctions communautaires ou les plateformes secondaires pour produire cette première build locale.
+- **Priorité produit :** après la boucle jouable, sécuriser le combat et le réseau, puis construire le parcours multijoueur officiel. Les systèmes de progression, de communauté et les extensions avancées viennent après leurs fondations.
+- **Dépendances avant calendrier :** une étape ne peut être déclarée franchie que lorsque ses critères d'acceptation sont démontrés. Une date cible ne permet jamais de contourner un prérequis, une validation de sécurité, une licence ou un test.
+- **Pas de parallélisation dispersée :** un seul chantier principal à la fois. Un travail secondaire n'est autorisé en parallèle que s'il est indépendant, réversible, de faible risque et ne retarde pas le jalon prioritaire.
+- **Pas de suppression par report :** toute exigence approuvée qui n'est pas nécessaire au jalon courant reste planifiée. La reporter ne signifie ni l'abandonner ni la considérer comme livrée.
+- **Aucune fausse validation :** distinguer systématiquement « spécifié », « commencé », « implémenté », « compilé », « testé », « validé sur build » et « livré ». Une preuve doit correspondre au niveau annoncé.
+
+### 12.2 Chronologie générale par phases et critères de passage
+
+**Phase 0 — Sécurisation et état des lieux**
+1. Vérifier la branche de travail, le commit, les changements locaux, les sauvegardes et la possibilité de revenir en arrière.
+2. Auditer l'arborescence, les Blueprints, plugins, dépendances, secrets, licences, configurations et outils réellement disponibles.
+3. Reproduire le blocage principal à partir d'une procédure claire ; relever les erreurs et distinguer faits vérifiés, hypothèses et inconnues.
+4. Établir un état de référence : ce qui fonctionne réellement, ce qui compile, ce qui a été testé, ce qui est incomplet et ce qui est bloqué.
+
+**Critère de passage :** dépôt sauvegardé, risques immédiats identifiés, blocage principal reproduit ou impossibilité de reproduction documentée, plan de correction concret. Aucun secret ou contenu non redistribuable ne doit être exposé.
+
+**Phase 1 — Première boucle FPS Windows jouable**
+1. Corriger le blocage qui empêche de lancer ou de jouer ; obtenir une compilation et une build de référence lorsque l'environnement le permet.
+2. Stabiliser une seule carte pilote, un mode simple et le parcours de lancement.
+3. Valider la boucle complète : déplacement, visée, tir, rechargement, dégâts, élimination, réapparition, score et fin de partie.
+4. Utiliser des bots ou un fonctionnement local pour tester la boucle si le multijoueur en ligne n'est pas encore fiable.
+5. Vérifier les sauvegardes essentielles et les réglages nécessaires au test.
+
+**Critère de passage :** une build Windows exécutable permet de jouer une partie complète reproductible sans blocage critique connu. Si l'empaquetage est impossible, la raison, les preuves de compilation et les étapes restantes sont consignées ; la build n'est pas déclarée livrée.
+
+**Phase 2 — Fondations du combat et autorité réseau**
+1. Vérifier que le serveur contrôle les éléments sensibles : déplacements validés, tirs, dégâts, santé, munitions, morts, apparitions, score, objectifs et résultats selon les règles applicables.
+2. Corriger les désynchronisations, doubles événements, abus RPC, failles d'autorité et incohérences de réplication.
+3. Tester en local à plusieurs joueurs, puis sur des machines et réseaux distincts dès que possible.
+4. Mesurer latence, gigue, pertes, hit registration, déconnexions et reconnexions ; ne pas confondre un test local avec une validation Internet.
+5. Garder le classement officiel désactivé tant que l'intégrité des résultats et l'autorité de l'hébergement ne sont pas suffisantes.
+
+**Critère de passage :** les règles essentielles sont validées côté serveur, les tests multijoueurs disponibles passent et les limites connues de l'hébergement par un joueur sont documentées. Aucun classement sécurisé n'est revendiqué sans garanties suffisantes.
+
+**Phase 3 — Services en ligne et parcours multijoueur officiel**
+1. Prototyper puis intégrer EOS pour les fonctions réellement nécessaires : identité/Connect, présence, amis, invitations, lobbies, sessions et transport P2P/relay lorsque compatible.
+2. Séparer strictement les services EOS du serveur de simulation et de l'autorité de gameplay.
+3. Valider un parcours bout en bout : lancement, connexion, création/recherche de lobby, invitation, entrée en partie, retour au lobby et continuité du groupe.
+4. Tester NAT, réseaux différents, latence, perte de connexion, départ de l'hôte, reconnexion et limites de disponibilité des services.
+5. Construire progressivement le matchmaking public automatique prévu, sans rendre les serveurs communautaires obligatoires ni promettre une connexion universelle.
+
+**Critère de passage :** le parcours testé fonctionne dans les scénarios réellement couverts ; les échecs et limites sont visibles et documentés. Ne pas annoncer que toutes les configurations réseau sont garanties.
+
+**Phase 4 — Socle de jeu, cartes, bots et équité**
+1. Stabiliser les règles, armes, déplacements, apparitions, équipes, bots et objectifs sur la carte pilote.
+2. Équilibrer les cartes et armes avec des mesures reproductibles ; étendre ensuite aux cartes de lancement, dans la limite de trois cartes.
+3. Ajouter les protections anti-spawn-trap, anti-farming, la validation des résultats et les tests de non-régression.
+4. Valider les quatre playlists prévues et leurs règles propres lorsque les systèmes de combat et de matchmaking qui les supportent sont fiables.
+5. Ne pas activer les fonctions classées tant que les critères de confiance, d'intégrité et de sécurité ne sont pas atteints.
+
+**Critère de passage :** les règles et contenus du périmètre retenu passent les tests fonctionnels, réseau et d'équilibrage disponibles ; les différences entre modes sont explicites et vérifiables.
+
+**Phase 5 — Progression, statistiques et services communautaires essentiels**
+1. Mettre en place un score de contribution fiable et anti-farming, puis les statistiques nécessaires à son explication.
+2. Ajouter la sauvegarde et la progression durables en évitant les pertes de données et les récompenses définitivement manquées.
+3. Stabiliser les fonctions essentielles du compte, des groupes, amis, invitations, préférences et modération en réutilisant les systèmes déjà créés.
+4. Ajouter les outils d'analyse et d'équilibrage à partir de données suffisantes, minimisées et correctement protégées.
+
+**Critère de passage :** les données sont cohérentes, sauvegardées, récupérables selon les garanties annoncées, protégées contre les attributions client non autorisées et testées après reconnexion ou mise à jour.
+
+**Phase 6 — Qualité, performances et préparation de l'alpha**
+1. Exécuter les tests de non-régression, tests réseau, tests de sauvegarde et tests de compatibilité pertinents.
+2. Mesurer performances CPU/GPU, mémoire, temps de frame, 1 % low, chargements, saccades et charge réseau sur plusieurs configurations réellement disponibles.
+3. Optimiser sans sacrifier la lisibilité compétitive, l'équité visuelle ou la stabilité ; intégrer les technologies graphiques uniquement après vérification de leur compatibilité et de leur licence.
+4. Vérifier les trois cartes au maximum prévues au lancement, les modes retenus, les paramètres et le parcours de démarrage.
+5. Produire une build Shipping/alpha propre, vérifier son lancement sur un environnement propre et préparer les notes, limites et procédure de retour arrière.
+
+**Critère de passage :** build identifiée par branche, commit et version, tests réellement exécutés, aucun défaut bloquant connu dans le périmètre annoncé, licences vérifiées pour le contenu distribué et procédure de livraison documentée.
+
+**Phase 7 — Extensions et systèmes avancés**
+Après stabilisation et validation du socle, développer progressivement les fonctions avancées approuvées : replays, création communautaire, événements, fonctions sociales étendues, accessibilité approfondie, outils communautaires, cross-play et clients/plateformes supplémentaires. Respecter les dépendances propres à chaque fonction, le budget de 0 € et les contraintes de licence.
+
+Learning Agents doit rester une expérimentation isolée : définir un cas d'usage mesurable, établir une référence sans apprentissage, comparer les résultats, contrôler les coûts/performance et ne l'intégrer au jeu que si le bénéfice est démontré. Il ne doit jamais bloquer la boucle FPS, le réseau ou la livraison.
+
+**Critère de passage :** chaque extension possède ses propres critères, tests, preuves, plan de désactivation ou retour arrière et ne dégrade pas les systèmes déjà validés.
+
+### 12.3 Règles de lecture des priorités spécialisées
+
+- Les sections 17, 22 et 25 précisent des exigences de réseau, de fiabilité, de sécurité et de licence. Leurs contrôles bloquants s'appliquent dès la phase concernée ; leurs fonctions avancées ne deviennent pas automatiquement des prérequis de la première build jouable.
+- Les sections 26 à 29 détaillent le parcours multijoueur, le matchmaking, les groupes et les fonctions communautaires. Elles s'intègrent après les fondations réseau et les services en ligne, sans créer plusieurs systèmes concurrents.
+- Les sections 30 à 33 détaillent les performances, l'internationalisation, la maîtrise des armes et les approfondissements du combat. Les fonctions nécessaires à la stabilité ou à l'équité sont traitées avant les finitions et extensions.
+- Les sections 34 à 43 ajoutent ou consolident des règles et fonctions spécifiques. Leur présence dans le cahier ne signifie pas qu'elles sont toutes exigées pour la première alpha ; suivre leurs dépendances et leur ordre local après validation du socle concerné.
+- Une priorité locale indique l'ordre à respecter **dans son propre chantier**. Elle ne permet pas de passer devant un blocage de sécurité, de licence, de sauvegarde, de boucle jouable ou de réseau qui empêche le chantier de fonctionner.
+- Lorsqu'une section spécialisée semble contredire la chronologie générale, ne rien supprimer ni interpréter silencieusement : identifier les deux passages, appliquer la priorité générale et les décisions explicitement approuvées les plus récentes, puis signaler toute ambiguïté qui change réellement le périmètre.
+
+### 12.4 Sélection de la prochaine tâche par Claude
+
+Au début de chaque session et après chaque jalon :
+1. Lire cette section 12, la section 24 et les sections spécialisées utiles à la tâche.
+2. Vérifier l'état réel du dépôt, de la branche, du commit, des fichiers modifiés, des builds et des tests ; ne pas se fier à un ancien rapport.
+3. Identifier la phase active, son critère de passage, les prérequis validés, le blocage le plus important et la prochaine action vérifiable.
+4. Choisir une tâche courte qui débloque ou fait progresser la phase active. Ne pas démarrer une extension simplement parce qu'elle est intéressante ou détaillée.
+5. Si la phase est bloquée, traiter d'abord le blocage ; sinon, choisir une tâche indépendante de même priorité ou préparer le prochain test. Ne pas sauter une phase.
+6. Après chaque modification, exécuter les validations pertinentes, consigner les preuves et mettre à jour le suivi de travail sans recopier le cahier.
+7. Présenter un rapport bref : **phase active / tâche réalisée / preuves et tests / blocage restant / prochaine action**.
+
+La chronologie est un ordre de dépendances, pas une promesse de durée. Toute estimation doit être révisée selon l'état réel du projet et les résultats observés.
 
 ## 13. Distribution et modèle économique — zéro budget
 
@@ -583,36 +676,64 @@ Ces cinq fonctionnalités sont approuvées et planifiées. Elles ne sont pas con
 Les cinq fonctionnalités sont approuvées et planifiées. Leur priorité est inférieure à la correction des blocages, à la stabilité du FPS multijoueur et à l'obtention d'une build jouable et testable.
 
 
-## 24. Objectif prioritaire de livraison — horizon de douze jours
+## 24. Livraison prioritaire — première build jouable Windows
 
-### Objectif obligatoire
-À l'échéance d'environ douze jours à compter de la décision du propriétaire (19 novembre 2026), l'objectif principal est de fournir **un FPS RIXE réellement jouable et testable**, même si certaines fonctionnalités avancées du cahier des charges restent à développer. Il ne faut pas promettre que l'intégralité du cahier des charges sera terminée dans ce délai.
+### 24.1 Objectif et relation avec la chronologie générale
 
-### Définition minimale d'une livraison jouable
-- Une build Unreal empaquetée et exécutable sur Windows x64, si l'environnement et les outils disponibles le permettent.
-- Le jeu démarre sans erreur bloquante, permet d'accéder à une partie et de jouer une boucle de gameplay complète.
-- Les contrôles essentiels fonctionnent : déplacement, visée, tir, rechargement, dégâts, élimination, réapparition et fin de partie selon le mode retenu.
-- Au moins une carte fonctionnelle et un mode jouable, avec des bots si le multijoueur réel n'est pas encore suffisamment stable.
-- Tester le multijoueur réel si disponible ; documenter précisément les limites, et ne pas le présenter comme validé si seuls des tests locaux ont été réalisés.
-- Pas de crash bloquant connu au démarrage ou pendant la boucle de jeu testée.
-- Fournir un lien direct vérifié vers la build de test, ou expliquer explicitement pourquoi aucun lien ne peut être produit.
-- Indiquer branche, commit, plateforme, procédure de lancement, tests exécutés, problèmes connus et fonctionnalités non livrées.
+L'objectif de cette livraison rapprochée est de fournir une **première build Windows réellement jouable et testable**, et non de terminer toutes les fonctionnalités de RIXE. Elle correspond principalement aux phases 0 et 1 de la section 12, avec les contrôles indispensables de sécurité, de licence et de qualité.
 
-### Plan de travail indicatif
-1. Jours 1–2 : audit de l'état réel, sauvegarde, audit des licences et reproduction du blocage principal.
-2. Jours 3–5 : résoudre le blocage et obtenir une boucle de jeu complète dans Unreal.
-3. Jours 6–8 : stabiliser le gameplay, la carte, les bots et le multijoueur disponible ; corriger les défauts critiques.
-4. Jours 9–10 : tests de régression, performances, sauvegarde et corrections.
-5. Jours 11–12 : empaquetage, test propre de la build, documentation et livraison du lien vérifié.
+La section 12 reste la chronologie générale du projet. La présente section est un objectif de livraison court terme : elle ne crée pas une deuxième feuille de route et ne permet pas de sauter les prérequis de la section 12. Les étapes suivantes du produit restent planifiées après cette première livraison.
 
-Ce calendrier est une cible de pilotage, pas une garantie. Réviser les étapes selon les résultats techniques réels et préserver du temps pour les tests.
+La cible initiale était d'environ douze jours à compter du 19 novembre 2026. Cette durée est indicative et doit être réévaluée selon l'état réel du dépôt, les blocages techniques et les résultats des tests. **La qualité et les preuves priment sur la date.**
 
-### Gel de périmètre et arbitrage
-- Jusqu'à l'obtention d'une build jouable, ne pas démarrer de gros systèmes secondaires simplement parce qu'ils figurent dans le cahier des charges.
-- Prioriser dans cet ordre : (1) sauvegarde et audit des licences, (2) blocage empêchant de jouer, (3) boucle de gameplay complète, (4) stabilité et tests, (5) build téléchargeable, (6) fonctionnalités secondaires seulement si le temps restant le permet.
-- Les fonctionnalités avancées non essentielles peuvent être reportées sans être supprimées du cahier des charges.
-- Ne pas dégrader la sécurité, les licences ou l'intégrité du jeu pour respecter artificiellement la date.
-- Ne pas déclarer RIXE « terminé » : qualifier précisément le résultat de prototype jouable, alpha de test ou autre statut justifié par les validations effectuées.
+### 24.2 Périmètre minimum de la première build
+
+- Build Unreal empaquetée et exécutable sur Windows x64, si l'environnement et les outils disponibles le permettent.
+- Démarrage fiable, accès à une partie et boucle complète : déplacement, visée, tir, rechargement, dégâts, élimination, réapparition, score et fin de partie.
+- Au moins une carte fonctionnelle et un mode jouable.
+- Bots autorisés pour valider la boucle si le multijoueur en ligne n'est pas encore fiable ; leur présence ne doit pas être présentée comme une validation réseau.
+- Test multijoueur réel si disponible, en indiquant précisément le nombre de machines, joueurs, réseaux et scénarios testés.
+- Aucun crash ou blocage critique connu dans le parcours testé ; les défauts non bloquants doivent être consignés.
+- Un lien direct de téléchargement uniquement si la build existe réellement et si le lien a été vérifié. Sinon, expliquer clairement le blocage.
+- Rapport indiquant version, branche, commit, plateforme, procédure de lancement, tests exécutés, résultats, limites et fonctionnalités non incluses.
+
+Cette première build n'exige pas que toutes les cartes, playlists, EOS, le matchmaking public, les statistiques avancées, les fonctions communautaires, le classé ou le cross-play soient terminés. Ces éléments ne sont pas supprimés : ils restent soumis à la chronologie générale et à leurs dépendances.
+
+### 24.3 Séquence indicative de livraison
+
+1. **Préparation :** sauvegarde, vérification branche/commit, audit des secrets et licences, reproduction du blocage.
+2. **Déblocage :** correction du problème empêchant le lancement, la compilation ou l'accès au jeu ; build de référence.
+3. **Boucle jouable :** une carte, un mode, contrôles, armes, dégâts, élimination, réapparition, score et fin de partie.
+4. **Stabilisation :** tests fonctionnels, bots si nécessaires, corrections critiques, sauvegarde des réglages et contrôle des régressions.
+5. **Empaquetage :** build Windows, lancement depuis un environnement propre, vérification des fichiers et procédure de démarrage.
+6. **Livraison :** lien vérifié si disponible, rapport factuel et liste des limites et travaux suivants.
+
+Les jalons calendaires initiaux (jours 1–2, 3–5, 6–8, 9–10 et 11–12) peuvent servir d'estimation, mais ne constituent ni des dates garanties ni des critères de validation.
+
+### 24.4 Gel de périmètre et arbitrage jusqu'à la livraison
+
+- Priorité 1 : sauvegarde, intégrité du dépôt, secrets, licences et risques juridiques bloquants pour la distribution.
+- Priorité 2 : blocage empêchant de compiler, lancer ou jouer.
+- Priorité 3 : boucle FPS complète sur une carte et un mode.
+- Priorité 4 : stabilité, tests fonctionnels et sauvegarde des réglages.
+- Priorité 5 : build Windows reproductible, test propre et livraison vérifiable.
+- Priorité 6 : uniquement ensuite, travaux secondaires qui ne compromettent pas la livraison.
+
+Ne pas entreprendre avant cette livraison un grand système secondaire (replays, éditeur communautaire, saisons, fonctions sociales avancées, cross-play, navigateur, Learning Agents ou optimisation graphique avancée) sauf s'il corrige directement un blocage, une faille, une incompatibilité ou un risque indispensable à la build.
+
+Ne pas sacrifier l'autorité serveur, la sécurité, les licences, la sauvegarde ou les tests pour respecter une échéance. Si une exigence de sécurité ou de licence bloque la distribution publique, fournir si possible une build de test interne non distribuée et expliquer ce qui interdit sa publication.
+
+### 24.5 Conditions de validation et rapport de livraison
+
+La livraison n'est validée que si :
+- la build et le commit correspondent exactement au rapport ;
+- le lancement et la boucle de jeu ont été testés réellement ;
+- les résultats distinguent tests locaux, tests en réseau et tests sur plusieurs machines ;
+- les erreurs, limites et fonctions absentes sont déclarées ;
+- les licences et contenus distribués ont été contrôlés ;
+- le lien fourni ouvre bien l'artefact attendu, ou son indisponibilité est explicitement indiquée.
+
+Ne jamais qualifier cette étape de jeu complet ou de produit final. Employer le statut exact démontré : prototype jouable, build de test ou alpha.
 
 
 ## 25. Audit de licence Unreal Engine / Epic — point bloquant à résoudre avant distribution
