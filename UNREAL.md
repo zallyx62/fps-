@@ -4,6 +4,8 @@ Projet de base : modèle « First Person », variante « Arena Shooter » (Bluep
 
 > **Portée de ce document :** journal de l'implémentation observée dans le prototype, et non cahier des charges fonctionnel. Les comportements décrits ici ne deviennent pas automatiquement des règles finales. En cas d'écart, suivre `CAHIER_DES_CHARGES_RIXE.md` et consigner l'écart comme tâche à corriger. Les tests mentionnés sont des tests historiques dans l'éditeur ; ils ne prouvent pas une validation sur build empaquetée ni sur Internet.
 
+> **Convention sur les anciennes étapes :** les titres « Étape 1 : rendu, performances, interface » et « Étape 2 : armes, stand de tir, arsenal » sont des intitulés historiques de lots de travail du 18 novembre 2026. Ils ne correspondent pas aux phases 1 et 2 de la chronologie consolidée actuelle et ne constituent pas une preuve de franchissement. Se reporter à `SUIVI_PHASES_RIXE.md` pour les critères et preuves.
+
 ## Écarts de configuration détectés — à auditer, non validés
 
 - `Config/DefaultEngine.ini` active actuellement `r.RayTracing=True`, avec DX12 comme RHI Windows par défaut. Le ray tracing ne doit pas être considéré comme un prérequis de jeu : mesurer son coût et vérifier son activation par profil avant de décider de le conserver par défaut.
