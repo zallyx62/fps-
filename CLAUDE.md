@@ -1,236 +1,206 @@
-# Priorité immédiate : livraison d'un FPS jouable en douze jours
+# RIXE — Instructions de développement pour Claude
 
-L'objectif prioritaire du propriétaire est d'obtenir, à l'échéance d'environ douze jours à compter du 19 novembre 2026, une build RIXE réellement jouable et testable, même si des fonctionnalités avancées restent à développer. Ne promets pas l'achèvement intégral du cahier des charges.
-
-Ordre impératif : (1) lire intégralement CAHIER_DES_CHARGES_RIXE.md, (2) sauvegarder et auditer les licences, (3) inspecter les branches et l'état réel du projet, (4) reproduire et corriger le blocage empêchant de jouer, (5) obtenir une boucle de gameplay Unreal complète, (6) stabiliser et tester, (7) empaqueter une build Windows x64 et fournir un lien vérifié. Reporter les gros systèmes secondaires tant que la build jouable n'existe pas. Ne jamais sacrifier sécurité, licences ou tests pour tenir artificiellement le délai. Le rapport doit distinguer prototype jouable, alpha et version terminée.
-
-# CONSIGNES PRIORITAIRES POUR CLAUDE — RIXE
-
-## Démarrage obligatoire : lire le cahier des charges
-Avant toute modification, lire intégralement `CAHIER_DES_CHARGES_RIXE.md` à la racine du dépôt. Ce document est la référence fonctionnelle consolidée du projet. Le présent fichier conserve aussi des notes techniques historiques : en cas de contradiction, ne pas appliquer aveuglément une ancienne note ou une ancienne feuille de route ; comparer les deux, privilégier les décisions les plus récentes du cahier des charges et signaler tout conflit réel.
-
-## Exigence multiplateforme RIXE
-Respecter la section « Jeu multiplateforme et parité de gameplay » du cahier des charges. Ne pas réduire l'objectif à un simple site vitrine : le navigateur doit permettre de jouer réellement. Étudier d'abord un prototype Pixel Streaming Unreal (rendu Unreal réel mais infrastructure GPU distante et latence/coût à mesurer), puis comparer à un client navigateur WebGL/WebGPU distinct si le streaming n'est pas viable. Ne jamais prétendre qu'un client web allégé est rendu par Unreal. Dans les deux cas, préserver strictement les mêmes règles, armes, cartes fonctionnelles, timings, validations serveur, progression et équité compétitive ; seuls les détails visuels/performance peuvent varier. Priorité à Windows Unreal stable, puis prototype web et autres plateformes par étapes. Budget 0 € : aucun hébergement GPU ou service payant sans accord.
-
-## Nouveaux chantiers approuvés : réseau, communauté et équilibrage
-Prendre en compte la section 17 du cahier des charges : réseau compétitif (diagnostic ping/jitter/pertes, compensation de latence et prédiction/réconciliation contrôlées), protection communautaire (blocage, sourdine, signalements, anti-spam et modération proportionnée), et équilibrage fondé sur des statistiques agrégées avec échantillons suffisants et tests avant/après. Ne pas sacrifier l'autorité serveur, la vie privée ou le budget 0 €. Commencer par les outils locaux et les mesures/tests les plus simples ; aucune sanction grave entièrement automatisée, aucune collecte superflue, aucun ajustement automatique des règles en pleine partie. Ces fonctions ne sont pas réputées existantes avant implémentation et tests.
-
-
-## Plateforme unifiée, compte joueur et cross-play — exigences approuvées
-Respecter la section 18 de `CAHIER_DES_CHARGES_RIXE.md`. RIXE doit viser une plateforme multiplateforme avec un compte RIXE unique : le joueur retrouve son profil, sa progression, ses statistiques, ses déblocages et ses paramètres compatibles sur PC, navigateur et les autres plateformes effectivement prises en charge. Concevoir liaison sécurisée des comptes de plateforme, sauvegarde/synchronisation, récupération et résolution des conflits. Le cross-play doit être activable ou désactivable par le joueur ; le matchmaking et les groupes doivent respecter ce choix sans mélange silencieux. Les amis doivent pouvoir jouer ensemble entre plateformes compatibles. Garder progression/rangs/récompenses validés côté serveur, préserver l'équité clavier/souris/manette/tactile et la parité de gameplay. Étudier EOS et les solutions compatibles, sans présumer qu'un service cloud est gratuit. Budget 0 € : aucun coût récurrent ou service payant sans accord. Développer par étapes et ne déclarer ces fonctions livrées qu'après tests de bout en bout sur plusieurs clients réels.
-
-## Ajouts approuvés A, B et E
-Appliquer les exigences de la section 19 du cahier des charges : A) consolider les services multijoueur et le parcours complet salons/invitations/recherche/connexion/classements ; B) compléter le level design par un anti-camping contextuel, équitable et non punitif envers la défense légitime ; E) fournir des statistiques de fin de partie transparentes, détaillées et explicables, cohérentes avec le profil et validées côté serveur. Ne pas confondre fonctionnalités planifiées et fonctionnalités livrées.
-
-
-## Replays, éditeur communautaire et calibration du matchmaking — ajouts approuvés
-Respecter la section 20 du cahier des charges :
-- Replays complets reconstruits à partir d'événements lorsque possible, avec chronologie, vues, contrôles de lecture, limites de stockage et confidentialité. Ne pas enregistrer le vocal par défaut.
-- Éditeur de cartes communautaire progressif : validation technique, tests privés, modération, licences vérifiées et séparation stricte des cartes communautaires et des playlists/classements officiels tant que les cartes ne sont pas validées.
-- Calibration du niveau sur plusieurs parties et détection prudente des abus de matchmaking/smurfing. Ne jamais sanctionner automatiquement sur une simple suspicion ; prévoir incertitude, réévaluation et contestation.
-Ne pas laisser ces chantiers retarder la correction du blocage actuel, la stabilité réseau et la livraison d'une build testable. Respecter le budget de 0 € et ne jamais prétendre qu'un prototype est livré avant les tests.
-
-
-## Crosshair personnalisable — exigence approuvée
-Respecter la section 21 de `CAHIER_DES_CHARGES_RIXE.md`. Le menu doit proposer deux formes de base : rond et croix. Le joueur peut ensuite personnaliser taille, épaisseur, écartement, longueur, diamètre, couleur, opacité, point central, contour/halo de contraste et, si pris en charge, comportement statique ou dynamique. Prévoir aperçu en direct, test au stand de tir, réinitialisation, préréglages et sauvegarde dans le profil synchronisée entre plateformes compatibles. Le crosshair reste strictement visuel : aucune aide à la visée ni information cachée. Vérifier le code Unreal existant avant de conclure que l'éditeur de réticule mentionné dans les anciennes notes est implémenté. Ne déclarer la fonction terminée qu'après tests réels.
-
-## PRIORITÉ ABSOLUE N°1 : audit et clarification de la licence
-Traiter la licence comme le tout premier chantier, avant les nouvelles fonctionnalités et avant toute publication.
-
-1. Examiner `LICENSE`, les mentions de licence du README, les fichiers de configuration, les plugins, les dépendances, les assets et les dossiers du projet Unreal.
-2. Faire l'inventaire des provenances et droits, en distinguant au minimum : code original RIXE, code/contenu du template Unreal, contenu Epic/Fab/Quixel, plugins, bibliothèques et ressources tierces.
-3. Identifier précisément ce qui est couvert par la GPL-3.0 actuelle, qui en détient les droits, et si le dépôt mélange des éléments soumis à des licences incompatibles ou à des conditions spécifiques.
-4. Vérifier les conditions officielles Unreal/Epic applicables aux versions et aux contenus réellement utilisés. Ne pas se fier à une supposition ni à une simple recherche de nom de fichier.
-5. Proposer une stratégie de licences séparées si nécessaire : par exemple licence permissive pour le seul code original RIXE, notices/exclusions explicites pour le contenu Unreal/Epic et respect des licences tierces. MIT n'est qu'une piste à évaluer, jamais une décision automatique.
-6. Ne pas remplacer, supprimer ou réécrire `LICENSE`, les notices de copyright ou les mentions de tiers tant que l'inventaire n'est pas établi. Ne pas prétendre que RIXE est entièrement open source ou redistribuable tant que ce n'est pas vérifié.
-7. Produire un rapport clair : fichiers concernés, détenteurs/provenances identifiés, licences applicables, incompatibilités/risques, éléments non vérifiables et stratégie recommandée.
-8. Préparer ensuite les modifications de licence dans un commit distinct et les appliquer uniquement après avoir établi que les droits le permettent. Toute décision juridique incertaine doit être signalée au propriétaire pour validation ; ne pas inventer de droits ni donner une garantie juridique.
-
-## Autonomie d'exécution
-Le propriétaire autorise Claude à avancer de manière autonome avec les outils disponibles, y compris terminal, navigateur, éditeur Unreal et contrôle du PC, dans la limite des autorisations réellement accordées par le système. Utiliser ces accès pour inspecter, tester, sauvegarder et faire progresser le projet sans demander une confirmation à chaque opération technique réversible.
-
-Limites impératives :
-- Budget autorisé : **0 €**. Aucun achat, abonnement, plugin/asset payant, serveur, publicité, domaine ou frais de boutique sans accord explicite préalable.
-- Ne jamais exposer de mot de passe, jeton, clé API, donnée privée ou secret dans le dépôt, les logs ou les rapports.
-- Sauvegarder avant les opérations risquées ; ne jamais supprimer/écraser des données sans sauvegarde vérifiée.
-- Demander l'accord avant dépense, publication publique, action irréversible, engagement juridique, changement de propriété/licence ou utilisation d'identifiants/paiements.
-- Ne pas prétendre avoir exécuté une action si l'outil ne l'a pas confirmée.
-
-## Après l'audit de licence
-Une fois le rapport de licence établi et les changements sûrs traités/validés :
-1. Faire un état des lieux Git : branche active, remote, commits non poussés et différences entre `main` et `jeu-unreal`. Ne pas supposer que ces branches sont synchronisées.
-2. Reproduire le problème bloquant actuel et le corriger avant d'ajouter des fonctionnalités.
-3. Continuer selon les priorités et critères de test du cahier des charges.
-4. Pour chaque étape, consigner les fichiers changés, sauvegardes, tests exécutés, résultats, limites et prochaine étape. Ne déclarer terminé que ce qui a été effectivement testé.
+**Référence fonctionnelle unique :** `CAHIER_DES_CHARGES_RIXE.md` (version la plus récente de la branche de travail).  
+**Moteur :** Unreal Engine 5.8. **Projet :** principalement Blueprint.  
+**Budget autorisé :** 0 €. **Branche de développement principale :** `jeu-unreal`.  
+**Objectif :** construire un FPS multijoueur réellement jouable, stable, accessible avec des amis à distance et maintenable.
 
 ---
 
-# Notes de travail (RIXE, UE 5.8 Blueprint)
+## 1. Règle de cohérence documentaire
 
-## Chemins
-- Projet : `D:\fps 5.8\fps.uproject`. Éditeur : `d:\ue_5.8\engine\binaries\win64\unrealeditor.exe`.
-- Dépôt : branche `jeu-unreal`. Sauvegarder dans l'éditeur, `device_stage_files` des `.uasset`, copier depuis
-  `/mnt/user-data/uploads/fps 5.8/Content/...` vers `Content/...`, commit, `git -c push.negotiate=true push`.
+Le cahier des charges est la source de vérité pour les fonctionnalités, décisions produit et priorités. Ce fichier explique comment travailler ; il ne doit pas recopier intégralement chaque fonctionnalité du cahier des charges.
 
-## Cahier des charges (15 modules, 18/11/2026) et ordre proposé
-Autonomica abandonné : seul RIXE compte. FPS arcade façon XDefiant/CoD, 10 contre 10, contenu fait maison
-(pas de packs Fab). Chaque étape se termine par une version jouable, testée à 2 joueurs, poussée sur `jeu-unreal`.
-1. Socle rendu/perf/UI : Lumen, Nanite, post-process contrasté, exposition verrouillée, pas d'ombres noires (M1) ;
-   kit UI coins arrondis 8-16, flou d'arrière-plan, liserés lumineux (M2) ; qualité Basse→Ultra, limite FPS,
-   V-Sync, TSR, Basse = sans Lumen (M3) ; champ de vision 80-120 (M9).
-2. Armes + stand de tir : 8 armes (maillages faits, voir plus bas), TTK moyen, recul, vitesse par arme,
-   hitmarkers corps/tête, barre de vie flottante (M4) ; accessoires qui changent les stats (M9) ; stand de tir (M8) ;
-   validation serveur de la cadence (M11).
-3. Mouvement : glissade, slide-cancel, jump-shot, escalade rapide (M4) ; input buffering (M11) ; prédiction client
-   (C++ si Visual Studio dispo, sinon Blueprint).
-4. Cartes et premiers modes : 3 cartes à 3 voies (M1) ; TDM, Domination, modificateur Hardcore (M6) ; bots pour
-   remplir le 10c10 (M8) ; apparitions anti-spawnkill (M9).
-5. Interface de match : tableau des scores + ping (M10), killfeed avec icônes, vote de carte (M15), podium MVP (M13),
-   ping rapide, killcam (M8).
-6. Factions : 1 compétence active (recharge) + 1 ultime (score) (M5).
-7. Progression : XP compte/armes, accessoires et skins (MI dynamiques) (M7) ; double sauvegarde, éditeur de réticule
-   (M14) ; stats de carrière, couleurs de contours (M10) ; passe de combat gratuit (M12) ; défis quotidiens (M8) ;
-   inspection d'arme, scorestreaks (drone radar) (M13).
-8. Autres modes + classé : Occupation, Hot Shot, CTF, Escorte, Contrôle de zone, Recherche & Destruction (M6) ;
-   RP et rangs Bronze→Légende (M7) ; backfill, pénalité d'abandon (M14).
-9. En ligne : Steam (OnlineSubsystemSteam, AppID 480), invitations/lobbies (plugin Advanced Sessions, à faire valider),
-   spectateur (M12, M10) ; anti-triche serveur vitesse/cadence, logs de crash (M11).
-10. Finition : MetaSounds spatialisé + occlusion (M11), manette + aim assist (M12), accessibilité (M15),
-    build Shipping optimisé (M10).
-Déjà fait : multijoueur (serveur d'écoute), chat, vocal, équipes, rechargement, menu à onglets, touches
-réassignables, sensibilités, visée au viseur, maintenir/basculer. **Étape 1 terminée** (18/11, poussée).
-Visual Studio 2022 Community 17.14 installé (vérifier MSVC v143 + SDK Windows avant l'étape 3).
+- Avant toute tâche, lire le cahier des charges et identifier les sections concernées.
+- Ne créer aucun système parallèle lorsqu'une fonction existante peut être étendue.
+- Si deux demandes ont le même résultat utilisateur ou la même responsabilité technique, les fusionner sous un seul système propriétaire et ajouter des références croisées.
+- En cas de contradiction, relever précisément les deux formulations, appliquer la décision la plus récente explicitement approuvée et signaler tout doute au propriétaire.
+- Ne jamais transformer un objectif planifié en fonctionnalité « terminée » sans preuve de code, test et build.
+- Maintenir une matrice d'état : **existant vérifié / partiellement fonctionnel / planifié / bloqué / non vérifié**.
+- Mettre à jour le cahier des charges uniquement pour corriger une erreur factuelle ou enregistrer une décision approuvée. Ne pas ajouter de nouvelles fonctionnalités sans autorisation.
 
-## Reprise (armes, 17/11 au soir)
-- Maillages générés par `Tools/rixe_weapons.py` (OBJ dans `D:\fps 5.8\RixeSource\Weapons`, repère Y = canon,
-  Z = haut, poignée à l'origine), importés dans `/Game/Rixe/Weapons/Meshes` ; matériaux `M_RixeSurface` et
-  `MI_Skin0..6_Body/Accent`, `MI_Wpn_Detail`, `MI_Wpn_Glass` dans `/Game/Rixe/Weapons/Materials`.
-  **Peut-être pas sauvegardés** : vérifier, sinon réimporter (`StaticMeshTools.import_file`) puis `save_assets`.
-- Points de visée, montages d'accessoires : `Tools/weapons_meta.json`. Variables déjà ajoutées à
-  `BP_ShooterWeaponBase` : RixeSightOffset, RixeAdsFov, RixeEyeDist, RixeDamage, RixeHeadMul, RixePellets…
-- Dégâts : `ProcessHit` de `BP_ShooterProjectileBase` (ApplyDamage avec `Damage`) ; tir : `Fire Bullet` /
-  `Calculate Bullet Spawn Transform` de `BP_ShooterWeaponBase`.
+## 2. Objectif et expérience de jeu
 
-## Unreal MCP : `ProgrammaticToolset.execute_tool_script`
-- `def run(): ... return {dict}` ; `execute_tool(nom, json.dumps(args))` ; imports : json, math, re, time.
-- Une erreur d'outil arrête tout le script, même dans un try : trouver les ids d'abord, construire ensuite.
-- `editor_toolset.toolsets.blueprint.BlueprintTools.` get_graph{blueprint,graph_name}, find_nodes{graph,title:''},
-  get_node_infos{nodes} (pins : name, pin_id, type_id, value, connected_pins), create_node{graph,type_id,pos}
-  (renvoie la réf. du nœud), connect_pins / break_pins{output_pin,input_pin}, set_pin_value{pin,value},
-  find_node_types{graph,type_id_filter,context_pins:[]}, compile_blueprint{blueprint}.
-- `editor_toolset.toolsets.object.ObjectTools.` get_properties{instance,properties}, set_properties{instance,values:"json"}.
-- `editor_toolset.toolsets.asset.AssetTools.save_assets{asset_paths:[...]}`.
-- `EditorToolset.EditorAppToolset.` StartPIE{options:{bSimulate,playMode:'PlayMode_InViewPort',warmupSeconds}}, StopPIE.
-- `EditorToolset.LogsToolset.GetLogEntries{pattern,category,maxEntries}`.
-- `SlateInspectorToolset.SlateInspectorToolset.Windows{action:list|select|close,index}`.
-- `UMGToolSet.UMGToolSet.GetWidgets{widgetBlueprint:{refPath:'/Game/.../WBP_X.WBP_X'}}`.
+RIXE est un FPS d'arène gratuit, nerveux, lisible et compétitif, avec une identité propre. Le gameplay, la qualité des tirs, les déplacements, la stabilité réseau et l'équité passent avant l'accumulation de contenu.
 
-## DSL de graphes (bien plus économe)
-- L'éditeur est passé en **anglais** pour que les ids de nœuds collent à la doc du DSL
-  (`BlueprintTools.get_graph_dsl_docs`, `write_graph_dsl{graph,code}`, `read_graph_dsl{graph}`).
-- `write_graph_dsl` ajoute des nœuds : vider la fonction d'abord (supprimer tout sauf FunctionEntry) ;
-  les paramètres doivent déjà exister (`add_function_param`). Les événements d'IA multi-sorties
-  (Started/Completed) ne sont pas lus par `read_graph_dsl` : les câbler avec create_node/connect_pins.
-- Cache par graphe : un nœud vers une variable/fonction créée après la première requête sur ce graphe
-  est introuvable jusqu'au redémarrage de l'éditeur (ou utiliser un graphe neuf). Créer d'abord toutes
-  les variables et fonctions vides, redémarrer (File > Exit, puis computer_open_application + double-clic
-  sur le projet `fps`), puis écrire la logique.
+L'expérience multijoueur officielle par défaut est un lobby public automatique inspiré de Black Ops II : les joueurs se rassemblent, le compte à rebours ou le seuil de joueurs déclenche la partie, et le groupe reste ensemble entre les manches/parties lorsque c'est possible. Les serveurs communautaires sont facultatifs et secondaires, dans une rubrique distincte.
 
-## Pièges connus
-- Ids en français : `Utilitaires|ContrôleDeFlux|Branche`, `Utilitaires|Opérateurs|Égalà(==)`, `Supérieurà(>)`,
-  `Math|Flottant|SelectFloat`, `Entrée|KeyboardEvents|C` / `Esperluette` / `é`, `Appelerunefonction|Aim`,
-  `Variables|Pardéfaut|ObtenirX` / `DéfinirX` (booléens sans le « b »).
-- Opérateurs promotables : brancher A avant de régler B.
-- Variable ajoutée à un BP parent : absente des nœuds de l'enfant, mettre la logique dans le parent.
-- Les événements RPC (`ServerRixeAction`) sont dans `EventGraph`. NodePosX/Y illisibles.
-- `set_pin_value` ne marque pas le paquet modifié ; `save_assets` échoue pendant le PIE.
-- Propriétés RepNotify non modifiables par set_properties. Variables BP avec espaces : `Current Weapon`.
-- PIE à 2 : `/Script/UnrealEd.Default__LevelEditorPlaySettings` PlayNumberOfClients 2, PlayNetMode
-  PIE_ListenServer (remis à zéro au redémarrage). Fermer « Journal des messages », `select` la fenêtre client.
-- Objets PIE : `/Game/Variant_Shooter/UEDPIE_0_Lvl_ArenaShooter.Lvl_ArenaShooter:PersistentLevel.BP_ShooterCharacter_C_0`
-  (serveur : _0 hôte, _1 client) ; `UEDPIE_1` = monde du client.
-- AZERTY : Unreal lit 1 / 2 comme `Ampersand` / `E_AccentAigu`. L'outil de test doit envoyer « & » / « é ».
-- Un script bloque le jeu : mesurer après l'action (distance, état), pas pendant.
-- Contrôle du PC : `computer_resolve_access(["UnrealEditor.exe","File Explorer"])`. Ne jamais relancer l'éditeur
-  avec `computer_open_application` (ouvre une 2e instance).
+Respecter les décisions approuvées du cahier des charges : trois cartes maximum au lancement initial ; modes standards à arsenal contrôlé ; playlists Chaos séparées avec armes explosives ; équipes rouge/bleue ; crosshair personnalisable rond/croix ; apparitions choisies automatiquement par le serveur ; camping géré d'abord par le level design ; score valorisant aussi objectifs, défense et soutien ; UI originale, claire et sobre.
 
-## Réseau
-Serveur d'écoute. `ServerRixeAction(Action, Text)` dans `BP_ShooterPlayerController` : 0/1 tir, 2 arme,
-3 chat, 4/5 sprint, 6 rechargement (`RixeReloading`), 7/8 visée (`RixeAdsSrv`, vitesse 420). Équipes : `ChoosePlayerStart` (GameMode), `Team Byte` en RepNotify.
+## 3. Priorité de livraison et ordre de travail
 
+Ne pas essayer de tout développer en parallèle. Toujours traiter les blocages et le socle avant les systèmes secondaires.
 
-## Livraison testable à chaque mise à jour — exigence du propriétaire
+1. **Sécurité et préservation :** sauvegarde vérifiée, audit des secrets exposés, état Git, inventaire des licences et dépendances.
+2. **Build de référence :** ouvrir le projet, reproduire le blocage actuel, compiler les Blueprints, corriger les erreurs bloquantes et obtenir une build Windows x64 testable.
+3. **Boucle FPS :** déplacement, tir, dégâts, rechargement, réapparition, score, fin de manche, HUD, carte et contrôles.
+4. **Réseau fiable :** autorité serveur, RPC validés, réplication, hit registration, déconnexions, tests de latence/pertes et stabilité multi-clients.
+5. **Parties avec amis :** invitations, rejoindre/créer groupe, lobby, sessions, connexion à distance et reconnexion.
+6. **Matchmaking officiel :** lobby public automatique, continuité de groupe, remplissage humain/bots transparent, backfill et équilibrage des équipes.
+7. **Progression et communauté :** compte, sauvegarde, statistiques, modération, groupes persistants et cross-play selon plateformes effectivement supportées.
+8. **Fonctions avancées :** replays, éditeur communautaire, entraînement hors ligne, environnement de test, temps morts/abandon, serveurs communautaires.
+9. **Navigateurs et autres plateformes :** seulement après stabilisation du client Windows et validation d'une architecture commune.
 
-Le propriétaire souhaite recevoir un lien utilisable pour tester chaque mise à jour. À la fin de chaque étape qui modifie le jeu :
+Les délais historiques (dont l'objectif de douze jours) sont des jalons de planification, jamais une permission de bâcler les tests ou de déclarer une version terminée artificiellement.
 
-1. Si le projet peut être compilé et empaqueté correctement, produire une build jouable (priorité à une build Windows x64 Shipping ou Development adaptée aux tests).
-2. Publier le paquet comme artefact GitHub Actions ou comme asset d'une GitHub Release, puis fournir un lien direct de téléchargement et indiquer la version, la branche, le commit, la plateforme, les contrôles effectués et les limites connues.
-3. Si la build n'est pas encore fiable, ne pas la présenter comme jouable : fournir le rapport de test et expliquer précisément ce qui bloque.
-4. Ne jamais remplacer le jeu Unreal par l'ancien dossier `prototype-web` ni présenter `prototype-web/demo.html` comme une version jouable de RIXE.
-5. Un lien vers les fichiers source GitHub ne constitue pas un lien de test du jeu. Pour Unreal, fournir une build installable/téléchargeable ; un lancement dans le navigateur n'est pas attendu sauf si une véritable version web distincte est développée et validée.
-6. Ne pas publier automatiquement une version publique ou une Release officielle sans vérifier le contenu, les licences, les données incluses et l'accord du propriétaire. Un artefact de test privé ou une Release de préversion peut être privilégié selon les permissions disponibles.
-7. Si la taille de la build ou les contraintes GitHub empêchent l'hébergement, proposer une solution gratuite compatible avec le budget de 0 € et expliquer ses limites. Ne jamais prétendre qu'un lien existe tant qu'il n'a pas été créé et vérifié.
+## 4. Architecture multijoueur et hébergement — décision technique à respecter
 
-Dans chaque compte rendu, ajouter obligatoirement :
-- **Lien de test/téléchargement :** URL vérifiée, ou « indisponible » avec la raison.
-- **Version testée :** branche + commit.
-- **Tests :** lancement, carte, contrôles, réseau si pertinent.
-- **État :** jouable / jouable avec limites / non jouable.
+### 4.1 Services en ligne et transport de jeu : responsabilités séparées
 
+Étudier **Epic Online Services (EOS)** comme premier choix pour les services gratuits de compte/Connect, présence, amis, invitations, lobbies, sessions et P2P, sous réserve des conditions et limites actuelles d'Epic. EOS n'est pas un serveur de simulation Unreal et ne remplace pas l'autorité de jeu.
 
-## Alerte licence Unreal / GPL — vérification prioritaire
-Le dépôt annonce GPL-3.0 dans LICENSE et README.md, alors que l'Unreal Engine EULA actuelle d'Epic (consultée le 19 novembre 2026) cite explicitement GPL/LGPL parmi les licences non compatibles avec la Licensed Technology (section 6(c)). C'est un risque sérieux à traiter avant toute distribution. Ne change jamais LICENSE automatiquement et ne remplace pas globalement par MIT. Inventorie chaque fichier/asset/plugin et ses droits, distingue les éléments originaux RIXE du contenu Epic/Fab/tiers, vérifie la redistribution des sources et binaires, puis présente des options au propriétaire. Toute relicence exige preuve que le propriétaire détient les droits nécessaires et son approbation explicite. Voir section 25 du cahier des charges.
+- Utiliser EOS pour découvrir les joueurs, gérer les groupes/lobbies et négocier les connexions lorsque pertinent.
+- Utiliser le réseau Unreal pour la simulation du match.
+- Évaluer EOS P2P/relay ou une solution compatible pour faciliter les connexions derrière NAT/pare-feu. Ne pas promettre que toutes les connexions seront possibles sur tous les réseaux.
+- Conserver un chemin de connexion directe/LAN pour les tests et le dépannage.
+- Ne pas intégrer Steam AppID 480, Advanced Sessions ou un plugin tiers comme dépendance de production sans validation technique, de licence et de configuration.
+- Les services EOS annoncés gratuits ne rendent pas gratuits le calcul serveur, les GPU, le stockage, le trafic, la modération ni le support.
 
+### 4.2 Modèle de parties recommandé à budget nul
 
-## Nouveaux ajouts approuvés — lobby, continuité, audio des armes et Chaos
-Respecter intégralement la section 26 du cahier des charges RIXE. Points essentiels :
-- Lobby public de playlist inspiré du fonctionnement Black Ops II : les joueurs se rassemblent dans un lobby commun, puis lancement automatique au compte à rebours ou lorsque l'effectif requis est atteint. Afficher population, places, timer et seuils ; éviter les pop-ups de confirmation individuelles en matchmaking public. Garder la confirmation pour salons privés/personnalisés et changements de configuration.
-- Déconnexion : réserver la place pendant une période de grâce configurable, permettre au même joueur de se reconnecter et de reprendre sans état client non fiable ; à expiration, remplacer par un bot si le mode le permet. Définir le retour après remplacement, protéger les statistiques, distinguer les bots et appliquer une politique classée stricte contre les abus.
-- Migration automatique de l'hôte si l'hôte joueur disparaît : élection contrôlée, transfert d'état vérifié, reprise ou annulation propre. Ne pas assimiler P2P et serveur dédié sécurisé ; prototype réel requis.
-- Noms tactiques courts et distinctifs pour les zones des cartes, cohérents entre mini-carte, pings et communications, traduisibles et testés.
-- Audio : chaque arme doit être satisfaisante dès le départ, avec identité propre de tir et de confirmation de touche. Le son de tracking/impact confirmé doit être précis, satisfaisant, non envahissant et déclenché sur résultat fiable. Des variantes cosmétiques de sons de hit peuvent se débloquer par maîtrise de l'arme ; choix, aperçu, volume et désactivation. Aucun avantage compétitif ni information cachée.
-- Arsenal : modes standards avec arsenal équilibré et contre-jeu ; armes explosives/atypiques réservées aux playlists dédiées. Créer Chaos non classé et Chaos classé, tous deux avec arsenal complet, règles et équilibrage propres. Rendre leur nature explicite.
-- Interface : lobby RIXE simple, rapide, lisible, paramétrage clair et coins arrondis cohérents avec le kit existant. Ne pas copier Warzone/Apex/THE FINALS ; prototyper et tester les principes d'organisation.
-Ces fonctionnalités sont approuvées mais non réputées implémentées. Maintenir le budget à 0 €, les contrôles de sécurité, la qualité réseau et les priorités de build jouable. Ne pas retarder le socle fonctionnel pour polir prématurément l'interface ou multiplier les systèmes.
+**Phase initiale : parties privées et groupes d'amis hébergés par un joueur (listen server), via EOS/P2P ou relais compatible.** Cela permet de prototyper et de jouer sans payer un parc de serveurs. Fournir un bouton « Inviter / Rejoindre », un code ou une invitation, l'affichage de la région/ping estimé et un diagnostic de connexion.
 
-## Direction communautaire hybride approuvée — section 27 du cahier des charges
-Le propriétaire a validé une direction hybride avec priorité stratégique à la communauté. Respecter toute la section 27 de `CAHIER_DES_CHARGES_RIXE.md`.
+Limites obligatoires à afficher et tester :
+- L'hôte joue sur la machine qui fait autorité : avantage potentiel de latence et risque de triche.
+- Débit montant, CPU, pare-feu, NAT strict, CGNAT, Wi-Fi et stabilité de l'hôte peuvent empêcher ou dégrader la partie.
+- Un relais peut améliorer la traversée réseau mais n'est pas une garantie de coût nul ou de disponibilité universelle.
+- La migration d'hôte peut être envisagée pour les salons non classés ; ne pas promettre un transfert parfait de la simulation sans prototype validé.
+- Ne pas lancer de classement officiel compétitif sur un modèle d'hôte joueur tant que les risques d'intégrité ne sont pas suffisamment maîtrisés.
 
-**RÈGLE D'EXPÉRIENCE PAR DÉFAUT :** au lancement du jeu, le parcours principal doit être le matchmaking officiel et le lobby public automatique inspiré de BO2. Le bouton « Jouer » conduit directement au matchmaking de la playlist ; le lobby public se remplit, affiche son état et démarre automatiquement selon un seuil ou un compte à rebours. Conserver autant que possible les joueurs ensemble entre les parties. Aucun pop-up de confirmation individuelle dans le matchmaking public.
+**Phase suivante : serveurs dédiés facultatifs**, uniquement lorsqu'un hébergement gratuit durable ou un financement approuvé existe. Étudier les serveurs communautaires autohébergés et les machines volontaires, avec règles, versions et statut clairement identifiés. Ne jamais dépendre d'une offre gratuite temporaire comme garantie de service permanent.
 
-**Les serveurs communautaires sont secondaires et facultatifs.** Ils doivent être accessibles dans une rubrique distincte (« Communauté » ou « Serveurs »), jamais imposés à l'ouverture du jeu et jamais utilisés comme parcours par défaut. Le navigateur communautaire, les serveurs personnalisés, règles, cartes et statistiques communautaires doivent être identifiés et séparés des expériences officielles et du classé.
+**Classé :** désactivé au lancement si l'autorité serveur, l'anti-triche, la stabilité et l'intégrité des résultats ne sont pas suffisamment fiables. Ne jamais présenter un listen server hébergé par un joueur comme équivalent à un serveur dédié impartial.
 
-Développer par étapes, sans détourner la priorité de la build jouable et de la stabilité :
-1. Licence/sauvegarde/audit et correction du blocage.
-2. Build jouable, gameplay, réseau, hit registration, sécurité serveur et bots.
-3. Matchmaking officiel, lobby public BO2, lancement automatique, continuité, backfill et reconnexion.
-4. Amis, groupes, invitations, présence, modération.
-5. Serveurs communautaires facultatifs et navigateur secondaire.
-6. Clans, événements/tournois, participation communautaire et cartes communautaires validées.
-7. Extension multiplateforme.
+### 4.3 Jouer avec des amis partout
 
-Fusionner les fonctions redondantes avec les systèmes déjà documentés (replays, stats, équilibrage data, sécurité, modération, cross-play, éditeur de cartes, événements). Ne pas créer de doublons fonctionnels : enrichir les sections existantes et maintenir des références croisées. Budget strict de 0 €, aucun achat ou service payant sans accord. Ne déclarer aucune fonction terminée avant tests de bout en bout et build vérifiée.
+Objectif : permettre de rejoindre un ami depuis des réseaux et régions différents, sans prétendre à une disponibilité absolue. Implémenter progressivement : identité de joueur, invitation, lobby, recherche/rejoindre, transport P2P/relay, gestion NAT/pare-feu, diagnostic ping/jitter/pertes, reconnexion et messages d'erreur utiles. Tester entre réseaux différents, pas uniquement deux fenêtres PIE sur le même PC.
 
+## 5. Systèmes fonctionnels uniques — éviter les doublons
 
-## Cinq fonctionnalités multijoueur approuvées — section 28 du cahier des charges
-Le propriétaire a approuvé les cinq propositions de la dernière liste. Respecter la section 28 de `CAHIER_DES_CHARGES_RIXE.md` et intégrer ces fonctions aux systèmes existants sans doublons :
-1. Préférences de matchmaking humains prioritaires / bots autorisés, transparence totale sur les bots et séparation des statistiques.
-2. Chat vocal de proximité facultatif, distinct du vocal d'équipe, avec mute, signalement, confidentialité et aucun enregistrement vocal par défaut.
-3. Entraînement/stand de tir pendant la recherche de partie, isolé du match et sans progression ni information sur la partie recherchée.
-4. Préférences de matchmaking selon clavier/souris, manette ou groupes mixtes, sans empêcher les amis de jouer ensemble et sans fragmenter excessivement la population.
-5. Remplaçants volontaires pour les parties en cours, avec statistiques séparées, entrée équitable et protections anti-abus ; classé désactivé tant que les règles strictes ne sont pas validées.
+Chaque responsabilité doit avoir un seul système de référence. Étendre ce système au lieu d'en créer un deuxième.
 
-Ne pas commencer ces chantiers avant que le socle gameplay/réseau et le matchmaking/lobby public soient suffisamment stables. Prioriser d'abord les préférences humains/bots et l'entraînement en recherche ; les trois autres sont ultérieurs. Budget 0 €, confidentialité et sécurité obligatoires. Les fonctions sont approuvées mais non implémentées tant que les tests ne les valident pas.
+- **Matchmaking unique :** regroupe recherche de partie, régions, ping de groupe, préférence solo/groupes, périphériques, équilibre des deux équipes, humains/bots, backfill et remplaçants. Les règles varient selon playlist/classement, pas par systèmes indépendants.
+- **Lobby/groupe unique :** amis, invitations, présence, lobby public automatique, lobby privé, continuité entre parties et préparation. Distinguer les états du groupe et ceux du match.
+- **Réseau/autorité unique :** validation serveur des tirs, cadence, munitions, dégâts, déplacements, capacités, apparitions, score, objectifs, résultats et sanctions de match. Les clients prédisent/présentent mais ne décident pas des résultats.
+- **Identité et progression uniques :** compte RIXE, liaison de comptes, sauvegarde synchronisée, récupération, statistiques, déblocages et cosmétiques. Séparer données locales hors ligne et données officielles validées.
+- **Statistiques et intégrité uniques :** tableau de fin de partie, profil, contribution, stats par joueur/équipe, replays et réparation/annulation de résultats compromis utilisent les mêmes événements et définitions de statistiques. Une annulation nécessite des preuves/critères publiés, audit et contestation.
+- **Entraînement unique :** stand de tir, laboratoire d'armes, comparaison des statistiques, entraînement pendant recherche et mode hors ligne partagent les mêmes données d'armes et règles de simulation ; séparer strictement les progrès locaux des résultats officiels.
+- **Équilibrage unique :** télémétrie agrégée, laboratoire interne, tests communautaires et équilibrage pré-match utilisent une définition commune des armes, modes, cartes, niveaux et incertitudes. Aucun changement automatique en cours de partie classée.
+- **Communication/modération unique :** chat texte, vocal d'équipe, vocal de proximité, roue de communication, mute, blocage, signalement et outils de modération partagent les mêmes contrôles de confidentialité et d'abus. Pas d'enregistrement vocal par défaut.
+- **Contenu communautaire unique :** éditeur/validation des cartes, playlist de test, événements et historique des changements partagent versionnage, validation, modération et séparation stricte des files officielles.
+- **Serveurs uniques par catégorie :** distinguer clairement matchmaking officiel, partie privée hébergée par joueur et serveur communautaire. Ne pas mélanger leurs règles, rangs ou garanties.
 
-## Huit nouvelles fonctionnalités approuvées — section 29
-Le propriétaire a explicitement approuvé les huit propositions de la liste communautaire/compétitive. Respecter la section 29 de `CAHIER_DES_CHARGES_RIXE.md` et les critères ci-dessous :
-1. Annulation/réparation de parties compromises uniquement sur preuves et critères publiés ; pas de sanction/annulation sur simple suspicion ; information, audit et contestation.
-2. Matchmaking tenant compte des groupes préformés, avec préférences solo/groupes si la population le permet, sans séparer silencieusement les amis.
-3. Entraînement entièrement hors ligne contre bots, avec statistiques/progression locales strictement séparées des résultats officiels.
-4. Temps morts tactiques limités et vote d'abandon encadré, activables seulement dans les modes compatibles et avec protections anti-abus ; ne pas les imposer à toutes les parties publiques.
-5. Armurerie transparente et laboratoire joueur : essayer/comparer armes et accessoires, consulter les valeurs réellement utilisées en jeu. Étendre le stand de tir/laboratoire existant plutôt que créer un système doublon.
-6. Équilibrage explicite des deux équipes avant chaque match, intégré au matchmaking existant, en tenant compte du niveau estimé, de l'incertitude, des performances, du mode et des groupes ; préserver les amis autant que possible.
-7. Environnement/playlist facultatif de test communautaire pour essayer les changements officiels, avec version clairement identifiée et données/rangs séparés des parties officielles.
-8. Transparence sur le ping estimé des membres d'un groupe et les régions candidates, avec choix qualité/attente ; ne jamais révéler IP ou localisation précise et ne pas présenter une estimation comme une garantie.
+Pour chaque fusion, conserver les exigences détaillées dans le cahier des charges et créer des liens vers les sections concernées. Ne pas supprimer une exigence approuvée sous prétexte qu'elle ressemble à une autre : la rattacher au système commun.
 
-Ordre de priorité : protéger l'intégrité des résultats et consolider le matchmaking/réseau d'abord ; intégrer groupes, équilibrage d'équipes et ping dans un seul système de matchmaking ; étendre le laboratoire/stand de tir existant ; développer l'entraînement hors ligne ; ajouter ensuite temps morts/abandon et environnement de test communautaire. Toutes ces fonctions sont approuvées mais restent planifiées jusqu'à tests sur build. Respecter strictement le budget de 0 €, les exigences de confidentialité, la sécurité serveur, la modération et les sauvegardes. Aucun achat/service payant sans accord explicite.
+## 6. Plateformes : Windows d'abord, navigateur ensuite
+
+Windows Unreal est la plateforme de référence initiale. Stabiliser d'abord une build Windows distribuable et son protocole réseau commun.
+
+Le navigateur reste un objectif approuvé, mais il ne doit pas bloquer le FPS Windows ni être présenté comme déjà disponible. Deux options seulement à évaluer :
+
+1. **Pixel Streaming :** le jeu Unreal tourne sur un PC/serveur avec GPU ; le navigateur reçoit une vidéo interactive via WebRTC. C'est bien le rendu Unreal réel, mais chaque instance/joueur consomme des ressources GPU et du trafic, avec latence, signalisation et éventuel coût de TURN/relai. À tester localement/LAN puis sur Internet. Ce n'est pas une solution publique gratuite et scalable par défaut.
+2. **Client web distinct WebGL/WebGPU :** rendu différent, gameplay/règles/protocole partagés avec le serveur autoritaire. C'est un véritable portage à développer, pas un export Unreal HTML5 prêt à l'emploi. Il demande une équipe/charge de travail supplémentaire et une parité de gameplay à prouver.
+
+Ne pas maintenir les deux pistes en production simultanément. Réaliser un prototype comparatif, mesurer latence, coût, qualité, accessibilité, charge de développement et équité, puis demander une décision au propriétaire avant de choisir. Tant qu'aucune solution gratuite et viable n'est validée, le navigateur reste expérimental et la version Windows est prioritaire.
+
+## 7. Compatibilité graphique et performances
+
+Ne pas forcer une qualité graphique unique pour tous les PC. Le projet doit avoir des profils réellement testés et une voie de rendu de secours.
+
+- Garder DirectX 12/SM6 comme chemin de référence pour les fonctionnalités UE5 modernes qui le nécessitent.
+- Ne pas activer le ray tracing matériel par défaut ; le traiter comme option haut de gamme uniquement après mesures.
+- Lumen/Nanite/VSM ne doivent pas être des prérequis absolus pour jouer. Prévoir une configuration basse avec éclairage précalculé ou solution plus légère, géométrie/LOD classiques et ombres moins coûteuses lorsque techniquement possible.
+- Vérifier si le projet peut compiler et démarrer un chemin D3D11/SM5 de secours. Ne pas supposer que Nanite ou toutes les fonctionnalités Lumen y seront disponibles.
+- Prévoir profils Bas, Moyen, Élevé, Ultra avec résolution, résolution dynamique/TSR si compatible, ombres, effets, post-process, distance d'affichage et limites FPS. Le profil Bas doit conserver lisibilité, silhouettes, hitboxes et visibilité compétitive.
+- Ne pas activer simultanément des paramètres RHI/Shader contradictoires ou des cibles Vulkan/Metal non testées. Ne conserver que les plateformes effectivement ciblées et compilées.
+- Éviter les effets coûteux qui nuisent à la lisibilité FPS : motion blur excessif, exposition automatique instable, fumées opaques et post-process masquant les ennemis.
+- Mesurer temps GPU/CPU, mémoire, FPS et stabilité sur au moins une machine modeste et une machine de référence. Définir les spécifications minimales à partir des tests, pas d'une supposition.
+- Avant de modifier `DefaultEngine.ini`, faire une copie, relever les valeurs actuelles, expliquer le changement, compiler shaders et tester les profils ; ne pas supprimer des lignes sans comprendre leur provenance.
+
+## 8. Bots, équipes, modes et équilibre
+
+Les bots doivent être gérés par l'autorité serveur, identifiés comme bots, avec statistiques séparées et règles propres à chaque playlist. Ils ne doivent pas disparaître automatiquement au premier joueur humain si le mode prévoit du remplissage. Les préférences humains uniquement / bots autorisés et les règles classées sont celles du cahier des charges.
+
+L'objectif 10 contre 10 est une cible conditionnelle, pas une capacité acquise. Valider d'abord 2, 4, 8, puis augmenter progressivement en mesurant CPU, bande passante, réplication, mémoire et qualité de jeu. Ne pas annoncer 20 joueurs tant que les tests réels ne le démontrent pas.
+
+Les cartes, apparitions, anti-camping, événements tactiques, armes et capacités doivent être testés ensemble. Le serveur choisit les apparitions ; éviter spawn-kill, positions dominantes et avantages cachés.
+
+## 9. Sécurité, confidentialité et équité
+
+- Valider côté serveur tous les événements ayant un effet sur la partie ; limiter fréquence, portée et paramètres des RPC.
+- Ne jamais faire confiance au client pour dégâts, cadence, munitions, position autorisée, score, progression ou résultats.
+- Protéger secrets, jetons, clés, fichiers de compte et données privées ; utiliser variables d'environnement ou mécanismes locaux sécurisés, jamais les committer.
+- Ne pas publier de logs contenant IP, identifiants ou données personnelles non nécessaires.
+- Minimiser les données ; pas d'enregistrement vocal par défaut.
+- Les sanctions, annulations de résultats et détections de triche doivent être explicables, proportionnées, auditées et contestables. Pas de sanction grave sur simple suspicion.
+- Cross-play, input matchmaking, aim assist et périphériques doivent être testés pour l'équité.
+
+## 10. Licence, plugins et contenus
+
+La compatibilité GPL-3.0 / Unreal/Epic est un risque à résoudre avant toute distribution. Respecter la section 25 du cahier des charges.
+
+- Ne jamais changer ou supprimer `LICENSE` automatiquement.
+- Inventorier code, Blueprints, assets, sons, polices, modèles, plugins, bibliothèques, outils et contenu du template.
+- Pour chaque élément, relever source, auteur/détenteur, version, licence, preuve d'acquisition et droits de redistribution.
+- Distinguer code original RIXE, contenu Epic/Unreal, Fab/Quixel et tiers.
+- Vérifier les conditions officielles et les versions précises des plugins. Ne pas ajouter de plugin payant ni de service payant.
+- Ne pas annoncer « open source intégral » ou « redistribuable » tant que les droits ne sont pas vérifiés.
+- Signaler les incertitudes au propriétaire ; aucune décision juridique ou relicence sans son accord explicite.
+
+## 11. Budget et autonomie
+
+Le budget est strictement de **0 €**. Aucun achat, abonnement, serveur cloud, GPU distant, plugin/asset payant, domaine, publicité, frais de boutique ou service payant sans accord explicite.
+
+Claude est autorisé à utiliser de manière autonome les outils réellement disponibles : terminal, navigateur, éditeur Unreal et contrôle du PC. Cette autorisation ne justifie pas d'ignorer les limites techniques, les permissions de l'environnement ou les protections de données.
+
+Avant toute opération risquée : sauvegarder et vérifier la restauration. Demander l'accord avant dépense, publication publique, action irréversible, changement de licence/propriété ou utilisation de moyens de paiement/identifiants.
+
+## 12. Procédure obligatoire pour chaque tâche
+
+1. Identifier la branche, le commit, l'état de travail et les modifications non commitées.
+2. Lire les sections pertinentes du cahier des charges et les documents techniques concernés.
+3. Inspecter l'implémentation réelle avant de modifier ; rechercher les systèmes existants à étendre.
+4. Établir un plan court et les risques ; sauvegarder les ressources concernées.
+5. Implémenter le plus petit changement cohérent.
+6. Compiler les Blueprints et le projet si possible ; corriger les erreurs introduites.
+7. Tester dans l'éditeur puis sur build empaquetée lorsque pertinent. Les tests PIE à deux fenêtres ne prouvent pas le fonctionnement Internet.
+8. Vérifier les régressions sur les systèmes liés.
+9. Mettre à jour documentation et état réel, sans déclarer les fonctions non testées comme livrées.
+10. Committer sur la bonne branche ; vérifier le commit distant et les fichiers après push.
+
+Pour les systèmes réseau, tester au minimum un hôte et plusieurs clients, puis des réseaux distincts, latence/pertes simulées, déconnexion/reconnexion et cas d'échec. Pour le rendu, tester les profils et les GPU ciblés. Pour toute fonctionnalité, conserver les résultats et limites.
+
+## 13. Build et lien de test à chaque mise à jour
+
+Le propriétaire souhaite un lien de test après chaque mise à jour qui modifie le jeu.
+
+- Produire une build Windows x64 Development/Shipping quand elle peut être empaquetée correctement.
+- Fournir un lien direct uniquement si l'artefact a réellement été créé et si le lien est vérifié.
+- Indiquer version, branche, commit, plateforme, tests effectués, état jouable et limites.
+- Si la build est impossible, dire « indisponible », expliquer le blocage et fournir le rapport de test ; ne jamais présenter les sources GitHub comme une build.
+- Ne pas utiliser `prototype-web/demo.html` comme substitut au jeu Unreal.
+- Ne pas publier une release publique sans contrôle des licences, secrets, contenu et accord requis.
+- Si les limites d'hébergement empêchent de partager une build, expliquer les contraintes et proposer une solution gratuite réaliste, sans promettre une disponibilité permanente.
+
+## 14. État de référence et notes historiques
+
+Les affirmations contenues dans les anciens comptes rendus, notes de travail, chemins locaux ou feuilles de route datées ne sont pas des instructions de développement actuelles. Elles doivent être vérifiées sur la machine et dans le projet avant réutilisation.
+
+Les chemins tels que `D:\fps 5.8\...` ou `/mnt/user-data/uploads/...`, les états « étape terminée », les listes d'armes et les descriptions de tests sont des indices historiques, pas des vérités garanties. Ne pas écraser un fichier ou importer un asset depuis un chemin qui n'existe pas et n'a pas été vérifié.
+
+Le projet utilise des outils Unreal/MCP et des Blueprints. Avant d'appeler un outil, vérifier sa disponibilité et son schéma actuels. Ne pas supposer que des noms de fonctions, identifiants de nœuds ou comportements d'outils sont identiques entre versions. Éviter de modifier les assets pendant PIE ; compiler et sauvegarder après arrêt du jeu. Ne jamais ouvrir une deuxième instance Unreal si l'éditeur courant est déjà actif.
+
+---
+
+## 15. Définition de terminé
+
+Une tâche n'est terminée que si :
+- l'implémentation existe réellement ;
+- les Blueprints/projet compilent sans nouvelle erreur bloquante ;
+- les tests correspondant au risque sont passés ;
+- les systèmes dépendants n'ont pas régressé ;
+- les limites connues sont consignées ;
+- le commit et la branche sont vérifiés ;
+- le lien de build est fourni ou son indisponibilité est explicitement expliquée.
+
+**Principe final :** un FPS plus petit, stable, réactif et réellement jouable vaut mieux qu'une longue liste de fonctionnalités non testées.
