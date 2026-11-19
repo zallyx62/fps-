@@ -1170,7 +1170,7 @@ Cette section formalise le veto compétitif approuvé et la règle de circulatio
 
 ### 34.2 Circulation entre alliés : aucun body block, aucune superposition exacte
 - Désactiver le body block entre coéquipiers : un allié ne doit jamais pouvoir empêcher un autre allié d'avancer, reculer, franchir un passage ou quitter une zone dangereuse par une collision physique bloquante.
-- Empêcher également les tirs alliés de blesser ou tuer un coéquipier dans les modes où le tir ami est désactivé ; les projectiles et impacts alliés ne doivent pas provoquer de dégâts indirects non prévus par les règles.
+- Désactiver le tir ami dans les modes officiels standards : un allié ne doit pas pouvoir blesser ou tuer directement un coéquipier avec ses tirs. Les explosions, projectiles, collisions et effets indirects alliés ne doivent pas non plus servir à tuer ou bloquer volontairement un coéquipier. Toute exception éventuelle devra correspondre à un mode dédié, annoncé explicitement et approuvé séparément ; elle ne sera jamais activée par défaut.
 - Ne pas autoriser deux personnages alliés à occuper exactement la même position au même instant. Maintenir une séparation spatiale minimale raisonnable entre leurs capsules/personnages, sans transformer cette séparation en mur invisible.
 - Utiliser de préférence un système souple de séparation/évitement : ajustement progressif des trajectoires, anticipation des déplacements et léger décalage latéral ou longitudinal lorsque deux alliés convergent vers le même emplacement.
 - Ne jamais immobiliser un joueur, le repousser brutalement, le téléporter ou lui retirer le contrôle pour appliquer cette séparation.
