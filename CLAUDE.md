@@ -3,6 +3,9 @@
 ## Démarrage obligatoire : lire le cahier des charges
 Avant toute modification, lire intégralement `CAHIER_DES_CHARGES_RIXE.md` à la racine du dépôt. Ce document est la référence fonctionnelle consolidée du projet. Le présent fichier conserve aussi des notes techniques historiques : en cas de contradiction, ne pas appliquer aveuglément une ancienne note ou une ancienne feuille de route ; comparer les deux, privilégier les décisions les plus récentes du cahier des charges et signaler tout conflit réel.
 
+## Exigence multiplateforme RIXE
+Respecter la section « Jeu multiplateforme et parité de gameplay » du cahier des charges. Ne pas réduire l'objectif à un simple site vitrine : le navigateur doit permettre de jouer réellement. Étudier d'abord un prototype Pixel Streaming Unreal (rendu Unreal réel mais infrastructure GPU distante et latence/coût à mesurer), puis comparer à un client navigateur WebGL/WebGPU distinct si le streaming n'est pas viable. Ne jamais prétendre qu'un client web allégé est rendu par Unreal. Dans les deux cas, préserver strictement les mêmes règles, armes, cartes fonctionnelles, timings, validations serveur, progression et équité compétitive ; seuls les détails visuels/performance peuvent varier. Priorité à Windows Unreal stable, puis prototype web et autres plateformes par étapes. Budget 0 € : aucun hébergement GPU ou service payant sans accord.
+
 ## PRIORITÉ ABSOLUE N°1 : audit et clarification de la licence
 Traiter la licence comme le tout premier chantier, avant les nouvelles fonctionnalités et avant toute publication.
 
