@@ -539,3 +539,80 @@ Les dix axes ci-dessous sont approuvés et doivent être intégrés à la planif
 - Aucune dépense, dépendance payante ou infrastructure payante sans accord explicite du propriétaire.
 - Aucune fonctionnalité ne peut être marquée « terminée » sur la seule base de sa spécification ou de code non testé.
 - Pour chaque axe : préciser l'état réel (non commencé, en cours, prototype, testé, livré), les dépendances, les risques, les tests et les preuves de validation.
+
+
+## 23. Nouvelles fonctionnalités communautaires et confort de partie — approuvées
+
+Ces cinq fonctionnalités sont approuvées et planifiées. Elles ne sont pas considérées comme implémentées tant qu'elles n'ont pas été développées et testées dans une build réelle.
+
+### 23.1 Roue de communication rapide
+- Ajouter une roue de communication accessible rapidement, notamment à la manette et au clavier, avec des messages courts prédéfinis : « ennemi repéré », « besoin de renfort », « défendez l'objectif », « je recharge », « regroupez-vous », « danger », « merci » et « bien joué ».
+- Prévoir une présentation textuelle claire et, si possible sans dépendance payante, des annonces vocales préenregistrées ou synthétiques uniquement si la licence et la taille le permettent.
+- Transmettre uniquement les informations que le joueur est autorisé à communiquer ; une indication directionnelle ou de position ne doit pas révéler une information inconnue du joueur.
+- Ajouter limitation de fréquence, mute, désactivation et protections anti-spam.
+- Adapter l'interface aux plateformes et périphériques pris en charge.
+
+### 23.2 Échauffement pré-match de dix secondes
+- Avant le début officiel de chaque partie, prévoir une phase d'échauffement de **10 secondes**, inspirée des salons d'échauffement des anciens Call of Duty.
+- Pendant cette phase, les joueurs peuvent se déplacer librement, sauter, viser, tirer et tester leur arme ainsi que leurs sensations de contrôle.
+- La phase doit être synchronisée par l'autorité de partie ; tous les joueurs voient le même compte à rebours et le match officiel ne commence qu'à son terme.
+- Les tirs et éliminations de l'échauffement ne doivent pas compter dans les statistiques, le score, les défis, les replays officiels ou les résultats. Prévoir munitions réapprovisionnées et réapparitions rapides si nécessaire.
+- Les choix d'armes et de classe ne doivent pas être révélés par l'interface adverse, les panneaux de joueurs, les listes d'équipement ou le flux d'éliminations pendant l'échauffement. Ne pas prétendre garantir le secret si l'arme est reconnaissable à l'écran ou au son ; toute dissimulation visuelle supplémentaire doit être évaluée pour éviter confusion et avantage injuste.
+- À la fin des dix secondes, remettre les joueurs dans un état de départ cohérent, appliquer les règles officielles et lancer simultanément la partie.
+- Prévoir un comportement de secours si un joueur rejoint tardivement, perd la connexion ou si le chargement d'un participant retarde le départ : ne pas laisser un compte à rebours incohérent.
+- La phase d'échauffement doit être optionnelle uniquement si le mode et l'équité le permettent ; sinon appliquer la même règle à tous les participants du match.
+
+### 23.3 Rotation intelligente des cartes et des modes
+- Éviter les répétitions excessives d'une même carte ou d'un même mode dans les playlists concernées.
+- Tenir compte de l'historique récent des parties, de la population disponible et des contraintes de matchmaking.
+- Si un vote est proposé, offrir un choix équitable et éviter que le système ne favorise toujours la même carte.
+- Ne pas imposer une carte incompatible avec le mode ou les règles de la playlist.
+- Garder une rotation déterministe et explicable ; ne pas modifier le matchmaking pour masquer une population insuffisante.
+
+### 23.4 Historique des changements du jeu
+- Mettre à disposition des notes de version consultables et archivées : changements d'armes, cartes, règles, corrections et améliorations techniques.
+- Associer chaque version aux identifiants de build, branche/commit de développement et date de publication lorsque ces informations sont disponibles.
+- Permettre de retrouver les notes des versions précédentes et d'identifier les changements pouvant affecter les statistiques ou replays.
+- Ne publier que des informations vérifiées ; distinguer clairement les changements livrés des changements prévus.
+
+### 23.5 Protection contre les erreurs de manipulation
+- Demander une confirmation pour les actions destructrices ou difficiles à annuler, par exemple supprimer un profil local ou réinitialiser des paramètres.
+- Prévoir une restauration des paramètres par défaut et, lorsque cela est faisable, une sauvegarde des configurations avant modification.
+- Permettre plusieurs profils de commandes et de réglages sans écraser accidentellement le profil actif.
+- Éviter les confirmations répétitives pour les actions quotidiennes non risquées.
+- Ne jamais présenter une suppression distante ou une restauration cloud comme réversible si elle ne l'est pas réellement.
+
+### Statut
+Les cinq fonctionnalités sont approuvées et planifiées. Leur priorité est inférieure à la correction des blocages, à la stabilité du FPS multijoueur et à l'obtention d'une build jouable et testable.
+
+
+## 24. Objectif prioritaire de livraison — horizon de douze jours
+
+### Objectif obligatoire
+À l'échéance d'environ douze jours à compter de la décision du propriétaire (19 novembre 2026), l'objectif principal est de fournir **un FPS RIXE réellement jouable et testable**, même si certaines fonctionnalités avancées du cahier des charges restent à développer. Il ne faut pas promettre que l'intégralité du cahier des charges sera terminée dans ce délai.
+
+### Définition minimale d'une livraison jouable
+- Une build Unreal empaquetée et exécutable sur Windows x64, si l'environnement et les outils disponibles le permettent.
+- Le jeu démarre sans erreur bloquante, permet d'accéder à une partie et de jouer une boucle de gameplay complète.
+- Les contrôles essentiels fonctionnent : déplacement, visée, tir, rechargement, dégâts, élimination, réapparition et fin de partie selon le mode retenu.
+- Au moins une carte fonctionnelle et un mode jouable, avec des bots si le multijoueur réel n'est pas encore suffisamment stable.
+- Tester le multijoueur réel si disponible ; documenter précisément les limites, et ne pas le présenter comme validé si seuls des tests locaux ont été réalisés.
+- Pas de crash bloquant connu au démarrage ou pendant la boucle de jeu testée.
+- Fournir un lien direct vérifié vers la build de test, ou expliquer explicitement pourquoi aucun lien ne peut être produit.
+- Indiquer branche, commit, plateforme, procédure de lancement, tests exécutés, problèmes connus et fonctionnalités non livrées.
+
+### Plan de travail indicatif
+1. Jours 1–2 : audit de l'état réel, sauvegarde, audit des licences et reproduction du blocage principal.
+2. Jours 3–5 : résoudre le blocage et obtenir une boucle de jeu complète dans Unreal.
+3. Jours 6–8 : stabiliser le gameplay, la carte, les bots et le multijoueur disponible ; corriger les défauts critiques.
+4. Jours 9–10 : tests de régression, performances, sauvegarde et corrections.
+5. Jours 11–12 : empaquetage, test propre de la build, documentation et livraison du lien vérifié.
+
+Ce calendrier est une cible de pilotage, pas une garantie. Réviser les étapes selon les résultats techniques réels et préserver du temps pour les tests.
+
+### Gel de périmètre et arbitrage
+- Jusqu'à l'obtention d'une build jouable, ne pas démarrer de gros systèmes secondaires simplement parce qu'ils figurent dans le cahier des charges.
+- Prioriser dans cet ordre : (1) sauvegarde et audit des licences, (2) blocage empêchant de jouer, (3) boucle de gameplay complète, (4) stabilité et tests, (5) build téléchargeable, (6) fonctionnalités secondaires seulement si le temps restant le permet.
+- Les fonctionnalités avancées non essentielles peuvent être reportées sans être supprimées du cahier des charges.
+- Ne pas dégrader la sécurité, les licences ou l'intégrité du jeu pour respecter artificiellement la date.
+- Ne pas déclarer RIXE « terminé » : qualifier précisément le résultat de prototype jouable, alpha de test ou autre statut justifié par les validations effectuées.
