@@ -1,3 +1,9 @@
+# Priorité immédiate : livraison d'un FPS jouable en douze jours
+
+L'objectif prioritaire du propriétaire est d'obtenir, à l'échéance d'environ douze jours à compter du 19 novembre 2026, une build RIXE réellement jouable et testable, même si des fonctionnalités avancées restent à développer. Ne promets pas l'achèvement intégral du cahier des charges.
+
+Ordre impératif : (1) lire intégralement CAHIER_DES_CHARGES_RIXE.md, (2) sauvegarder et auditer les licences, (3) inspecter les branches et l'état réel du projet, (4) reproduire et corriger le blocage empêchant de jouer, (5) obtenir une boucle de gameplay Unreal complète, (6) stabiliser et tester, (7) empaqueter une build Windows x64 et fournir un lien vérifié. Reporter les gros systèmes secondaires tant que la build jouable n'existe pas. Ne jamais sacrifier sécurité, licences ou tests pour tenir artificiellement le délai. Le rapport doit distinguer prototype jouable, alpha et version terminée.
+
 # CONSIGNES PRIORITAIRES POUR CLAUDE — RIXE
 
 ## Démarrage obligatoire : lire le cahier des charges
