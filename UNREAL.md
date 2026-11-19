@@ -69,9 +69,9 @@ tout ce qui compte (dégâts, morts, scores, fin de manche) ; les clients envoie
 
 ## Équipes joueurs contre joueurs
 
-- **Répartition** : `ChoosePlayerStart` (`BP_ShooterGameMode`) place chaque joueur dans une équipe selon son
+- **Répartition et apparition actuelles du prototype** : `ChoosePlayerStart` (`BP_ShooterGameMode`) place chaque joueur dans une équipe selon son
   ordre d'arrivée (1er Rouge, 2e Bleu, 3e Rouge…) puis le fait apparaître sur un point d'apparition de son
-  camp (`PlayerStart` marqués `RED` / `BLUE`), aussi après chaque mort.
+  camp (`PlayerStart` marqués `RED` / `BLUE`), aussi après chaque mort. Il s'agit d'une sélection statique par camp, pas encore du système adaptatif décidé dans la section 3 du cahier des charges (évaluation des menaces, lignes de vue, répétition des points et validation serveur au moment du respawn). Cette règle devra être remplacée et testée avant validation du système d'apparition final.
 - **Bots — écart connu avec la cible produit** : l'implémentation documentée les utilise seulement en solo (entraînement contre l'équipe Bleue) et `OnPostLogin` les supprime dès qu'un deuxième joueur arrive. C'est un comportement actuel du prototype, **pas une règle finale**. Le cahier des charges, notamment sa section 28.1, prévoit des préférences explicites humains/bots, un remplissage transparent selon la playlist et des statistiques distinctes. Remplacer cette suppression automatique par les règles du mode concerné avant de considérer le matchmaking ou le remplissage des équipes comme terminé.
 - **Pas de tir ami** : `RixeFriendly` (`BP_ShooterProjectileBase`) annule les dégâts entre deux joueurs de la
   même équipe (côté serveur).
@@ -138,8 +138,7 @@ transition douce. Le serveur connaît la visée (actions 7 / 8) : déplacement r
 
 ## Score et fin de manche
 
-Le modèle compte les morts de chaque équipe (`TeamScores`). L'interface affiche les **éliminations** :
-le score Rouge = morts de l'équipe Bleue, et inversement. `BP_RixeMatchRules` utilise la même règle.
+Le prototype compte les éliminations de chaque équipe (`TeamScores`) : le score Rouge correspond aux morts de l'équipe Bleue, et inversement. `BP_RixeMatchRules` utilise la même règle. **Ce compteur d'éliminations n'est pas encore le score de contribution final** défini dans la section 3 du cahier des charges, qui doit aussi valoriser objectifs, assistance, défense et soutien avec des protections anti-farming. Il doit donc être traité comme un score provisoire de prototype, et non comme une implémentation complète du barème approuvé.
 À la victoire, la bannière « VICTOIRE DE L'ÉQUIPE … » s'affiche chez tous les joueurs, puis le serveur
 relance l'arène (`servertravel`) et les clients se reconnectent tout seuls.
 
