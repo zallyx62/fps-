@@ -48,8 +48,7 @@ Projet de base : modèle « First Person », variante « Arena Shooter » (Bluep
 
 ## Multijoueur en ligne
 
-Modèle réseau : **serveur d'écoute** (un joueur héberge, les autres le rejoignent). Le serveur décide de
-tout ce qui compte (dégâts, morts, scores, fin de manche) ; les clients envoient seulement leurs actions.
+Modèle réseau actuel : **serveur d'écoute** (un joueur héberge, les autres le rejoignent). Le prototype délègue déjà au serveur certains éléments documentés, notamment les dégâts des projectiles, les morts et le score provisoire de match. Cela ne démontre pas une autorité serveur complète : cadence de tir, munitions, déplacements, capacités, apparitions, RPC et résultats doivent encore être audités selon le cahier des charges. Les clients demandent des actions ; le serveur doit valider chaque action sensible avant de l'appliquer.
 
 - **Héberger / Rejoindre** (menu M, section Multijoueur) :
   - champ « Pseudo » enregistré avec les autres réglages ;
