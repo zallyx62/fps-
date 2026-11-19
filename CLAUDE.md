@@ -27,21 +27,30 @@ L'expérience multijoueur officielle par défaut est un lobby public automatique
 
 Respecter les décisions approuvées du cahier des charges : trois cartes maximum au lancement initial ; modes standards à arsenal contrôlé ; playlists Chaos séparées avec armes explosives ; équipes rouge/bleue ; crosshair personnalisable rond/croix ; apparitions choisies automatiquement par le serveur ; camping géré d'abord par le level design ; score valorisant aussi objectifs, défense et soutien ; UI originale, claire et sobre.
 
-## 3. Priorité de livraison et ordre de travail
+## 3. Chronologie officielle, priorités et pilotage du travail
 
-Ne pas essayer de tout développer en parallèle. Toujours traiter les blocages et le socle avant les systèmes secondaires.
+**La chronologie de référence est celle du cahier des charges : ne pas créer une feuille de route concurrente dans ce fichier.**
 
-1. **Sécurité et préservation :** sauvegarde vérifiée, audit des secrets exposés, état Git, inventaire des licences et dépendances.
-2. **Build de référence :** ouvrir le projet, reproduire le blocage actuel, compiler les Blueprints, corriger les erreurs bloquantes et obtenir une build Windows x64 testable.
-3. **Boucle FPS :** déplacement, tir, dégâts, rechargement, réapparition, score, fin de manche, HUD, carte et contrôles.
-4. **Réseau fiable :** autorité serveur, RPC validés, réplication, hit registration, déconnexions, tests de latence/pertes et stabilité multi-clients.
-5. **Parties avec amis :** invitations, rejoindre/créer groupe, lobby, sessions, connexion à distance et reconnexion.
-6. **Matchmaking officiel :** lobby public automatique, continuité de groupe, remplissage humain/bots transparent, backfill et équilibrage des équipes.
-7. **Progression et communauté :** compte, sauvegarde, statistiques, modération, groupes persistants et cross-play selon plateformes effectivement supportées.
-8. **Fonctions avancées :** replays, éditeur communautaire, entraînement hors ligne, environnement de test, temps morts/abandon, serveurs communautaires.
-9. **Navigateurs et autres plateformes :** seulement après stabilisation du client Windows et validation d'une architecture commune.
+- **Ordre général obligatoire :** suivre les étapes de la section 12 du cahier des charges, dans leur ordre et avec leurs dépendances.
+- **Livraison prioritaire :** appliquer la section 24 pour obtenir une version Windows réellement jouable et testable. Son calendrier de douze jours est un objectif indicatif, jamais une garantie ni une raison de bâcler les validations.
+- **Ordres spécialisés :** lorsqu'une section du cahier des charges définit son propre ordre de réalisation, ses dépendances ou ses critères d'acceptation, les respecter pour le système concerné, sans contredire les priorités générales ni retarder le socle jouable.
+- **Priorité en cas de concurrence :** traiter d'abord les risques de sécurité, pertes de données, licences et blocages empêchant de jouer ; ensuite le socle FPS, le réseau et la build Windows ; puis les systèmes dépendants ; enfin les extensions et plateformes secondaires selon les sections applicables.
+- **Aucune avance artificielle :** ne pas commencer une étape ultérieure si un prérequis critique de l'étape courante échoue. Les travaux préparatoires indépendants et sans risque restent possibles, mais ne doivent pas détourner les ressources du blocage prioritaire.
+- **Pas de suppression silencieuse :** une fonctionnalité reportée reste une exigence planifiée du cahier des charges. La reporter ne signifie ni l'abandonner ni la déclarer réalisée.
 
-Les délais historiques (dont l'objectif de douze jours) sont des jalons de planification, jamais une permission de bâcler les tests ou de déclarer une version terminée artificiellement.
+### Suivi obligatoire de la chronologie
+
+Au début de chaque session de travail, puis après chaque jalon important :
+
+1. Lire les sections 12 et 24 du cahier des charges, ainsi que les sections spécialisées concernées par la tâche.
+2. Vérifier l'état réel du dépôt, de la branche, du commit, des modifications locales, des builds et des tests ; ne jamais reprendre aveuglément un ancien compte rendu.
+3. Identifier le jalon actuellement actif, les prérequis déjà validés, les blocages et le prochain critère d'acceptation.
+4. Choisir une tâche courte qui fait avancer le jalon actif ; ne pas lancer plusieurs grands systèmes indépendants en parallèle.
+5. Ne déclarer un jalon franchi qu'avec les preuves adaptées : fichiers/code ou Blueprints présents, compilation, tests fonctionnels, tests réseau/performance si concernés et build lorsque pertinente.
+6. Mettre à jour le suivi de travail avec le statut réel, les preuves, les limites, les tâches restantes et le prochain jalon. Ne pas recopier le cahier des charges : référencer ses sections.
+7. Si une dépendance, un problème technique ou une contrainte de budget empêche de poursuivre, documenter le blocage et ses conséquences, puis traiter le meilleur travail non bloqué qui respecte l'ordre de priorité.
+
+Le suivi de session doit rester bref et factuel : **jalon actif / validé / bloqué / prochaine action**. La section 12 du cahier reste la feuille de route générale ; la section 24 reste le plan de livraison rapproché.
 
 ## 4. Architecture multijoueur et hébergement — décision technique à respecter
 
