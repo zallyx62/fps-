@@ -210,3 +210,14 @@ Développer par étapes, sans détourner la priorité de la build jouable et de 
 7. Extension multiplateforme.
 
 Fusionner les fonctions redondantes avec les systèmes déjà documentés (replays, stats, équilibrage data, sécurité, modération, cross-play, éditeur de cartes, événements). Ne pas créer de doublons fonctionnels : enrichir les sections existantes et maintenir des références croisées. Budget strict de 0 €, aucun achat ou service payant sans accord. Ne déclarer aucune fonction terminée avant tests de bout en bout et build vérifiée.
+
+
+## Cinq fonctionnalités multijoueur approuvées — section 28 du cahier des charges
+Le propriétaire a approuvé les cinq propositions de la dernière liste. Respecter la section 28 de `CAHIER_DES_CHARGES_RIXE.md` et intégrer ces fonctions aux systèmes existants sans doublons :
+1. Préférences de matchmaking humains prioritaires / bots autorisés, transparence totale sur les bots et séparation des statistiques.
+2. Chat vocal de proximité facultatif, distinct du vocal d'équipe, avec mute, signalement, confidentialité et aucun enregistrement vocal par défaut.
+3. Entraînement/stand de tir pendant la recherche de partie, isolé du match et sans progression ni information sur la partie recherchée.
+4. Préférences de matchmaking selon clavier/souris, manette ou groupes mixtes, sans empêcher les amis de jouer ensemble et sans fragmenter excessivement la population.
+5. Remplaçants volontaires pour les parties en cours, avec statistiques séparées, entrée équitable et protections anti-abus ; classé désactivé tant que les règles strictes ne sont pas validées.
+
+Ne pas commencer ces chantiers avant que le socle gameplay/réseau et le matchmaking/lobby public soient suffisamment stables. Prioriser d'abord les préférences humains/bots et l'entraînement en recherche ; les trois autres sont ultérieurs. Budget 0 €, confidentialité et sécurité obligatoires. Les fonctions sont approuvées mais non implémentées tant que les tests ne les valident pas.
