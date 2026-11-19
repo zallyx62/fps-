@@ -192,3 +192,21 @@ Respecter intégralement la section 26 du cahier des charges RIXE. Points essent
 - Arsenal : modes standards avec arsenal équilibré et contre-jeu ; armes explosives/atypiques réservées aux playlists dédiées. Créer Chaos non classé et Chaos classé, tous deux avec arsenal complet, règles et équilibrage propres. Rendre leur nature explicite.
 - Interface : lobby RIXE simple, rapide, lisible, paramétrage clair et coins arrondis cohérents avec le kit existant. Ne pas copier Warzone/Apex/THE FINALS ; prototyper et tester les principes d'organisation.
 Ces fonctionnalités sont approuvées mais non réputées implémentées. Maintenir le budget à 0 €, les contrôles de sécurité, la qualité réseau et les priorités de build jouable. Ne pas retarder le socle fonctionnel pour polir prématurément l'interface ou multiplier les systèmes.
+
+## Direction communautaire hybride approuvée — section 27 du cahier des charges
+Le propriétaire a validé une direction hybride avec priorité stratégique à la communauté. Respecter toute la section 27 de `CAHIER_DES_CHARGES_RIXE.md`.
+
+**RÈGLE D'EXPÉRIENCE PAR DÉFAUT :** au lancement du jeu, le parcours principal doit être le matchmaking officiel et le lobby public automatique inspiré de BO2. Le bouton « Jouer » conduit directement au matchmaking de la playlist ; le lobby public se remplit, affiche son état et démarre automatiquement selon un seuil ou un compte à rebours. Conserver autant que possible les joueurs ensemble entre les parties. Aucun pop-up de confirmation individuelle dans le matchmaking public.
+
+**Les serveurs communautaires sont secondaires et facultatifs.** Ils doivent être accessibles dans une rubrique distincte (« Communauté » ou « Serveurs »), jamais imposés à l'ouverture du jeu et jamais utilisés comme parcours par défaut. Le navigateur communautaire, les serveurs personnalisés, règles, cartes et statistiques communautaires doivent être identifiés et séparés des expériences officielles et du classé.
+
+Développer par étapes, sans détourner la priorité de la build jouable et de la stabilité :
+1. Licence/sauvegarde/audit et correction du blocage.
+2. Build jouable, gameplay, réseau, hit registration, sécurité serveur et bots.
+3. Matchmaking officiel, lobby public BO2, lancement automatique, continuité, backfill et reconnexion.
+4. Amis, groupes, invitations, présence, modération.
+5. Serveurs communautaires facultatifs et navigateur secondaire.
+6. Clans, événements/tournois, participation communautaire et cartes communautaires validées.
+7. Extension multiplateforme.
+
+Fusionner les fonctions redondantes avec les systèmes déjà documentés (replays, stats, équilibrage data, sécurité, modération, cross-play, éditeur de cartes, événements). Ne pas créer de doublons fonctionnels : enrichir les sections existantes et maintenir des références croisées. Budget strict de 0 €, aucun achat ou service payant sans accord. Ne déclarer aucune fonction terminée avant tests de bout en bout et build vérifiée.
