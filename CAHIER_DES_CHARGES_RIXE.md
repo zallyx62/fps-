@@ -201,32 +201,33 @@ Cette section constitue **la feuille de route générale de RIXE**. Elle organis
 
 **Critère de passage :** une build Windows exécutable permet de jouer une partie complète reproductible sans blocage critique connu. Si l'empaquetage est impossible, la raison, les preuves de compilation et les étapes restantes sont consignées ; la build n'est pas déclarée livrée.
 
-**Phase 2 — Fondations du combat et autorité réseau**
-1. Vérifier que le serveur contrôle les éléments sensibles : déplacements validés, tirs, dégâts, santé, munitions, morts, apparitions, score, objectifs et résultats selon les règles applicables.
-2. Corriger les désynchronisations, doubles événements, abus RPC, failles d'autorité et incohérences de réplication.
-3. Tester en local à plusieurs joueurs, puis sur des machines et réseaux distincts dès que possible.
-4. Mesurer latence, gigue, pertes, hit registration, déconnexions et reconnexions ; ne pas confondre un test local avec une validation Internet.
-5. Garder le classement officiel désactivé tant que l'intégrité des résultats et l'autorité de l'hébergement ne sont pas suffisantes.
+**Phase 2 — Socle FPS, combat, réseau, bots et cartes de lancement**
+1. Stabiliser le combat sur la carte pilote : déplacements, visée, tirs, cadence, munitions, dégâts, hit registration, morts, réapparitions et fin de partie.
+2. Vérifier et renforcer l'autorité serveur sur les actions sensibles ; corriger les désynchronisations, doubles événements, RPC abusifs et incohérences de réplication.
+3. Stabiliser les équipes, les apparitions, les bots et leurs règles serveur ; conserver un comportement jouable même si les services en ligne sont indisponibles.
+4. Équilibrer et valider les cartes prévues au lancement (trois maximum), les armes et les modes retenus. Tester les lignes de vue, le spawn-kill, le camping abusif et les objectifs.
+5. Tester d'abord en local et avec plusieurs clients, puis sur plusieurs machines/réseaux ; mesurer latence, gigue, pertes, déconnexions et reconnexions.
+6. Garder le classé désactivé tant que l'intégrité des résultats et les garanties d'hébergement ne sont pas suffisantes.
 
-**Critère de passage :** les règles essentielles sont validées côté serveur, les tests multijoueurs disponibles passent et les limites connues de l'hébergement par un joueur sont documentées. Aucun classement sécurisé n'est revendiqué sans garanties suffisantes.
+**Critère de passage :** boucle de combat stable, règles sensibles validées côté serveur, bots et cartes du périmètre de lancement testés, régressions critiques corrigées et limites réseau documentées. Les tests PIE locaux ne valent pas validation Internet.
 
-**Phase 3 — Services en ligne et parcours multijoueur officiel**
-1. Prototyper puis intégrer EOS pour les fonctions réellement nécessaires : identité/Connect, présence, amis, invitations, lobbies, sessions et transport P2P/relay lorsque compatible.
-2. Séparer strictement les services EOS du serveur de simulation et de l'autorité de gameplay.
-3. Valider un parcours bout en bout : lancement, connexion, création/recherche de lobby, invitation, entrée en partie, retour au lobby et continuité du groupe.
-4. Tester NAT, réseaux différents, latence, perte de connexion, départ de l'hôte, reconnexion et limites de disponibilité des services.
-5. Construire progressivement le matchmaking public automatique prévu, sans rendre les serveurs communautaires obligatoires ni promettre une connexion universelle.
+**Phase 3 — Services EOS et parcours privé entre amis**
+1. Prototyper puis intégrer EOS uniquement pour les fonctions nécessaires : identité/Connect, présence, amis, invitations, lobbies et sessions.
+2. Séparer les services EOS du transport et de la simulation Unreal ; évaluer P2P/relay sans supposer une traversée NAT universelle ni un coût nul garanti.
+3. Valider un parcours privé complet : lancement, connexion, création de lobby, invitation, rejoindre, lancement d'une partie, retour au lobby et maintien du groupe lorsque possible.
+4. Conserver un chemin LAN/direct de diagnostic et ne retirer aucune méthode de connexion existante avant validation de bout en bout et possibilité de retour arrière.
+5. Tester sur des machines et réseaux distincts, avec NAT/pare-feu, latence, pertes, départ de l'hôte, reconnexion et scénarios d'échec.
 
-**Critère de passage :** le parcours testé fonctionne dans les scénarios réellement couverts ; les échecs et limites sont visibles et documentés. Ne pas annoncer que toutes les configurations réseau sont garanties.
+**Critère de passage :** le parcours privé fonctionne dans les scénarios réellement testés ; les erreurs sont compréhensibles, les limites sont documentées et le jeu reste testable sans EOS. Aucun matchmaking public n'est considéré comme livré à cette phase.
 
-**Phase 4 — Socle de jeu, cartes, bots et équité**
-1. Stabiliser les règles, armes, déplacements, apparitions, équipes, bots et objectifs sur la carte pilote.
-2. Équilibrer les cartes et armes avec des mesures reproductibles ; étendre ensuite aux cartes de lancement, dans la limite de trois cartes.
-3. Ajouter les protections anti-spawn-trap, anti-farming, la validation des résultats et les tests de non-régression.
-4. Valider les quatre playlists prévues et leurs règles propres lorsque les systèmes de combat et de matchmaking qui les supportent sont fiables.
-5. Ne pas activer les fonctions classées tant que les critères de confiance, d'intégrité et de sécurité ne sont pas atteints.
+**Phase 4 — Matchmaking officiel, lobby public et continuité des parties**
+1. Construire le parcours officiel complet inspiré de BO2 : file publique, constitution des équipes, lobby, compte à rebours/seuil de joueurs et lancement automatique.
+2. Assurer la continuité du groupe entre les parties lorsque possible, avec retour au lobby, invitations, rejoindre un ami, gestion des départs et reconnexion.
+3. Ajouter progressivement backfill/remplaçants, préférences humains/bots, préférences de périphériques, gestion des groupes préformés et exclusions de playlists, selon les sections spécialisées.
+4. Ajouter les fonctions sociales essentielles et la modération en réutilisant les systèmes uniques déjà définis ; ne pas développer un système séparé pour chaque fonctionnalité.
+5. Mesurer l'effet des préférences sur la population et les temps d'attente ; ne jamais promettre un délai ni placer un joueur dans une playlist explicitement exclue.
 
-**Critère de passage :** les règles et contenus du périmètre retenu passent les tests fonctionnels, réseau et d'équilibrage disponibles ; les différences entre modes sont explicites et vérifiables.
+**Critère de passage :** le parcours public est testé de bout en bout avec les scénarios de groupe, d'équilibrage, de remplissage, de départ et de reconnexion applicables. Les règles de file et les limites de population sont documentées ; aucun résultat classé n'est activé sans garanties suffisantes.
 
 **Phase 5 — Progression, statistiques et services communautaires essentiels**
 1. Mettre en place un score de contribution fiable et anti-farming, puis les statistiques nécessaires à son explication.
