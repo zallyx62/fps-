@@ -204,3 +204,11 @@ Une tâche n'est terminée que si :
 - le lien de build est fourni ou son indisponibilité est explicitement expliquée.
 
 **Principe final :** un FPS plus petit, stable, réactif et réellement jouable vaut mieux qu'une longue liste de fonctionnalités non testées.
+
+## Décisions récentes à intégrer au travail
+- Appliquer la section 42 du cahier des charges : progression durable sans récompenses définitivement manquées, fiche de mode obligatoire pour tous les joueurs dans tous les modes, et favoris/préférences de playlists.
+- La fiche de mode doit rester courte et contextuelle : objectif, condition de victoire et règles particulières réellement actives. Elle ne doit pas ralentir l'entrée en partie ni devenir une fenêtre de confirmation.
+- Ne jamais placer un joueur dans une playlist qu'il a explicitement exclue. Ne pas promettre de délai de matchmaking sans mesure réelle.
+- La progression ne doit pas imposer de connexion quotidienne ni d'achat pour récupérer une récompense annoncée gratuite.
+- Avant toute modification de configuration ou de code, rechercher les secrets déjà publiés. Ne jamais committer de jeton, mot de passe, clé privée ou identifiant secret. Utiliser les mécanismes locaux sécurisés et des valeurs d'exemple non fonctionnelles dans le dépôt.
+- Un secret qui a déjà été publié doit être considéré compromis : le retirer du dépôt ne suffit pas ; demander sa révocation/rotation auprès du service concerné, vérifier l'historique Git et éviter de réintroduire sa valeur.
