@@ -180,7 +180,7 @@ Cette section constitue **la feuille de route générale de RIXE**. Elle organis
 - **Dépendances avant calendrier :** une étape ne peut être déclarée franchie que lorsque ses critères d'acceptation sont démontrés. Une date cible ne permet jamais de contourner un prérequis, une validation de sécurité, une licence ou un test.
 - **Pas de parallélisation dispersée :** un seul chantier principal à la fois. Un travail secondaire n'est autorisé en parallèle que s'il est indépendant, réversible, de faible risque et ne retarde pas le jalon prioritaire.
 - **Pas de suppression par report :** toute exigence approuvée qui n'est pas nécessaire au jalon courant reste planifiée. La reporter ne signifie ni l'abandonner ni la considérer comme livrée.
-- **Aucune fausse validation :** distinguer systématiquement « spécifié », « commencé », « implémenté », « compilé », « testé », « validé sur build » et « livré ». Une preuve doit correspondre au niveau annoncé.
+- **Aucune fausse validation :** distinguer systématiquement « spécifié », « commencé », « implémenté », « compilé », « testé », « validé sur build » et « livré ». Une preuve doit correspondre au niveau annoncé. Le statut des phases et leurs preuves sont consignés dans `SUIVI_PHASES_RIXE.md` ; la matrice ci-dessous reste un rattachement fonctionnel, pas une preuve de réalisation.
 
 ### 12.2 Chronologie générale par phases et critères de passage
 
@@ -267,28 +267,29 @@ Learning Agents doit rester une expérimentation isolée : définir un cas d'usa
 
 Cette matrice sert à vérifier qu'aucune exigence approuvée ne disparaît entre le cahier des charges et l'exécution. Elle indique le premier chantier pertinent, pas une obligation de tout livrer au même jalon.
 
-| Sections | Phase(s) de référence | Rattachement et dépendance principale |
-|---|---|---|
-| 1–2 | 0, puis toutes | Vision, contraintes et état réel ; base de l'audit et de la traçabilité. |
-| 3 | 1–2, puis 4 | Boucle de gameplay et carte pilote ; extension aux cartes/modes de lancement après stabilisation. |
-| 4 | 3–4 | EOS, groupes et sessions privées avant le matchmaking public. |
-| 5 | 2–4 | Autorité serveur et intégrité du combat avant toute fonction compétitive ou publique. |
-| 6 | 1–2, puis 5 | Score de match de base dès la boucle jouable ; statistiques persistantes et détaillées ensuite. |
-| 7 | 7 | Learning Agents expérimental, isolé et jamais bloquant. |
-| 8–9 | Toutes, validation finale en 6 | Mesures dès les fondations ; non-régression, qualité du dépôt et validation finale avant alpha. |
-| 10–12 | 0, puis pilotage continu | Note historique non implémentable sans clarification ; règles agent et chronologie applicables à chaque tâche. |
-| 13–15 | 0 et 6 | Budget et licence audités dès le départ ; distribution et conditions d'alpha contrôlées avant publication. |
-| 16–18 | 5 et 7 | Comptes/progression après les sessions et données de base ; cross-play et plateformes supplémentaires après Windows. |
-| 19–23 | 2 à 7 selon dépendances | Stabilisation réseau, anti-camping, statistiques, replays, accessibilité et confort ; chaque fonction suit son système propriétaire. |
-| 24–25 | 0–1 et 6 | Première build Windows ; audit de licence initial puis contrôle final avant toute distribution. |
-| 26–29 | 3–5 | Lobbies, continuité, matchmaking, remplaçants et fonctions communautaires après EOS privé et protections minimales. |
-| 30–33 | 2, 6 et 7 | Référence graphique et combat sur carte pilote ; profils finaux, internationalisation et extensions après mesures. |
-| 34–38 | 2, 4, 5 et 7 | Équité des cartes/mouvements, informations de match, progression et systèmes communautaires selon leurs prérequis. |
-| 39–43 | 2, 4, 5 et 7 | Matchmaking, protection des nouveaux, fin de partie, duel, progression, identité et variantes ; jamais avant les fondations correspondantes. |
+| Sections | Phase(s) de référence | Rattachement et dépendance principale | Statut constaté | Commit / preuve de validation |
+|---|---|---|---|---|
+| 1–2 | 0, puis toutes | Vision, contraintes et état réel ; base de l'audit et de la traçabilité.  | Non vérifié | Aucun enregistré |
+| 3 | 1–2, puis 4 | Boucle de gameplay et carte pilote ; extension aux cartes/modes de lancement après stabilisation.  | Non vérifié | Aucun enregistré |
+| 4 | 3–4 | EOS, groupes et sessions privées avant le matchmaking public.  | Non vérifié | Aucun enregistré |
+| 5 | 2–4 | Autorité serveur et intégrité du combat avant toute fonction compétitive ou publique.  | Non vérifié | Aucun enregistré |
+| 6 | 1–2, puis 5 | Score de match de base dès la boucle jouable ; statistiques persistantes et détaillées ensuite.  | Non vérifié | Aucun enregistré |
+| 7 | 7 | Learning Agents expérimental, isolé et jamais bloquant.  | Non vérifié | Aucun enregistré |
+| 8–9 | Toutes, validation finale en 6 | Mesures dès les fondations ; non-régression, qualité du dépôt et validation finale avant alpha.  | Non vérifié | Aucun enregistré |
+| 10–12 | 0, puis pilotage continu | Note historique non implémentable sans clarification ; règles agent et chronologie applicables à chaque tâche.  | Non vérifié | Aucun enregistré |
+| 13–15 | 0 et 6 | Budget et licence audités dès le départ ; distribution et conditions d'alpha contrôlées avant publication.  | Non vérifié | Aucun enregistré |
+| 16–18 | 5 et 7 | Comptes/progression après les sessions et données de base ; cross-play et plateformes supplémentaires après Windows.  | Non vérifié | Aucun enregistré |
+| 19–23 | 2 à 7 selon dépendances | Stabilisation réseau, anti-camping, statistiques, replays, accessibilité et confort ; chaque fonction suit son système propriétaire.  | Non vérifié | Aucun enregistré |
+| 24–25 | 0–1 et 6 | Première build Windows ; audit de licence initial puis contrôle final avant toute distribution.  | Non vérifié | Aucun enregistré |
+| 26–29 | 3–5 | Lobbies, continuité, matchmaking, remplaçants et fonctions communautaires après EOS privé et protections minimales.  | Non vérifié | Aucun enregistré |
+| 30–33 | 2, 6 et 7 | Référence graphique et combat sur carte pilote ; profils finaux, internationalisation et extensions après mesures.  | Non vérifié | Aucun enregistré |
+| 34–38 | 2, 4, 5 et 7 | Équité des cartes/mouvements, informations de match, progression et systèmes communautaires selon leurs prérequis.  | Non vérifié | Aucun enregistré |
+| 39–43 | 2, 4, 5 et 7 | Matchmaking, protection des nouveaux, fin de partie, duel, progression, identité et variantes ; jamais avant les fondations correspondantes.  | Non vérifié | Aucun enregistré |
 
 Une exigence peut contribuer à plusieurs phases : sa version minimale nécessaire à la jouabilité ou à la sécurité est traitée tôt ; ses fonctions persistantes, sociales ou avancées sont livrées plus tard. Le report d'une partie avancée ne reporte pas une protection critique, et ne supprime jamais l'exigence.
 - Une priorité locale indique l'ordre à respecter **dans son propre chantier**. Elle ne permet pas de passer devant un blocage de sécurité, de licence, de sauvegarde, de boucle jouable ou de réseau qui empêche le chantier de fonctionner.
 - Lorsqu'une section spécialisée semble contredire la chronologie générale, ne rien supprimer ni interpréter silencieusement : identifier les deux passages, appliquer la priorité générale et les décisions explicitement approuvées les plus récentes, puis signaler toute ambiguïté qui change réellement le périmètre.
+- Les anciens intitulés d'étapes dans `UNREAL.md` et les messages de commit sont des repères historiques, pas des jalons de la chronologie actuelle. La correspondance et les limites de preuve sont précisées dans `SUIVI_PHASES_RIXE.md`.
 
 ### 12.4 Sélection de la prochaine tâche par Claude
 
@@ -480,6 +481,7 @@ Fonctionnalités approuvées et planifiées ; elles ne sont pas considérées co
 - Afficher les erreurs de connexion avec une explication et une action de récupération compréhensibles.
 - Conserver une solution de connexion de secours pendant la transition ; ne retirer aucun parcours existant avant validation de bout en bout.
 - Les classements doivent utiliser des résultats fiables validés côté serveur et distinguer clairement les parties classées des parties privées/non classées.
+- Une playlist de test communautaire (section 29.7) est une file expérimentale séparée : elle peut être préparée et testée sans classé, sans rang et sans récompense officielle. Elle exige un environnement versionné, des résultats isolés et les protections minimales requises avant toute ouverture à des volontaires.
 
 ### B — Anti-camping intelligent
 - Compléter le level design anti-camping par des mécanismes de jeu contextuels, sans interdire la défense tactique ni pénaliser un joueur qui tient temporairement un objectif.
@@ -932,10 +934,10 @@ Cette séquence complète la chronologie générale de la section 12 ; elle ne l
 
 1. **Sécurisation et audit :** sauvegarde, état réel du dépôt, secrets, licences, plugins, dépendances, configurations et blocages. Aucune distribution publique avant clarification des licences ; les tests internes peuvent continuer si les droits et conditions applicables le permettent.
 2. **Première build jouable :** une carte pilote, un mode, boucle FPS complète et build Windows de test ; bots/local autorisés pour valider le gameplay sans prétendre valider le réseau en ligne.
-3. **Fondations FPS et réseau :** qualité du tir/hit registration, autorité serveur, réplication, déplacements et mécaniques de base approuvées, dégâts, apparitions, équipes, bots, stabilité de la carte pilote et tests réseau progressifs. Établir la référence de performances dès ce stade.
+3. **Fondations FPS et réseau :** qualité du tir/hit registration, autorité serveur, réplication, déplacements et mécaniques de base approuvées, dégâts, apparitions, équipes, bots, stabilité de la carte pilote et tests réseau progressifs. Établir la référence de performances dès ce stade. **La carte pilote seule est requise pour cette phase et pour ouvrir le chantier EOS ; les autres cartes du lancement ne sont pas un prérequis EOS.**
 4. **EOS et parties privées :** identité/Connect, présence, amis/invitations, lobbies et sessions privées ; valider création, invitation, rejoindre, lancer une partie, retour au lobby et reconnexion. Garder un chemin LAN/direct de diagnostic.
 5. **Socle de sécurité communautaire avant le public :** sourdine, blocage, signalement, limites anti-spam, confidentialité, messages d'erreur et règles de traitement des abus. Tester ces protections avec les parcours privés et les scénarios de groupe. Les outils avancés de modération restent ultérieurs, mais aucune ouverture publique ne doit précéder ce socle.
-6. **Matchmaking public officiel et contenu de lancement :** construire et tester en environnement contrôlé la file publique, la constitution des équipes, le lobby BO2, le compte à rebours/seuil de joueurs, le lancement automatique et la continuité des groupes. Ajouter progressivement gestion des départs, migration d'hôte, backfill, remplaçants et préférences selon les capacités validées. Finaliser et valider les trois cartes maximum et les modes inclus dans l'alpha. **L'activation publique réelle** attend les contrôles de sécurité, de licence, de stabilité et de capacité.
+6. **Matchmaking public officiel et contenu de lancement :** après validation d'EOS et des parties privées, construire et tester en environnement contrôlé la file publique, la constitution des équipes, le lobby BO2, le compte à rebours/seuil de joueurs, le lancement automatique et la continuité des groupes. Les prototypes internes du matchmaking peuvent avancer sur la carte pilote sans attendre la finalisation des autres cartes. Ajouter progressivement gestion des départs, migration d'hôte, backfill, remplaçants et préférences selon les capacités validées. Finaliser et valider les trois cartes maximum et les modes inclus dans l'alpha avant celle-ci. **L'activation publique réelle** attend les contrôles de sécurité, de licence, de stabilité et de capacité.
 7. **Données persistantes et systèmes dépendants :** statistiques détaillées, sauvegardes, progression, défis, préférences synchronisées et fonctions communautaires avancées. Le score de match de base et son affichage sont requis dans la première boucle jouable ; sa validation serveur appartient aux fondations FPS.
 8. **Qualité, performances et préparation de l'alpha :** non-régression, tests réseau/performance multi-configurations, sauvegardes, accessibilité, localisation, compatibilité, audit final des licences, build Shipping et procédure de retour arrière. Le profilage commence dès les fondations ; cette phase réalise la validation finale.
 9. **Extensions après validation du socle :** replays, création communautaire, événements, fonctions sociales avancées, cross-play, clients navigateur et plateformes supplémentaires lorsque leurs dépendances sont prêtes. Learning Agents reste une expérimentation isolée, désactivable et non bloquante.
@@ -1066,7 +1068,7 @@ Les huit propositions suivantes sont approuvées par le propriétaire. Elles com
 - Intégrer 29.5 au stand de tir et au laboratoire d'équilibrage existants ; proposer une interface joueur distincte et sûre, alimentée par les données de la version active.
 - Prioriser 29.1 (intégrité des résultats) et les fondations de 29.2/29.6/29.8 après stabilisation du socle réseau et du matchmaking officiel.
 - Réaliser 29.3 comme mode local indépendant après validation de la boucle gameplay et des bots.
-- Ajouter 29.4 et 29.7 plus tard, après stabilisation du classé, de la modération et des processus de mise à jour.
+- Ajouter 29.4 selon ses propres dépendances. Préparer 29.7 dès que la boucle gameplay, les bots et l'environnement de test versionné sont suffisamment stables ; son lancement public exige le socle minimal de sécurité communautaire et les contrôles de confidentialité, mais **ne dépend pas de l'activation du classé**, des rangs ou des récompenses officielles.
 - Respecter le budget autorisé de 0 € : aucune infrastructure, service, outil ou dépense nouvelle sans accord explicite. Privilégier les solutions locales et gratuites dans leurs limites réelles.
 - Toute fonction reste planifiée jusqu'à ce qu'elle soit implémentée, testée sur une build et documentée avec ses limites.
 
@@ -1661,7 +1663,7 @@ Cette section rassemble des décisions approuvées lors des échanges de cadrage
 - Les références à des jeux commerciaux décrivent uniquement des sensations et objectifs qualitatifs : ne copier aucun code, asset, carte, interface, animation, son ou élément protégé.
 
 ### 43.2 Playlists avec et sans capacités
-- Prévoir quatre playlists distinctes : **Classé avec capacités**, **Standard avec capacités**, **Non classé avec capacités** et **Non classé sans capacités**.
+- Prévoir trois playlists de référence : **Classé avec capacités** (désactivée tant que les garanties ne sont pas suffisantes), **Standard / non classé avec capacités** et **Non classé sans capacités**. Les anciennes entrées « Standard avec capacités » et « Non classé avec capacités » sont fusionnées tant qu'aucune différence de règles, de population, de statut ou de progression n'est définie et testée ; elles ne doivent pas créer deux files équivalentes.
 - Les capacités doivent compléter les armes et le tir, jamais les remplacer ; elles doivent être équilibrées, lisibles, contrables et testées pour ne pas dominer les affrontements.
 - La fiche universelle de mode (section 42.2) doit indiquer clairement si les capacités sont actives, leurs règles essentielles et les conditions de victoire.
 - Ne pas activer les capacités dans la playlist sans capacités, y compris via un équipement, bonus temporaire ou effet indirect.
