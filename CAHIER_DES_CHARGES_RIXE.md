@@ -899,17 +899,22 @@ C'est le parcours principal et l'écran de jeu par défaut. Les serveurs communa
 - Paramètres lisibles, libellés explicites, descriptions courtes, valeurs visibles, aperçu immédiat et réinitialisation.
 
 ### 27.10 Ordre de réalisation
-Ne pas développer tous les systèmes sociaux simultanément. Respecter les priorités générales du cahier des charges :
-1. Audit licence, sauvegarde et état réel du projet ; corriger les blocages.
-2. Obtenir une build réellement jouable et testable.
-3. Stabiliser gameplay, hit registration, réseau, autorité serveur, bots et cartes de lancement.
-4. Mettre en place le parcours officiel complet : identité/session, matchmaking, lobby public BO2, lancement automatique, continuité entre parties, backfill et reconnexion.
-5. Ajouter les fonctions sociales essentielles : amis, groupes, invitations, présence et modération.
-6. Ajouter le navigateur de serveurs communautaires comme option secondaire.
-7. Ajouter clans, événements/tournois, outils communautaires, cartes communautaires et variantes contrôlées.
-8. Étendre progressivement la synchronisation multiplateforme et les clients compatibles.
-À chaque étape : tests réels, critères d'acceptation, sauvegarde, rapport de branche/commit et build ou lien de test vérifié lorsque possible. Une fonction planifiée n'est jamais présentée comme livrée sans preuve.
 
+Cette séquence complète la chronologie générale de la section 12 ; elle ne la remplace pas. La première build Windows de la section 24 reste prioritaire. Les services privés EOS et le matchmaking public sont deux jalons distincts : ne pas les fusionner.
+
+1. **Sécurisation et audit :** sauvegarde, état réel du dépôt, secrets, licences, plugins, dépendances et blocages.
+2. **Première build jouable :** une carte pilote, un mode, boucle FPS complète et build Windows testable ; bots/local autorisés pour valider le gameplay sans prétendre valider le réseau en ligne.
+3. **Fondations FPS et réseau :** qualité du tir/hit registration, autorité serveur, réplication, déplacements, dégâts, apparitions, équipes, bots, stabilité de la carte pilote et tests réseau progressifs. Établir dès ce stade une référence de performances et des budgets CPU/GPU/mémoire/temps de frame ; les optimisations avancées restent ultérieures.
+4. **EOS et parties privées :** identité/Connect, présence, amis/invitations nécessaires, lobbies et sessions privées ; valider création, invitation, rejoindre, lancer une partie, retour au lobby et reconnexion dans les scénarios réellement supportés. Garder un chemin LAN/direct de diagnostic.
+5. **Matchmaking public officiel :** file publique, constitution des équipes, lobby BO2, compte à rebours/seuil de joueurs, lancement automatique, continuité des groupes, gestion des départs, migration d'hôte, backfill et reconnexion selon les capacités réellement validées.
+6. **Fonctions sociales essentielles et intégrité :** stabiliser groupes, présence, modération, signalement et protection des parties ; activer le classé uniquement après validation de l'autorité, de l'intégrité des résultats et des conditions d'hébergement.
+7. **Systèmes dépendants :** score de contribution, statistiques, sauvegardes, progression, préférences de playlists/périphériques et fonctions communautaires, selon leurs dépendances et les ordres spécialisés.
+8. **Contenus et extensions :** étendre aux cartes/modes du périmètre approuvé, puis replays, création communautaire, événements, cross-play et plateformes supplémentaires lorsque leurs fondations sont prêtes.
+9. **Qualité et livraison alpha :** non-régression, tests réseau/performance multi-configurations, accessibilité, localisation, licences de distribution, build Shipping et procédure de retour arrière. Le profilage et l'optimisation finale complètent les mesures de performance commencées dès les premières phases.
+
+Ne pas développer tous les systèmes sociaux simultanément. À chaque étape, appliquer les critères de passage de la section 12 et les critères spécialisés du système concerné. Une dépendance non validée bloque le jalon qui en dépend, pas les tâches indépendantes et réversibles de même priorité. Les fonctionnalités reportées restent planifiées ; elles ne sont ni supprimées ni déclarées livrées.
+
+À chaque jalon : tests réels adaptés, critères d'acceptation, sauvegarde, rapport branche/commit, état des limites et build ou lien de test vérifié lorsque possible. Une fonction planifiée n'est jamais présentée comme livrée sans preuve.
 
 ## 28. Améliorations de l'expérience multijoueur — cinq ajouts approuvés le 19 novembre 2026
 
