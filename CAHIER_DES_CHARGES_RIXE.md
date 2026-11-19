@@ -151,15 +151,9 @@ Learning Agents / PPO / imitation learning restent expérimentaux :
 - Vérifier les plugins activés et retirer les références obsolètes.
 - Ne pas versionner caches et fichiers temporaires inutiles.
 
-## 10. Ajouts approuvés dans le dernier échange
+## 10. Note historique à clarifier
 
-Le dernier échange de cadrage approuve quatre ajouts numérotés :
-- Ajout 1 : limité à un seul mode.
-- Ajout 2 : limité à un seul mode.
-- Ajout 3 : limité à un seul mode.
-- Ajout 4 : facultatif, désactivable/ignoré.
-
-Le libellé fonctionnel exact de ces quatre éléments doit être recopié depuis la conversation source avant implémentation. Ne pas inventer leur contenu ni les activer globalement par défaut.
+Une ancienne note de cadrage mentionnait quatre ajouts numérotés (trois limités à un seul mode et un facultatif). Leur libellé exact n'est pas suffisamment documenté dans le dépôt. Cette note n'autorise donc aucune implémentation : ne pas inventer leur contenu, ne pas les compter comme exigences fonctionnelles confirmées et demander leur clarification uniquement si ces éléments redeviennent pertinents.
 
 ## 11. Agent de développement autonome
 
