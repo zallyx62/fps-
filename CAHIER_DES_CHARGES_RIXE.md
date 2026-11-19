@@ -939,7 +939,11 @@ Règles obligatoires :
 - Préserver la visibilité des adversaires, les silhouettes, les télégraphies, les projectiles et tous les indices visuels qui transmettent une information tactique.
 - Ne pas supprimer un effet fonctionnel de gameplay (fumée, explosion, signal d'objectif, etc.) ; réduire uniquement son coût ou sa présentation sans changer son information, sa durée, sa portée ou son comportement.
 - Les options graphiques avancées doivent être activées uniquement si le matériel et le chemin de rendu les prennent réellement en charge.
-- Permettre de personnaliser individuellement les réglages après le choix d'un préréglage, d'afficher les valeurs actives et de restaurer le préréglage.
+- **Équilibré est le préréglage sélectionné par défaut** lors d'une première installation, puis le jeu peut proposer un benchmark pour affiner le choix sans rien modifier sans accord.
+- Ajouter une entrée **Personnalisé**, distincte des six préréglages : elle permet de modifier individuellement les options, de sauvegarder plusieurs configurations nommées, de les renommer/supprimer et de restaurer un préréglage de départ. Ne pas créer un septième préréglage prédéfini.
+- Afficher les valeurs réellement actives et signaler clairement lorsqu'une option est indisponible ou remplacée par une solution de secours.
+- Ne fixer aucun quota universel de FPS par préréglage. Chercher la meilleure fluidité réellement possible selon le matériel, la résolution et les options choisies, avec une priorité particulière à la régularité des images (frame pacing) plutôt qu'à une moyenne élevée mais instable.
+- Mesurer, lorsque possible, FPS moyens, 1 % low, temps de frame, pics de temps de frame et saccades. Distinguer les FPS réellement rendus des images interpolées/générées.
 - Les préréglages sont des points de départ et non une garantie de FPS identique sur tous les matériels.
 
 ### 30.2 Benchmark graphique intégré
@@ -976,6 +980,30 @@ Règles obligatoires :
 - Mémoriser les performances et réglages testés par carte afin de signaler les cartes plus exigeantes et proposer un ajustement avant leur lancement.
 - Le joueur garde toujours le contrôle : pas de changement silencieux en pleine partie, possibilité de désactiver les recommandations et de conserver ses réglages globaux.
 - Les profils par carte ne doivent jamais créer de différence de gameplay ou d'information tactique.
+
+### 30.7 Mise à l'échelle, technologies GPU et génération d'images
+- Étudier et intégrer, lorsque les versions, licences, pilotes, API de rendu et cartes graphiques le permettent, les solutions suivantes : **NVIDIA DLSS**, **AMD FSR**, **Intel XeSS** et **Unreal TSR**.
+- Utiliser Unreal TSR comme voie de mise à l'échelle de référence largement compatible lorsque les solutions spécialisées ne sont pas disponibles ; ne jamais rendre DLSS, FSR ou XeSS obligatoires au démarrage.
+- Détecter les capacités réellement disponibles sur la machine (GPU, API/RHI, pilote et fonctionnalités prises en charge) et n'afficher que les options compatibles. Prévoir une solution de secours testée si un plugin, pilote ou chemin de rendu est absent ou échoue.
+- Permettre au joueur de choisir la solution et le niveau de qualité lorsqu'ils sont compatibles ; ne jamais imposer silencieusement une technologie ni remplacer un choix sans l'en informer.
+- Ne jamais activer simultanément plusieurs upscalers concurrents sur la même chaîne de rendu. Vérifier les conflits de plugins et de génération d'images ; une seule technologie de frame generation peut être active à la fois.
+- Étudier les fonctions de réduction de latence adaptées au matériel : **NVIDIA Reflex**, **AMD Radeon Anti-Lag 2** et **Intel Xe Low Latency (XeLL)** lorsqu'elles sont prises en charge. Ces fonctions sont distinctes de l'upscaling et ne doivent pas être présentées comme un gain de FPS garanti.
+- Distinguer **NVIDIA Reflex** et ses options éventuelles de **Boost** des fonctions de gestion dynamique de puissance propres à certains matériels. Ne pas promettre ni piloter une fonction matérielle qui n'est pas exposée de façon fiable au jeu.
+- Proposer la génération d'images (Frame Generation / Multi Frame Generation) uniquement si la configuration et la solution sélectionnée la prennent réellement en charge. Elle doit rester facultative et désactivable, particulièrement pour le jeu compétitif.
+- Expliquer que les images générées améliorent la fluidité visuelle mais n'augmentent pas dans les mêmes proportions la fréquence de simulation, la réactivité des entrées ou les FPS réellement calculés. Afficher séparément, lorsque possible, les FPS natifs et les FPS incluant les images générées.
+- Ne jamais sacrifier la précision, la latence, la lisibilité des adversaires ou la stabilité du gameplay pour afficher un chiffre de FPS supérieur. Tester chaque technologie en mouvement, en combat et dans les scènes chargées.
+- Prévoir les options HDR uniquement lorsque l'écran, le système et le chemin de rendu sont compatibles, avec calibration et retour à un affichage SDR fiable.
+- Auditer les licences, conditions de redistribution, versions et dépendances de chaque SDK/plugin avant intégration. Privilégier les composants gratuits compatibles avec le budget de 0 € ; aucun achat, abonnement ou service payant sans accord explicite.
+- Verrouiller et documenter les versions testées des plugins. Ne pas considérer une compatibilité annoncée par un fournisseur comme une validation suffisante : vérifier réellement le build, le lancement, le rendu, les performances et le comportement de secours sous Unreal Engine 5.8.
+
+### 30.8 Réglages personnalisés et validation multi-matériels
+- Regrouper dans le mode Personnalisé les réglages détaillés déjà prévus par le jeu : textures/matériaux, ombres, éclairage, reflets, effets, post-traitement, distance d'affichage, résolution/résolution dynamique, anti-aliasing/upscaler, limite FPS, synchronisation, faible latence et HDR si disponibles.
+- N'exposer que les paramètres réellement pris en charge par la plateforme ; expliquer brièvement les options avancées sans imposer de choix technique au joueur.
+- Prévoir une fonction de comparaison avant/après et de restauration sûre des valeurs précédentes si un changement provoque un écran noir, une instabilité ou une dégradation importante.
+- Valider les six préréglages et le mode Personnalisé sur plusieurs catégories de GPU (modestes, intermédiaires et haut de gamme), résolutions et fréquences d'écran, ainsi que sur les chemins de rendu effectivement pris en charge.
+- Inclure des tests spécifiques sur matériel NVIDIA, AMD et Intel lorsque disponible. Une option non testée sur une famille de matériel ne doit pas être annoncée comme pleinement prise en charge.
+- Ne pas limiter la qualité maximale du projet à la GTX 1070 du propriétaire : conserver des niveaux évolutifs, tout en fournissant une voie de rendu jouable et stable aux machines plus modestes.
+- Commencer par une carte de référence représentative, mesurer les coûts GPU/CPU et la lisibilité compétitive, puis appliquer les réglages validés aux autres cartes.
 
 ### Critères communs et ordre de réalisation
 - Commencer par les préréglages et leur validation sur plusieurs configurations, puis le benchmark reproductible.
