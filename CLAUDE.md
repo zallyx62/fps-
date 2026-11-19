@@ -29,28 +29,30 @@ Respecter les décisions approuvées du cahier des charges : trois cartes maximu
 
 ## 3. Chronologie officielle, priorités et pilotage du travail
 
-**La chronologie de référence est celle du cahier des charges : ne pas créer une feuille de route concurrente dans ce fichier.**
+**Le cahier des charges est l'unique feuille de route fonctionnelle.** Ne crée aucune chronologie concurrente et ne réordonne pas les fonctionnalités selon tes préférences.
 
-- **Ordre général obligatoire :** suivre les étapes de la section 12 du cahier des charges, dans leur ordre et avec leurs dépendances.
-- **Livraison prioritaire :** appliquer la section 24 pour obtenir une version Windows réellement jouable et testable. Son calendrier de douze jours est un objectif indicatif, jamais une garantie ni une raison de bâcler les validations.
-- **Ordres spécialisés :** lorsqu'une section du cahier des charges définit son propre ordre de réalisation, ses dépendances ou ses critères d'acceptation, les respecter pour le système concerné, sans contredire les priorités générales ni retarder le socle jouable.
-- **Priorité en cas de concurrence :** traiter d'abord les risques de sécurité, pertes de données, licences et blocages empêchant de jouer ; ensuite le socle FPS, le réseau et la build Windows ; puis les systèmes dépendants ; enfin les extensions et plateformes secondaires selon les sections applicables.
-- **Aucune avance artificielle :** ne pas commencer une étape ultérieure si un prérequis critique de l'étape courante échoue. Les travaux préparatoires indépendants et sans risque restent possibles, mais ne doivent pas détourner les ressources du blocage prioritaire.
-- **Pas de suppression silencieuse :** une fonctionnalité reportée reste une exigence planifiée du cahier des charges. La reporter ne signifie ni l'abandonner ni la déclarer réalisée.
+- **Ordre général obligatoire :** suivre la section 12 du cahier des charges et ses critères de passage.
+- **Livraison rapprochée :** appliquer la section 24 pour obtenir d'abord une build Windows jouable. Les douze jours sont indicatifs ; aucune validation ne peut être sautée pour tenir le calendrier.
+- **Ordre multijoueur obligatoire :** respecter également la section 27.10. Avant le matchmaking public, stabiliser le combat, le hit registration, l'autorité réseau, les bots et les cartes de lancement. Ensuite seulement valider EOS et les lobbies privés entre amis, puis construire le matchmaking public, le lobby BO2 et la continuité des parties.
+- **Séquence de référence :** audit/sauvegarde/licences/blocages → boucle FPS Windows jouable → combat/réseau/bots/cartes → EOS et parcours privé → matchmaking public/lobby/continuité → score/statistiques/progression et fonctions communautaires dépendantes → performances, régressions et alpha → extensions.
+- **Priorité en cas de concurrence :** protéger d'abord les données, secrets et licences ; corriger ensuite tout blocage empêchant de compiler, lancer ou jouer ; avancer sur le jalon courant et ses dépendances ; reporter les extensions indépendantes.
+- **Aucune avance artificielle :** ne commence pas une étape ultérieure si un prérequis critique échoue. Les préparatifs indépendants ne sont permis que s'ils sont réversibles, à faible risque et ne détournent pas le travail prioritaire.
+- **Pas de suppression silencieuse :** une fonctionnalité reportée reste planifiée dans le cahier des charges. Ne la supprime pas, ne la déclare pas abandonnée et ne la marque pas comme réalisée.
+- **Pas de duplication :** étends les systèmes uniques déjà définis ; rattache chaque exigence spécialisée au système propriétaire correspondant.
 
 ### Suivi obligatoire de la chronologie
 
-Au début de chaque session de travail, puis après chaque jalon important :
+Au début de chaque session, puis après chaque jalon :
 
-1. Lire les sections 12 et 24 du cahier des charges, ainsi que les sections spécialisées concernées par la tâche.
-2. Vérifier l'état réel du dépôt, de la branche, du commit, des modifications locales, des builds et des tests ; ne jamais reprendre aveuglément un ancien compte rendu.
-3. Identifier le jalon actuellement actif, les prérequis déjà validés, les blocages et le prochain critère d'acceptation.
-4. Choisir une tâche courte qui fait avancer le jalon actif ; ne pas lancer plusieurs grands systèmes indépendants en parallèle.
-5. Ne déclarer un jalon franchi qu'avec les preuves adaptées : fichiers/code ou Blueprints présents, compilation, tests fonctionnels, tests réseau/performance si concernés et build lorsque pertinente.
-6. Mettre à jour le suivi de travail avec le statut réel, les preuves, les limites, les tâches restantes et le prochain jalon. Ne pas recopier le cahier des charges : référencer ses sections.
-7. Si une dépendance, un problème technique ou une contrainte de budget empêche de poursuivre, documenter le blocage et ses conséquences, puis traiter le meilleur travail non bloqué qui respecte l'ordre de priorité.
+1. Lire les sections 12 et 24, la section 27.10 et les sections spécialisées directement concernées.
+2. Vérifier branche, commit, changements locaux, état des Blueprints, compilation, builds et tests ; ne jamais reprendre aveuglément un ancien rapport.
+3. Identifier la phase active, ses critères de passage, les prérequis validés, le blocage principal et la prochaine action vérifiable.
+4. Choisir une tâche courte qui débloque le jalon actif. Ne lance pas plusieurs grands systèmes en parallèle.
+5. Ne franchir un jalon qu'avec des preuves adaptées : implémentation réelle, compilation, tests fonctionnels, réseau/performance si concernés et build empaquetée lorsque requise.
+6. Mettre à jour le suivi de travail avec statut, preuves, limites, tâches restantes et prochaine action ; référencer les sections du cahier sans recopier leur contenu.
+7. Si le jalon est bloqué, consigner la cause et traiter le meilleur travail non bloqué de même priorité, sans sauter l'ordre de dépendance.
 
-Le suivi de session doit rester bref et factuel : **jalon actif / validé / bloqué / prochaine action**. La section 12 du cahier reste la feuille de route générale ; la section 24 reste le plan de livraison rapproché.
+Rapport de session bref : **phase active / tâche réalisée / preuves et tests / blocage / prochaine action**. La section 12 reste la chronologie générale ; la section 24 reste le plan de première livraison.
 
 ## 4. Architecture multijoueur et hébergement — décision technique à respecter
 
