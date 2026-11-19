@@ -16,6 +16,14 @@ Respecter la section 18 de `CAHIER_DES_CHARGES_RIXE.md`. RIXE doit viser une pla
 ## Ajouts approuvés A, B et E
 Appliquer les exigences de la section 19 du cahier des charges : A) consolider les services multijoueur et le parcours complet salons/invitations/recherche/connexion/classements ; B) compléter le level design par un anti-camping contextuel, équitable et non punitif envers la défense légitime ; E) fournir des statistiques de fin de partie transparentes, détaillées et explicables, cohérentes avec le profil et validées côté serveur. Ne pas confondre fonctionnalités planifiées et fonctionnalités livrées.
 
+
+## Replays, éditeur communautaire et calibration du matchmaking — ajouts approuvés
+Respecter la section 20 du cahier des charges :
+- Replays complets reconstruits à partir d'événements lorsque possible, avec chronologie, vues, contrôles de lecture, limites de stockage et confidentialité. Ne pas enregistrer le vocal par défaut.
+- Éditeur de cartes communautaire progressif : validation technique, tests privés, modération, licences vérifiées et séparation stricte des cartes communautaires et des playlists/classements officiels tant que les cartes ne sont pas validées.
+- Calibration du niveau sur plusieurs parties et détection prudente des abus de matchmaking/smurfing. Ne jamais sanctionner automatiquement sur une simple suspicion ; prévoir incertitude, réévaluation et contestation.
+Ne pas laisser ces chantiers retarder la correction du blocage actuel, la stabilité réseau et la livraison d'une build testable. Respecter le budget de 0 € et ne jamais prétendre qu'un prototype est livré avant les tests.
+
 ## PRIORITÉ ABSOLUE N°1 : audit et clarification de la licence
 Traiter la licence comme le tout premier chantier, avant les nouvelles fonctionnalités et avant toute publication.
 
