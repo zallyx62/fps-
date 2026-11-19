@@ -181,13 +181,9 @@ l'enregistrement est fait dès la première manche.
 
 ## Anti-triche
 
-Ce qui est protégé, parce que décidé par le serveur : dégâts, points de vie, morts, scores, victoire,
-création des bots, contenu du chat (longueur et fréquence). Un client modifié ne peut pas s'ajouter des
-points ni tuer quelqu'un sans tirer.
+Le prototype documente une autorité serveur sur plusieurs éléments : dégâts appliqués par les projectiles, morts, scores, victoire, création des bots et limites de longueur/fréquence du chat. **Cela ne constitue pas une validation anti-triche complète.** Les RPC et paramètres reçus du client, la cadence de tir, les munitions, les déplacements, les capacités, les apparitions et les résultats doivent encore être audités et testés selon la section 5 du cahier des charges.
 
-Limites connues : la visée vient du client (comme dans la plupart des FPS), donc un aimbot reste possible ;
-le serveur d'écoute appartient à un joueur, qui peut tricher. Pour un vrai jeu public il faudra un serveur
-dédié et un anti-triche côté client (Easy Anti-Cheat est gratuit pour les projets Unreal).
+Limites connues : la visée provient du client et peut être manipulée ; un serveur d'écoute appartient à un joueur qui peut lui-même tricher ou falsifier l'état du match. Ne jamais affirmer qu'un client modifié ne peut pas tricher sur la seule base des tests PIE actuels. Le classement et les récompenses compétitives restent désactivés tant que l'intégrité n'est pas démontrée. Un anti-triche client éventuel ne remplace pas l'autorité serveur et doit être évalué selon les plateformes et licences réellement retenues.
 
 ## Testé
 
