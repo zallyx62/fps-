@@ -262,6 +262,31 @@ Learning Agents doit rester une expérimentation isolée : définir un cas d'usa
 - Les sections 26 à 29 détaillent le parcours multijoueur, le matchmaking, les groupes et les fonctions communautaires. Elles s'intègrent après les fondations réseau et les services en ligne, sans créer plusieurs systèmes concurrents.
 - Les sections 30 à 33 détaillent les performances, l'internationalisation, la maîtrise des armes et les approfondissements du combat. Les fonctions nécessaires à la stabilité ou à l'équité sont traitées avant les finitions et extensions.
 - Les sections 34 à 43 ajoutent ou consolident des règles et fonctions spécifiques. Leur présence dans le cahier ne signifie pas qu'elles sont toutes exigées pour la première alpha ; suivre leurs dépendances et leur ordre local après validation du socle concerné.
+
+#### Matrice de rattachement des sections à la chronologie
+
+Cette matrice sert à vérifier qu'aucune exigence approuvée ne disparaît entre le cahier des charges et l'exécution. Elle indique le premier chantier pertinent, pas une obligation de tout livrer au même jalon.
+
+| Sections | Phase(s) de référence | Rattachement et dépendance principale |
+|---|---|---|
+| 1–2 | 0, puis toutes | Vision, contraintes et état réel ; base de l'audit et de la traçabilité. |
+| 3 | 1–2, puis 4 | Boucle de gameplay et carte pilote ; extension aux cartes/modes de lancement après stabilisation. |
+| 4 | 3–4 | EOS, groupes et sessions privées avant le matchmaking public. |
+| 5 | 2–4 | Autorité serveur et intégrité du combat avant toute fonction compétitive ou publique. |
+| 6 | 1–2, puis 5 | Score de match de base dès la boucle jouable ; statistiques persistantes et détaillées ensuite. |
+| 7 | 7 | Learning Agents expérimental, isolé et jamais bloquant. |
+| 8–9 | Toutes, validation finale en 6 | Mesures dès les fondations ; non-régression, qualité du dépôt et validation finale avant alpha. |
+| 10–12 | 0, puis pilotage continu | Note historique non implémentable sans clarification ; règles agent et chronologie applicables à chaque tâche. |
+| 13–15 | 0 et 6 | Budget et licence audités dès le départ ; distribution et conditions d'alpha contrôlées avant publication. |
+| 16–18 | 5 et 7 | Comptes/progression après les sessions et données de base ; cross-play et plateformes supplémentaires après Windows. |
+| 19–23 | 2 à 7 selon dépendances | Stabilisation réseau, anti-camping, statistiques, replays, accessibilité et confort ; chaque fonction suit son système propriétaire. |
+| 24–25 | 0–1 et 6 | Première build Windows ; audit de licence initial puis contrôle final avant toute distribution. |
+| 26–29 | 3–5 | Lobbies, continuité, matchmaking, remplaçants et fonctions communautaires après EOS privé et protections minimales. |
+| 30–33 | 2, 6 et 7 | Référence graphique et combat sur carte pilote ; profils finaux, internationalisation et extensions après mesures. |
+| 34–38 | 2, 4, 5 et 7 | Équité des cartes/mouvements, informations de match, progression et systèmes communautaires selon leurs prérequis. |
+| 39–43 | 2, 4, 5 et 7 | Matchmaking, protection des nouveaux, fin de partie, duel, progression, identité et variantes ; jamais avant les fondations correspondantes. |
+
+Une exigence peut contribuer à plusieurs phases : sa version minimale nécessaire à la jouabilité ou à la sécurité est traitée tôt ; ses fonctions persistantes, sociales ou avancées sont livrées plus tard. Le report d'une partie avancée ne reporte pas une protection critique, et ne supprime jamais l'exigence.
 - Une priorité locale indique l'ordre à respecter **dans son propre chantier**. Elle ne permet pas de passer devant un blocage de sécurité, de licence, de sauvegarde, de boucle jouable ou de réseau qui empêche le chantier de fonctionner.
 - Lorsqu'une section spécialisée semble contredire la chronologie générale, ne rien supprimer ni interpréter silencieusement : identifier les deux passages, appliquer la priorité générale et les décisions explicitement approuvées les plus récentes, puis signaler toute ambiguïté qui change réellement le périmètre.
 
