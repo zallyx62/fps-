@@ -15,11 +15,11 @@ fourni avec le moteur, puis est adapté : arène, règles de match par équipes,
 2. Cloner ce dépôt.
 3. Ouvrir `fps.uproject` à la racine du dépôt. Le jeu démarre sur l'arène `Variant_Shooter/Lvl_ArenaShooter`.
 
-## Jouer à plusieurs
+## Jouer à plusieurs — prototype actuel
 
-1. Un joueur ouvre le menu (**M**), saisit son pseudo et clique sur « Héberger ».
-2. Les autres saisissent l'adresse IP de l'hôte et cliquent sur « Rejoindre » (port UDP 7777).
-   Hors réseau local : ouvrir le port 7777 chez l'hôte, ou passer par ZeroTier / Radmin VPN.
+Le prototype documenté dans `UNREAL.md` utilise actuellement `OnlineSubsystem Null` et une connexion directe par IP (port UDP 7777) : un joueur héberge, les autres le rejoignent. Hors réseau local, cette méthode peut nécessiter une configuration du routeur ou un réseau virtuel.
+
+**Important : ce parcours décrit l'état actuel du prototype, pas l'expérience multijoueur finale approuvée.** La cible produit prévoit un matchmaking public automatique comme parcours principal, ainsi que des groupes, invitations et salons privés via EOS. Leur réalisation et leur validation suivent les phases 2 à 6 de la section 12 du cahier des charges. Ne pas présenter EOS ou le matchmaking public comme déjà disponibles.
 
 ## Touches
 
