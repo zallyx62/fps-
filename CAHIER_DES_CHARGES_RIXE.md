@@ -920,3 +920,68 @@ Les huit propositions suivantes sont approuvées par le propriétaire. Elles com
 - Ajouter 29.4 et 29.7 plus tard, après stabilisation du classé, de la modération et des processus de mise à jour.
 - Respecter le budget autorisé de 0 € : aucune infrastructure, service, outil ou dépense nouvelle sans accord explicite. Privilégier les solutions locales et gratuites dans leurs limites réelles.
 - Toute fonction reste planifiée jusqu'à ce qu'elle soit implémentée, testée sur une build et documentée avec ses limites.
+
+## 30. Préréglages graphiques, diagnostic et optimisation — six ajouts approuvés le 19 novembre 2026
+
+Cette section complète les paramètres vidéo et les objectifs de performance existants. Elle décrit des fonctions planifiées : aucune n'est considérée comme livrée avant implémentation et tests sur des builds réelles.
+
+### 30.1 Six préréglages graphiques
+Proposer six préréglages clairement nommés :
+1. **Ultra performance** : priorité maximale à la fluidité ; désactiver ou réduire fortement les effets graphiques coûteux (ombres, reflets, effets secondaires, qualité d'éclairage et détails non essentiels) lorsque cela est techniquement sûr.
+2. **Performance** : privilégier les FPS tout en conservant certains effets visuels simples.
+3. **Équilibré** : compromis recommandé entre qualité et fluidité.
+4. **Qualité élevée** : améliorer textures, ombres, éclairage et effets selon les capacités du matériel.
+5. **Très haute qualité** : pousser davantage les détails et effets avancés compatibles.
+6. **Ultra** : proposer la meilleure qualité réellement disponible sur la configuration, sans activer aveuglément une option incompatible.
+
+Règles obligatoires :
+- Les préréglages ne modifient jamais le gameplay, les hitboxes, les dégâts, le recul, la cadence, les déplacements, les collisions, les règles réseau ou l'équilibrage.
+- Préserver la visibilité des adversaires, les silhouettes, les télégraphies, les projectiles et tous les indices visuels qui transmettent une information tactique.
+- Ne pas supprimer un effet fonctionnel de gameplay (fumée, explosion, signal d'objectif, etc.) ; réduire uniquement son coût ou sa présentation sans changer son information, sa durée, sa portée ou son comportement.
+- Les options graphiques avancées doivent être activées uniquement si le matériel et le chemin de rendu les prennent réellement en charge.
+- Permettre de personnaliser individuellement les réglages après le choix d'un préréglage, d'afficher les valeurs actives et de restaurer le préréglage.
+- Les préréglages sont des points de départ et non une garantie de FPS identique sur tous les matériels.
+
+### 30.2 Benchmark graphique intégré
+- Ajouter un test de performances accessible depuis les paramètres vidéo.
+- Utiliser une séquence reproductible représentant une charge réaliste du jeu, sans exposer d'informations tactiques ni modifier les statistiques officielles.
+- Mesurer et afficher, lorsque les données sont disponibles, FPS moyens, 1 % low / stabilité des images, temps de frame et éventuels indicateurs CPU/GPU.
+- Comparer les résultats avant/après un changement et proposer un préréglage adapté, sans appliquer de changement sans accord du joueur.
+- Préciser la scène, la résolution, les options et les limites du test ; ne pas présenter une mesure courte comme une garantie de performances en partie réelle.
+
+### 30.3 Mode faible latence
+- Étudier une option de réduction de latence de rendu et d'entrée, compatible avec les API et pilotes réellement disponibles.
+- Optimiser la file de rendu, la synchronisation et le traitement des entrées lorsque cela réduit effectivement le délai.
+- Distinguer clairement latence d'entrée/rendu, latence réseau et ping ; ne pas les confondre dans l'interface.
+- Ne pas promettre de gain universel et ne pas sacrifier la stabilité, la précision d'affichage ou la compatibilité pour un bénéfice non mesuré.
+- Garder les technologies propriétaires optionnelles et prévoir un comportement de secours.
+
+### 30.4 Précompilation et cache des shaders
+- Préparer les shaders nécessaires avant l'entrée en partie lorsque la plateforme le permet.
+- Afficher une progression claire lors de la première compilation ou après une mise à jour importante.
+- Mettre en cache les shaders compilés et éviter les recompilations inutiles.
+- Gérer proprement invalidation, versions, espace disque et cache corrompu ; permettre une reconstruction sûre du cache.
+- Réduire les saccades de compilation en cours de partie sans bloquer indéfiniment le lancement du jeu.
+
+### 30.5 Réglages de visibilité et de confort visuel
+- Ajouter des options pour régler contraste de l'interface, intensité des flashs, effets lumineux perturbants, taille/échelle du HUD et lisibilité des marqueurs.
+- Compléter les options d'accessibilité déjà prévues (daltonisme, sous-titres, contrastes, réduction des effets).
+- Ne pas permettre de supprimer les obstacles visuels, fumées, effets ou indices tactiques pour obtenir un avantage compétitif ; les réglages doivent préserver une information équivalente entre joueurs.
+- Fournir des valeurs recommandées, un aperçu et une réinitialisation.
+
+### 30.6 Diagnostic automatique et profils graphiques par carte
+- Ajouter un diagnostic local qui aide à identifier les causes probables de problèmes : saturation CPU/GPU, mémoire vidéo, saccades, compilation de shaders, pertes de paquets et instabilité réseau.
+- Séparer les mesures locales des informations réseau ; ne jamais affirmer qu'un diagnostic client prouve une triche ou identifie avec certitude la cause d'un incident.
+- Proposer des pistes de correction explicables, sans modifier les réglages ni transmettre des données sans consentement.
+- Mémoriser les performances et réglages testés par carte afin de signaler les cartes plus exigeantes et proposer un ajustement avant leur lancement.
+- Le joueur garde toujours le contrôle : pas de changement silencieux en pleine partie, possibilité de désactiver les recommandations et de conserver ses réglages globaux.
+- Les profils par carte ne doivent jamais créer de différence de gameplay ou d'information tactique.
+
+### Critères communs et ordre de réalisation
+- Commencer par les préréglages et leur validation sur plusieurs configurations, puis le benchmark reproductible.
+- Prototyper ensuite le mode faible latence et la précompilation/cache, en mesurant les gains réels.
+- Intégrer les réglages de confort avec le système d'accessibilité existant.
+- Ajouter diagnostic et profils par carte après fiabilisation de la collecte locale des mesures.
+- Tester les six préréglages sur GPU modestes et puissants, plusieurs résolutions et les chemins de rendu pris en charge.
+- Ne pas retarder la première build jouable pour ces fonctions ; priorité à la stabilité et au socle gameplay.
+- Respecter le budget de 0 € et ne pas ajouter de dépendance ou service payant sans accord explicite.
