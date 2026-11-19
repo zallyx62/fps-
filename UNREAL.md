@@ -8,7 +8,7 @@ Projet de base : modèle « First Person », variante « Arena Shooter » (Bluep
 
 - `Config/DefaultEngine.ini` active actuellement `r.RayTracing=True`, avec DX12 comme RHI Windows par défaut. Le ray tracing ne doit pas être considéré comme un prérequis de jeu : mesurer son coût et vérifier son activation par profil avant de décider de le conserver par défaut.
 - La configuration déclare D3D11/SM5 ainsi que des cibles Linux et Mac en SM6. Leur présence dans le fichier ne prouve ni la compilation ni le fonctionnement de ces plateformes ; Windows reste la cible initiale.
-- Des entrées de configuration apparaissent répétées (notamment `DefaultGraphicsRHI` et des variables d'exposition). Les examiner avec Unreal avant tout nettoyage, sans supprimer une valeur dont la provenance ou l'effet n'est pas compris.
+- **Nettoyage effectué le 19 novembre 2026** : les doublons stricts de `DefaultGraphicsRHI=DefaultGraphicsRHI_DX12` et de `r.DefaultFeature.AutoExposure.ExtendDefaultLuminanceRange` ont été retirés de `Config/DefaultEngine.ini` sur les deux branches. Aucune valeur graphique différente n'a été arbitrée ; vérifier le comportement effectif dans Unreal avant toute autre modification.
 - `fps.uproject` active `GameplayStateTree`, `ModelContextProtocol`, `MCPClientToolset` et `AllToolsets`, en plus de `ModelingToolsEditorMode` limité à l'éditeur. Vérifier les dépendances, licences, modules Editor/Runtime et le comportement lors du packaging Shipping ; ne pas retirer les outils MCP utilisés pour le développement sans vérifier leur portée.
 
 
