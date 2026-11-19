@@ -1168,19 +1168,17 @@ Cette section formalise le veto compétitif approuvé et la règle de circulatio
 - Enregistrer le résultat du veto dans les données de partie et les replays afin que les statistiques comparent des configurations équivalentes.
 - Tester les abandons, déconnexions, égalités, délais expirés et désaccords de version ; ne pas permettre de modifier la sélection après le début de la partie.
 
-### 34.2 Circulation entre alliés : collisions non bloquantes, comme dans les FPS de référence
-- Appliquer entre coéquipiers le comportement recherché dans les FPS comme Call of Duty et The Finals : les personnages alliés ne doivent pas se bloquer physiquement. Un joueur doit pouvoir traverser la position occupée par un allié et continuer son déplacement, y compris dans les portes, couloirs et zones d'objectif.
-- Désactiver les collisions de déplacement bloquantes entre capsules alliées. Ne pas utiliser une séparation physique qui recrée indirectement du body block.
-- Éviter autant que possible les superpositions visuelles gênantes par des ajustements purement visuels et non bloquants, uniquement si cela ne modifie jamais la trajectoire, la vitesse, la position de gameplay ou le contrôle du joueur. Si cet ajustement n'est pas fiable, privilégier la fluidité et la non-collision.
-- Ne jamais immobiliser, repousser, téléporter, ralentir ou dévier un joueur pour le séparer d'un allié. Aucun mur invisible ni file d'attente forcée.
-- Les alliés peuvent se croiser et se traverser sans friction ni blocage ; les armes, projectiles et tirs ne doivent pas pouvoir blesser un coéquipier dans les modes officiels standards.
-- Les ennemis conservent les collisions et interactions de gameplay normales prévues par le mode : cette règle ne permet ni de traverser un adversaire, ni d'obtenir une protection contre ses tirs, ni de se cacher dans un allié.
-- Les explosions, projectiles, collisions et effets indirects alliés ne doivent pas servir à tuer ou bloquer volontairement un coéquipier. Toute exception future devra être réservée à un mode dédié, annoncée explicitement et approuvée séparément ; aucune exception par défaut.
-- Assurer un comportement cohérent en réseau : autorité serveur sur les positions et interactions, prédiction client sans blocage local, corrections réseau discrètes.
-- Tester les croisements à plusieurs joueurs, portes, couloirs étroits, escaliers, objectifs, apparitions, sauts, mouvements rapides et connexions à latence élevée.
-- Mesurer les cas de blocage résiduel, les corrections réseau et les éventuelles déviations involontaires ; la validation principale est qu'un allié ne peut jamais empêcher physiquement un autre allié de se déplacer.
-- Ne pas confondre non-collision entre alliés et invulnérabilité : les dégâts ennemis, les collisions ennemies et les règles de gameplay contre les adversaires restent inchangés.
-
+### 34.2 Circulation entre alliés : non-collision de gameplay façon XDefiant, The Finals et Call of Duty
+- Viser le ressenti pratique observé dans XDefiant, The Finals et Call of Duty : les coéquipiers ne doivent pas se bloquer physiquement et doivent pouvoir se croiser naturellement, y compris dans les portes, couloirs, escaliers et zones d'objectif. Il s'agit de reproduire le résultat de gameplay attendu, pas de copier une implémentation propriétaire.
+- Désactiver les collisions de déplacement bloquantes entre capsules alliées. La collision allié-allié ne doit jamais arrêter, ralentir, repousser, dévier ou immobiliser le mouvement d'un joueur.
+- Ne pas utiliser de séparation physique, de répulsion ou de correction de position qui recrée indirectement du body-block. Aucun mur invisible, aucune file d'attente forcée et aucune téléportation pour dégager un passage.
+- Accepter une superposition visuelle temporaire entre alliés si nécessaire à la fluidité. Tout éventuel ajustement visuel doit rester strictement cosmétique : il ne doit modifier ni la position de gameplay, ni la trajectoire, ni la vitesse, ni la visée, ni les collisions.
+- Les alliés peuvent se traverser sans friction ni blocage. Dans les modes officiels standards, les tirs, projectiles, explosions et effets alliés ne doivent pas blesser ou tuer les coéquipiers ; aucune exception par défaut.
+- Les ennemis conservent les collisions et interactions normales prévues par le mode : un joueur ne traverse pas un adversaire et ne bénéficie d'aucune protection supplémentaire contre ses tirs.
+- Assurer un comportement identique côté serveur et client : règles de collision explicites, autorité serveur sur les interactions, prédiction client sans blocage local et corrections réseau discrètes. Vérifier que les capsules, traces d'armes, projectiles et interactions avec le décor ne réintroduisent pas de blocage indirect.
+- Tester les croisements simultanés à plusieurs joueurs, portes étroites, couloirs, escaliers, objectifs, apparitions, sauts, sprint, glissades éventuelles et connexions à latence élevée.
+- Critères d'acceptation : aucun allié ne peut empêcher physiquement un autre allié d'avancer ; aucune répulsion forcée ni déviation de gameplay ; les ennemis et le décor restent correctement bloquants ; tirs amis désactivés dans les modes standards.
+- Commencer par un prototype multijoueur dans une carte de test, puis vérifier les cas limites avant généralisation à toutes les cartes et tous les modes.
 ### Priorités et critères communs
 - Prototyper la circulation alliée avec plusieurs personnages dans des couloirs étroits avant de l'étendre à toutes les cartes.
 - Vérifier que le système ne crée ni body block, ni superposition exacte, ni déplacement forcé, ni avantage défensif artificiel.
@@ -1218,3 +1216,44 @@ Cette section formalise le veto compétitif approuvé et la règle de circulatio
 - Compléter les outils de diagnostic réseau et de désynchronisation déjà prévus ; ne pas créer de systèmes redondants.
 - Tester les scénarios de pertes de paquets, jitter, pics de ping, reconnexion et hôte instable. Documenter les limites du listen server et ne pas présenter ces protections comme un remplacement d'une architecture serveur compétitive.
 - Respecter le budget de 0 € : aucun service payant ni hébergement supplémentaire sans accord explicite.
+
+
+## 36. Informations de combat, continuité des groupes et progression personnelle — quatre décisions approuvées le 19 novembre 2026
+
+### 36.1 Récapitulatif détaillé après une élimination
+- Après la mort du joueur, présenter un récapitulatif clair de l'élimination : adversaire responsable lorsque connu, arme utilisée, chronologie des impacts, dégâts reçus, répartition par zone corporelle si cette fonction est activée et distance estimée lorsque la mesure est fiable.
+- Distinguer les dégâts directs, dégâts de zone et éventuels dégâts déjà reçus d'autres adversaires ; ne pas attribuer à tort toute l'élimination à un seul joueur.
+- Afficher uniquement les données de combat réellement enregistrées et validées par le serveur ; signaler les valeurs estimées ou indisponibles plutôt que d'inventer une précision.
+- Permettre de fermer ou passer rapidement le récapitulatif pour ne pas ralentir la réapparition.
+- Ne pas révéler à un joueur ou à son équipe des positions ennemies qui ne seraient pas normalement connues ; ne pas transformer l'écran de mort en outil de repérage.
+- Garder une présentation lisible, concise et cohérente avec les règles de chaque mode.
+
+### 36.2 Transfert automatique du chef de groupe
+- Si le chef d'un groupe quitte, se déconnecte durablement ou perd sa session, transférer automatiquement le rôle à un membre éligible encore présent.
+- Choisir le successeur selon une règle stable et annoncée, par exemple ancienneté dans le groupe ou disponibilité de session ; éviter une élection confuse à chaque micro-coupure.
+- Conserver les membres, invitations, paramètres de groupe et recherche de partie autant que possible ; notifier clairement le changement de chef.
+- Si le chef revient, ne pas lui reprendre automatiquement le rôle : le groupe doit rester stable, avec possibilité de transfert volontaire.
+- Gérer les cas où le groupe est en file d'attente, dans un lobby, en partie ou en transition ; ne pas confondre ce transfert de responsabilité sociale avec la migration de l'hôte réseau de la partie, déjà spécifiée séparément.
+- Prévoir une protection contre les transferts en boucle, les comptes inactifs et les sessions expirées.
+
+### 36.3 Caméra de mort courte
+- Dans les modes compatibles, proposer une séquence courte et passable montrant les derniers instants ayant conduit à l'élimination, reconstruite à partir des événements de partie et des données de simulation disponibles.
+- Utiliser une reconstruction cohérente avec le serveur ; afficher clairement toute limite ou approximation liée à la reconstruction et à la latence.
+- Ne jamais transmettre cette vue aux coéquipiers encore vivants et ne jamais révéler au joueur des informations cachées qu'il pourrait exploiter pour communiquer pendant la partie.
+- Permettre de passer la séquence immédiatement et désactiver la fonction dans les modes où elle nuit au rythme ou à l'équité.
+- Ne pas enregistrer de vidéo complète en continu : réutiliser les événements nécessaires au système de replay déjà prévu, avec durée de conservation et confidentialité cohérentes.
+- Prévoir des protections contre les abus, notamment l'utilisation de la caméra pour identifier des positions, des stratégies ou des joueurs hors du champ de connaissance légitime.
+
+### 36.4 Comparaison des performances avec son propre historique
+- À la fin d'une partie, comparer les performances du joueur à ses propres références récentes : éliminations, morts, assists, précision, contribution aux objectifs, soutien et performances par arme, uniquement lorsque les données sont suffisamment fiables.
+- Présenter les tendances sur plusieurs parties plutôt que tirer des conclusions d'un seul match ; distinguer les changements de mode, carte, arme et durée de partie.
+- Mettre en avant des axes de progression concrets sans imposer de comparaison publique, de classement humiliant ou de pression artificielle.
+- Permettre de consulter et filtrer son historique, avec des options de confidentialité et de suppression/export lorsque l'architecture du compte le permet.
+- Ne pas modifier le matchmaking, le niveau caché ou l'équilibrage sur la seule base de ces indicateurs personnels.
+- Séparer les statistiques officielles validées par le serveur des données locales d'entraînement hors ligne.
+
+### Priorités et critères communs
+- Développer d'abord le récapitulatif après élimination et le transfert du chef de groupe, une fois les données serveur et les sessions de groupe stabilisées.
+- Ajouter ensuite la caméra de mort courte seulement si la reconstruction est fiable, rapide et sans fuite d'information ; réutiliser l'architecture de replay plutôt que créer un enregistreur parallèle.
+- Ajouter la comparaison personnelle après validation de la qualité des statistiques et de l'historique.
+- Toutes ces fonctions restent subordonnées à la build jouable, à la stabilité réseau, à la sécurité et au budget de 0 €. Aucun service payant sans accord explicite.
