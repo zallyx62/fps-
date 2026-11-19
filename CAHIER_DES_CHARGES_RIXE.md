@@ -1168,19 +1168,18 @@ Cette section formalise le veto compétitif approuvé et la règle de circulatio
 - Enregistrer le résultat du veto dans les données de partie et les replays afin que les statistiques comparent des configurations équivalentes.
 - Tester les abandons, déconnexions, égalités, délais expirés et désaccords de version ; ne pas permettre de modifier la sélection après le début de la partie.
 
-### 34.2 Circulation entre alliés : aucun body block, aucune superposition exacte
-- Désactiver le body block entre coéquipiers : un allié ne doit jamais pouvoir empêcher un autre allié d'avancer, reculer, franchir un passage ou quitter une zone dangereuse par une collision physique bloquante.
-- Désactiver le tir ami dans les modes officiels standards : un allié ne doit pas pouvoir blesser ou tuer directement un coéquipier avec ses tirs. Les explosions, projectiles, collisions et effets indirects alliés ne doivent pas non plus servir à tuer ou bloquer volontairement un coéquipier. Toute exception éventuelle devra correspondre à un mode dédié, annoncé explicitement et approuvé séparément ; elle ne sera jamais activée par défaut.
-- Ne pas autoriser deux personnages alliés à occuper exactement la même position au même instant. Maintenir une séparation spatiale minimale raisonnable entre leurs capsules/personnages, sans transformer cette séparation en mur invisible.
-- Utiliser de préférence un système souple de séparation/évitement : ajustement progressif des trajectoires, anticipation des déplacements et léger décalage latéral ou longitudinal lorsque deux alliés convergent vers le même emplacement.
-- Ne jamais immobiliser un joueur, le repousser brutalement, le téléporter ou lui retirer le contrôle pour appliquer cette séparation.
-- Dans les passages étroits et les zones encombrées, privilégier la fluidité : autoriser le croisement et le passage rapproché, réduire temporairement la séparation souhaitée si nécessaire, et éviter toute file d'attente forcée.
-- Si deux joueurs visent le même point précis, répartir leurs positions vers les emplacements libres les plus proches, sans réserver durablement une zone à un joueur ni empêcher un allié d'atteindre un objectif.
-- Conserver les collisions et interactions ennemies prévues par chaque mode ; cette règle concerne la circulation entre alliés et ne doit pas supprimer les collisions de gameplay avec les adversaires.
-- Assurer un comportement cohérent en réseau : le serveur arbitre les positions valides, les clients prédisent le mouvement sans créer de blocage local, et les corrections réseau restent discrètes.
-- Tester les regroupements à plusieurs joueurs, couloirs, portes, escaliers, objectifs, apparitions, sauts, mouvements rapides et connexions à latence élevée.
-- Mesurer les superpositions, blocages, changements de trajectoire, corrections réseau et cas où un joueur est involontairement dévié de son objectif.
-- Ne pas introduire d'avantage de collision, de protection contre les tirs ennemis ou de traversée des adversaires. La séparation souple ne doit jamais permettre de se cacher dans un allié ni de traverser un ennemi.
+### 34.2 Circulation entre alliés : collisions non bloquantes, comme dans les FPS de référence
+- Appliquer entre coéquipiers le comportement recherché dans les FPS comme Call of Duty et The Finals : les personnages alliés ne doivent pas se bloquer physiquement. Un joueur doit pouvoir traverser la position occupée par un allié et continuer son déplacement, y compris dans les portes, couloirs et zones d'objectif.
+- Désactiver les collisions de déplacement bloquantes entre capsules alliées. Ne pas utiliser une séparation physique qui recrée indirectement du body block.
+- Éviter autant que possible les superpositions visuelles gênantes par des ajustements purement visuels et non bloquants, uniquement si cela ne modifie jamais la trajectoire, la vitesse, la position de gameplay ou le contrôle du joueur. Si cet ajustement n'est pas fiable, privilégier la fluidité et la non-collision.
+- Ne jamais immobiliser, repousser, téléporter, ralentir ou dévier un joueur pour le séparer d'un allié. Aucun mur invisible ni file d'attente forcée.
+- Les alliés peuvent se croiser et se traverser sans friction ni blocage ; les armes, projectiles et tirs ne doivent pas pouvoir blesser un coéquipier dans les modes officiels standards.
+- Les ennemis conservent les collisions et interactions de gameplay normales prévues par le mode : cette règle ne permet ni de traverser un adversaire, ni d'obtenir une protection contre ses tirs, ni de se cacher dans un allié.
+- Les explosions, projectiles, collisions et effets indirects alliés ne doivent pas servir à tuer ou bloquer volontairement un coéquipier. Toute exception future devra être réservée à un mode dédié, annoncée explicitement et approuvée séparément ; aucune exception par défaut.
+- Assurer un comportement cohérent en réseau : autorité serveur sur les positions et interactions, prédiction client sans blocage local, corrections réseau discrètes.
+- Tester les croisements à plusieurs joueurs, portes, couloirs étroits, escaliers, objectifs, apparitions, sauts, mouvements rapides et connexions à latence élevée.
+- Mesurer les cas de blocage résiduel, les corrections réseau et les éventuelles déviations involontaires ; la validation principale est qu'un allié ne peut jamais empêcher physiquement un autre allié de se déplacer.
+- Ne pas confondre non-collision entre alliés et invulnérabilité : les dégâts ennemis, les collisions ennemies et les règles de gameplay contre les adversaires restent inchangés.
 
 ### Priorités et critères communs
 - Prototyper la circulation alliée avec plusieurs personnages dans des couloirs étroits avant de l'étendre à toutes les cartes.
@@ -1188,3 +1187,34 @@ Cette section formalise le veto compétitif approuvé et la règle de circulatio
 - Développer le veto après stabilisation des playlists compétitives, du système de groupes et de la sélection de cartes.
 - Conserver le matchmaking public simple et rapide ; ne pas retarder la première build jouable.
 - Respecter le budget de 0 € et ne pas ajouter de dépendance payante sans accord explicite.
+
+## 35. Améliorations supplémentaires du rythme et de la qualité des parties
+
+### 35.1 Protection anti-spawn-trap et réévaluation des apparitions
+- Détecter les situations où un joueur ou une équipe est éliminé à répétition très peu de temps après sa réapparition, en particulier lorsque plusieurs adversaires contrôlent les sorties ou les lignes de vue.
+- Exploiter les données déjà prévues par le système d'apparitions intelligentes : proximité des ennemis, lignes de vue, pression autour des points, morts récentes, sécurité des sorties et historique des apparitions.
+- Réévaluer immédiatement les points disponibles et choisir automatiquement une zone plus sûre lorsqu'une apparition devient manifestement piégée.
+- Ne pas rendre les joueurs invulnérables de façon abusive, ne pas téléporter un joueur après son apparition et ne pas révéler les positions ennemies.
+- Prévoir des protections contre les abus : un joueur ne doit pas pouvoir provoquer artificiellement un changement de spawn pour exploiter le système.
+- Mesurer les éliminations dans les premières secondes après apparition, les répétitions par zone, les apparitions annulées et les déséquilibres créés ; tester sur chaque carte et chaque mode concerné.
+- Cette fonction complète le système d'apparitions intelligentes déjà prévu ; elle ne doit pas créer un second système indépendant.
+
+### 35.2 Revanche immédiate et continuité des équipes
+- À la fin d'une partie publique compatible, proposer automatiquement une continuité entre les deux équipes afin qu'elles puissent enchaîner sur une revanche sans devoir reformer un groupe ou relancer une recherche complète.
+- Conserver autant que possible les équipes et les joueurs qui souhaitent rester, dans l'esprit des lobbies persistants des anciens FPS.
+- Permettre une rotation vers une autre carte ou un autre mode selon la playlist, tout en gardant l'option d'une revanche sur la même carte lorsque les règles le permettent.
+- Afficher clairement qui reste, qui quitte et qui rejoint ; remplacer les départs par le backfill prévu, sans bloquer indéfiniment le lancement.
+- Respecter les choix de départ, les groupes préformés, les préférences de matchmaking et les règles de population. Ne jamais retenir un joueur contre son gré.
+- Éviter que la continuité ne fige le matchmaking : si les équipes deviennent trop déséquilibrées ou si la qualité réseau se dégrade, appliquer les règles transparentes de rééquilibrage déjà prévues.
+- Garder cette continuité facultative et compatible avec les playlists ; ne pas imposer la conservation des équipes en classé si les règles compétitives l'interdisent.
+
+### 35.3 Protection contre les connexions instables
+- Surveiller, lorsque les données sont disponibles, le ping, le jitter, les pertes de paquets, les variations brutales de latence et les désynchronisations pour chaque joueur.
+- Distinguer la latence réseau de la latence locale d'entrée/rendu et des ralentissements CPU/GPU ; ne pas présenter le FPS comme une mesure du ping.
+- Afficher des indicateurs compréhensibles et des avertissements utiles au joueur, sans exposer son adresse IP ni sa localisation précise.
+- Utiliser la qualité de connexion comme un facteur explicable du matchmaking et du choix de région, avec un compromis transparent entre attente, niveau et stabilité.
+- Détecter les dégradations temporaires pour éviter les décisions injustes fondées sur une seule mesure ; utiliser des fenêtres de mesure et des seuils validés par les tests.
+- Ne jamais modifier artificiellement les dégâts, les hitboxes, la cadence, le recul ou les règles de combat pour compenser une mauvaise connexion.
+- Compléter les outils de diagnostic réseau et de désynchronisation déjà prévus ; ne pas créer de systèmes redondants.
+- Tester les scénarios de pertes de paquets, jitter, pics de ping, reconnexion et hôte instable. Documenter les limites du listen server et ne pas présenter ces protections comme un remplacement d'une architecture serveur compétitive.
+- Respecter le budget de 0 € : aucun service payant ni hébergement supplémentaire sans accord explicite.
