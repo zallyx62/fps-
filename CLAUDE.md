@@ -24,6 +24,10 @@ Respecter la section 20 du cahier des charges :
 - Calibration du niveau sur plusieurs parties et détection prudente des abus de matchmaking/smurfing. Ne jamais sanctionner automatiquement sur une simple suspicion ; prévoir incertitude, réévaluation et contestation.
 Ne pas laisser ces chantiers retarder la correction du blocage actuel, la stabilité réseau et la livraison d'une build testable. Respecter le budget de 0 € et ne jamais prétendre qu'un prototype est livré avant les tests.
 
+
+## Crosshair personnalisable — exigence approuvée
+Respecter la section 21 de `CAHIER_DES_CHARGES_RIXE.md`. Le menu doit proposer deux formes de base : rond et croix. Le joueur peut ensuite personnaliser taille, épaisseur, écartement, longueur, diamètre, couleur, opacité, point central, contour/halo de contraste et, si pris en charge, comportement statique ou dynamique. Prévoir aperçu en direct, test au stand de tir, réinitialisation, préréglages et sauvegarde dans le profil synchronisée entre plateformes compatibles. Le crosshair reste strictement visuel : aucune aide à la visée ni information cachée. Vérifier le code Unreal existant avant de conclure que l'éditeur de réticule mentionné dans les anciennes notes est implémenté. Ne déclarer la fonction terminée qu'après tests réels.
+
 ## PRIORITÉ ABSOLUE N°1 : audit et clarification de la licence
 Traiter la licence comme le tout premier chantier, avant les nouvelles fonctionnalités et avant toute publication.
 
