@@ -176,3 +176,7 @@ Dans chaque compte rendu, ajouter obligatoirement :
 - **Version testée :** branche + commit.
 - **Tests :** lancement, carte, contrôles, réseau si pertinent.
 - **État :** jouable / jouable avec limites / non jouable.
+
+
+## Alerte licence Unreal / GPL — vérification prioritaire
+Le dépôt annonce GPL-3.0 dans LICENSE et README.md, alors que l'Unreal Engine EULA actuelle d'Epic (consultée le 19 novembre 2026) cite explicitement GPL/LGPL parmi les licences non compatibles avec la Licensed Technology (section 6(c)). C'est un risque sérieux à traiter avant toute distribution. Ne change jamais LICENSE automatiquement et ne remplace pas globalement par MIT. Inventorie chaque fichier/asset/plugin et ses droits, distingue les éléments originaux RIXE du contenu Epic/Fab/tiers, vérifie la redistribution des sources et binaires, puis présente des options au propriétaire. Toute relicence exige preuve que le propriétaire détient les droits nécessaires et son approbation explicite. Voir section 25 du cahier des charges.
