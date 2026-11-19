@@ -552,15 +552,18 @@ Ces cinq fonctionnalités sont approuvées et planifiées. Elles ne sont pas con
 - Ajouter limitation de fréquence, mute, désactivation et protections anti-spam.
 - Adapter l'interface aux plateformes et périphériques pris en charge.
 
-### 23.2 Échauffement pré-match de dix secondes
+### 23.2 Échauffement pré-match de dix secondes — isolation totale des équipes
 - Avant le début officiel de chaque partie, prévoir une phase d'échauffement de **10 secondes**, inspirée des salons d'échauffement des anciens Call of Duty.
-- Pendant cette phase, les joueurs peuvent se déplacer librement, sauter, viser, tirer et tester leur arme ainsi que leurs sensations de contrôle.
-- La phase doit être synchronisée par l'autorité de partie ; tous les joueurs voient le même compte à rebours et le match officiel ne commence qu'à son terme.
-- Les tirs et éliminations de l'échauffement ne doivent pas compter dans les statistiques, le score, les défis, les replays officiels ou les résultats. Prévoir munitions réapprovisionnées et réapparitions rapides si nécessaire.
-- Les choix d'armes et de classe ne doivent pas être révélés par l'interface adverse, les panneaux de joueurs, les listes d'équipement ou le flux d'éliminations pendant l'échauffement. Ne pas prétendre garantir le secret si l'arme est reconnaissable à l'écran ou au son ; toute dissimulation visuelle supplémentaire doit être évaluée pour éviter confusion et avantage injuste.
-- À la fin des dix secondes, remettre les joueurs dans un état de départ cohérent, appliquer les règles officielles et lancer simultanément la partie.
-- Prévoir un comportement de secours si un joueur rejoint tardivement, perd la connexion ou si le chargement d'un participant retarde le départ : ne pas laisser un compte à rebours incohérent.
-- La phase d'échauffement doit être optionnelle uniquement si le mode et l'équité le permettent ; sinon appliquer la même règle à tous les participants du match.
+- Pendant cette phase, chaque joueur peut librement marcher, courir, sprinter, sauter, viser, tirer, recharger, changer d'arme et tester les grenades ou équipements disponibles dans le mode.
+- Les joueurs peuvent entendre les sons de leur propre équipe, mais **aucun son de l'équipe adverse ne doit leur parvenir** : tirs, impacts, explosions, grenades, pas, sauts, rechargements, voix, communications et autres événements audio.
+- L'isolation doit être appliquée techniquement côté serveur et/ou par le système de réplication audio : ne pas simplement baisser le volume adverse dans les réglages locaux. Aucun événement audio adverse ne doit être transmis ou rendu audible pendant cette phase.
+- Les deux équipes ne doivent recevoir aucune information sur les actions de l'autre équipe : positions, déplacements, visée, tirs, grenades, équipement, changements d'arme, éliminations, messages, marqueurs, indicateurs, killfeed ou notifications. Ne pas transmettre ces informations aux clients adverses pendant l'échauffement lorsque cela est techniquement possible.
+- Prévoir une séparation des espaces ou des instances d'échauffement si nécessaire afin d'empêcher les joueurs de voir l'équipe adverse. Si les joueurs partagent physiquement la même carte, masquer les silhouettes, noms, effets, projectiles et autres indices visuels adverses.
+- Les joueurs peuvent tester librement les armes et équipements ; les munitions peuvent être réapprovisionnées et les réapparitions rapides autorisées pour éviter les temps morts.
+- Les tirs, dégâts, grenades, éliminations et autres actions de l'échauffement ne comptent pas dans les statistiques, le score, les défis, les replays officiels ou le résultat de la partie. Aucun effet persistant ne doit influencer le début officiel.
+- À la fin des dix secondes, terminer l'échauffement, réinitialiser les états nécessaires (santé, munitions, grenades, positions et équipements selon les règles du mode), puis démarrer simultanément la partie officielle pour les deux équipes.
+- Synchroniser le compte à rebours avec l'autorité de partie. Gérer proprement les chargements tardifs, pertes de connexion et arrivées tardives ; ne pas démarrer avec des états différents entre clients.
+- L'échauffement doit être identique pour tous les joueurs du match et ne doit procurer aucun avantage d'information ou de position au lancement officiel.
 
 ### 23.3 Rotation intelligente des cartes et des modes
 - Éviter les répétitions excessives d'une même carte ou d'un même mode dans les playlists concernées.
@@ -616,3 +619,27 @@ Ce calendrier est une cible de pilotage, pas une garantie. Réviser les étapes 
 - Les fonctionnalités avancées non essentielles peuvent être reportées sans être supprimées du cahier des charges.
 - Ne pas dégrader la sécurité, les licences ou l'intégrité du jeu pour respecter artificiellement la date.
 - Ne pas déclarer RIXE « terminé » : qualifier précisément le résultat de prototype jouable, alpha de test ou autre statut justifié par les validations effectuées.
+
+
+## 25. Audit de licence Unreal Engine / Epic — point bloquant à résoudre avant distribution
+
+### Constat vérifié dans le dépôt et les conditions Epic consultées le 19 novembre 2026
+- Le dépôt contient un fichier `LICENSE` intégralement rédigé sous GNU GPL version 3.
+- Le fichier `README.md` indique que le code et les ressources créés pour RIXE, dont `Content/Rixe`, sont sous GPL-3.0, et que les ressources issues des modèles Epic restent sous la licence Unreal Engine.
+- Le projet `fps.uproject` déclare Unreal Engine 5.8 et active plusieurs plugins ; chaque plugin, module, contenu et dépendance doit être inventorié avec sa version et sa licence.
+- La version actuelle de l'Unreal Engine EULA publiée par Epic contient une clause « Non-Compatible Licenses » (section 6(c)) qui cite explicitement GNU GPL et LGPL (sauf simple liaison dynamique d'une bibliothèque partagée) parmi les licences incompatibles avec la Licensed Technology. L'accord limite aussi la redistribution du moteur et du contenu Epic ; les produits intégrant le moteur doivent respecter les conditions de distribution applicables.
+- Ce constat crée un risque sérieux de compatibilité entre la GPL-3.0 annoncée pour le projet et l'utilisation/intégration d'Unreal Engine. Il ne permet pas, à lui seul, de conclure que chaque fichier du dépôt est soumis à la même licence ou que le propriétaire détient les droits nécessaires pour relicencier tous les éléments.
+
+### Consignes obligatoires
+- **Ne pas remplacer, supprimer ou réécrire le fichier `LICENSE` automatiquement.** Ne pas annoncer que le problème est réglé par un simple changement global vers MIT, BSD ou Apache.
+- Auditer fichier par fichier et dossier par dossier : code original, Blueprints et assets originaux, modèle First Person/Arena Shooter, Starter Content, exemples Epic, contenus Fab/Quixel, plugins, bibliothèques, sons, polices, textures, animations, outils et prototype web.
+- Pour chaque élément, relever auteur/source, version, propriétaire des droits, licence exacte, preuve d'acquisition, droits de modification, redistribution, usage commercial et restrictions de plateforme/source.
+- Séparer clairement les éléments originaux RIXE des éléments Epic et des tiers. Ne pas appliquer une licence open source au contenu Epic ou tiers sans autorisation expresse.
+- Vérifier si les fichiers originaux placés dans le même projet Unreal et distribués avec le moteur peuvent légalement rester sous GPL au regard de la clause 6(c). Examiner une architecture de licences séparées ou une licence permissive pour les seuls éléments originaux, uniquement si le propriétaire possède les droits nécessaires et après validation juridique.
+- Ne pas présumer que MIT résout toutes les obligations : conserver les notices tierces, respecter les licences des plugins/assets et les règles de redistribution d'Epic.
+- Produire un rapport de compatibilité, les éléments incertains, les options de remédiation et leurs conséquences sur l'ouverture du code, la distribution des sources et les builds binaires.
+- Si la compatibilité ne peut pas être établie, suspendre la publication/distribution publique des éléments concernés jusqu'à décision du propriétaire après avis juridique adapté. Le travail privé de développement ne doit pas être confondu avec une autorisation de redistribuer.
+- Consigner la version et la date de l'EULA examinée ; revérifier les conditions Epic au moment de toute distribution.
+
+### Décision de licence
+Aucune modification de licence n'est autorisée sans inventaire complet, preuve des droits du propriétaire sur chaque élément concerné et approbation explicite du propriétaire. Toute modification doit être ciblée, documentée et vérifiée dans toutes les branches et tous les fichiers de notices concernés.
