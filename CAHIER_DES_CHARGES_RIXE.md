@@ -201,41 +201,44 @@ Cette section constitue **la feuille de route générale de RIXE**. Elle organis
 
 **Critère de passage :** une build Windows exécutable permet de jouer une partie complète reproductible sans blocage critique connu. Si l'empaquetage est impossible, la raison, les preuves de compilation et les étapes restantes sont consignées ; la build n'est pas déclarée livrée.
 
-**Phase 2 — Socle FPS, combat, réseau, bots et cartes de lancement**
-1. Stabiliser le combat sur la carte pilote : déplacements, visée, tirs, cadence, munitions, dégâts, hit registration, morts, réapparitions et fin de partie.
+**Phase 2 — Fondations FPS, combat, réseau et carte pilote**
+1. Stabiliser sur une seule carte pilote le cœur du combat : déplacements, visée, tirs, cadence, munitions, dégâts, hit registration, morts, réapparitions et fin de partie.
 2. Vérifier et renforcer l'autorité serveur sur les actions sensibles ; corriger les désynchronisations, doubles événements, RPC abusifs et incohérences de réplication.
-3. Stabiliser les équipes, les apparitions, les bots et leurs règles serveur ; conserver un comportement jouable même si les services en ligne sont indisponibles.
-4. Équilibrer et valider les cartes prévues au lancement (trois maximum), les armes et les modes retenus. Tester les lignes de vue, le spawn-kill, le camping abusif et les objectifs.
-5. Tester d'abord en local et avec plusieurs clients, puis sur plusieurs machines/réseaux ; mesurer latence, gigue, pertes, déconnexions et reconnexions.
-6. Garder le classé désactivé tant que l'intégrité des résultats et les garanties d'hébergement ne sont pas suffisantes.
+3. Prototyper les mécaniques de gameplay indispensables déjà approuvées (notamment sprint, glissade, saut/franchissement, capacités et interactions) sur cette carte et un arsenal réduit ; conserver des timings, collisions et règles validés par le serveur. N'étendre qu'après tests concluants.
+4. Stabiliser les équipes, les apparitions, les bots et leurs règles serveur ; conserver un fonctionnement jouable même si les services en ligne sont indisponibles.
+5. Tester d'abord en local et avec plusieurs clients, puis sur plusieurs machines/réseaux via les chemins LAN/direct disponibles ; mesurer latence, gigue, pertes, déconnexions et reconnexions. Les tests directs ne remplacent pas les tests EOS à venir.
+6. Établir une référence de performances et des budgets provisoires CPU/GPU, mémoire, temps de frame et charge réseau. Les préréglages avancés et l'optimisation finale restent ultérieurs.
+7. Garder le classé désactivé tant que l'intégrité des résultats et les garanties d'hébergement ne sont pas suffisantes.
 
-**Critère de passage :** boucle de combat stable, règles sensibles validées côté serveur, bots et cartes du périmètre de lancement testés, régressions critiques corrigées et limites réseau documentées. Les tests PIE locaux ne valent pas validation Internet.
+**Critère de passage :** boucle de combat stable sur la carte pilote, règles sensibles validées côté serveur, bots fonctionnels, tests réseau progressifs réalisés, régressions critiques corrigées et limites documentées. Les tests PIE locaux ne valent pas validation Internet. Les autres cartes du lancement ne bloquent pas ce jalon : elles seront validées après les fondations, avant l'alpha publique.
 
-**Phase 3 — Services EOS et parcours privé entre amis**
-1. Prototyper puis intégrer EOS uniquement pour les fonctions nécessaires : identité/Connect, présence, amis, invitations, lobbies et sessions.
+**Phase 3 — EOS et parcours privé entre amis**
+1. Prototyper puis intégrer EOS pour les fonctions nécessaires : identité/Connect, présence, amis, invitations, lobbies et sessions privées.
 2. Séparer les services EOS du transport et de la simulation Unreal ; évaluer P2P/relay sans supposer une traversée NAT universelle ni un coût nul garanti.
-3. Valider un parcours privé complet : lancement, connexion, création de lobby, invitation, rejoindre, lancement d'une partie, retour au lobby et maintien du groupe lorsque possible.
+3. Valider le parcours privé de bout en bout : connexion, création de groupe/lobby, invitation, rejoindre, lancement d'une partie, retour au lobby, continuité du groupe et reconnexion dans les scénarios supportés.
 4. Conserver un chemin LAN/direct de diagnostic et ne retirer aucune méthode de connexion existante avant validation de bout en bout et possibilité de retour arrière.
 5. Tester sur des machines et réseaux distincts, avec NAT/pare-feu, latence, pertes, départ de l'hôte, reconnexion et scénarios d'échec.
+6. Préparer le socle minimal de sécurité communautaire avant toute ouverture publique : sourdine/blocage local, signalement simple, limites anti-spam et règles de confidentialité. Les sanctions globales et outils de modération avancés restent un chantier ultérieur.
 
-**Critère de passage :** le parcours privé fonctionne dans les scénarios réellement testés ; les erreurs sont compréhensibles, les limites sont documentées et le jeu reste testable sans EOS. Aucun matchmaking public n'est considéré comme livré à cette phase.
+**Critère de passage :** le parcours privé fonctionne dans les scénarios réellement testés ; les erreurs sont compréhensibles, les limites sont documentées et le jeu reste testable sans EOS. Le socle minimal de protection est prêt avant les tests publics. Aucun matchmaking public n'est considéré comme livré à cette phase.
 
-**Phase 4 — Matchmaking officiel, lobby public et continuité des parties**
-1. Construire le parcours officiel complet inspiré de BO2 : file publique, constitution des équipes, lobby, compte à rebours/seuil de joueurs et lancement automatique.
+**Phase 4 — Matchmaking officiel, lobby public et consolidation du contenu de lancement**
+1. Construire et tester le parcours officiel inspiré de BO2 : file publique, constitution des équipes, lobby, compte à rebours/seuil de joueurs et lancement automatique.
 2. Assurer la continuité du groupe entre les parties lorsque possible, avec retour au lobby, invitations, rejoindre un ami, gestion des départs et reconnexion.
-3. Ajouter progressivement backfill/remplaçants, préférences humains/bots, préférences de périphériques, gestion des groupes préformés et exclusions de playlists, selon les sections spécialisées.
-4. Ajouter les fonctions sociales essentielles et la modération en réutilisant les systèmes uniques déjà définis ; ne pas développer un système séparé pour chaque fonctionnalité.
-5. Mesurer l'effet des préférences sur la population et les temps d'attente ; ne jamais promettre un délai ni placer un joueur dans une playlist explicitement exclue.
+3. Ajouter progressivement backfill/remplaçants, préférences humains/bots, préférences de périphériques, gestion des groupes préformés et exclusions de playlists, selon les sections spécialisées. Ne les activer qu'après validation de la file de base.
+4. Finaliser et tester les autres cartes du lancement (trois maximum), les modes et leurs règles, à partir du socle validé sur la carte pilote. Cette validation est requise avant l'alpha publique, mais ne doit pas retarder les prototypes internes du matchmaking.
+5. Renforcer la protection communautaire avant l'ouverture publique ; ajouter ensuite les outils de modération avancés et les fonctions sociales étendues en réutilisant les systèmes uniques déjà définis.
+6. Mesurer l'effet des préférences sur la population et les temps d'attente ; ne jamais promettre un délai ni placer un joueur dans une playlist explicitement exclue.
 
-**Critère de passage :** le parcours public est testé de bout en bout avec les scénarios de groupe, d'équilibrage, de remplissage, de départ et de reconnexion applicables. Les règles de file et les limites de population sont documentées ; aucun résultat classé n'est activé sans garanties suffisantes.
+**Critère de passage :** le parcours public est testé de bout en bout avec les scénarios de groupe, d'équilibrage, de remplissage, de départ et de reconnexion applicables. Les cartes/modes inclus dans l'alpha sont validés, les règles de file et les limites de population sont documentées ; aucun résultat classé n'est activé sans garanties suffisantes.
 
-**Phase 5 — Progression, statistiques et services communautaires essentiels**
-1. Mettre en place un score de contribution fiable et anti-farming, puis les statistiques nécessaires à son explication.
-2. Ajouter la sauvegarde et la progression durables en évitant les pertes de données et les récompenses définitivement manquées.
-3. Stabiliser les fonctions essentielles du compte, des groupes, amis, invitations, préférences et modération en réutilisant les systèmes déjà créés.
-4. Ajouter les outils d'analyse et d'équilibrage à partir de données suffisantes, minimisées et correctement protégées.
+**Phase 5 — Données durables, progression et services communautaires étendus**
+1. Consolider les statistiques persistantes, profils, historiques et tableaux détaillés à partir des événements de match déjà validés. Le score de match et son affichage de base sont requis dès la première boucle jouable ; leur validation serveur relève de la phase 2.
+2. Ajouter la sauvegarde et la progression durables, les défis et récompenses récupérables, en évitant les pertes de données et les récompenses définitivement manquées.
+3. Ajouter les outils d'analyse et d'équilibrage à partir de données suffisantes, minimisées et correctement protégées.
+4. Développer les fonctions de compte, groupes persistants, préférences synchronisées et modération avancée qui ne sont pas déjà couvertes par le parcours EOS privé et le matchmaking public.
 
-**Critère de passage :** les données sont cohérentes, sauvegardées, récupérables selon les garanties annoncées, protégées contre les attributions client non autorisées et testées après reconnexion ou mise à jour.
+**Critère de passage :** les données persistantes sont cohérentes, sauvegardées, récupérables selon les garanties annoncées, protégées contre les attributions client non autorisées et testées après reconnexion, conflit de synchronisation ou mise à jour.
 
 **Phase 6 — Qualité, performances et préparation de l'alpha**
 1. Exécuter les tests de non-régression, tests réseau, tests de sauvegarde et tests de compatibilité pertinents.
@@ -902,15 +905,15 @@ C'est le parcours principal et l'écran de jeu par défaut. Les serveurs communa
 
 Cette séquence complète la chronologie générale de la section 12 ; elle ne la remplace pas. La première build Windows de la section 24 reste prioritaire. Les services privés EOS et le matchmaking public sont deux jalons distincts : ne pas les fusionner.
 
-1. **Sécurisation et audit :** sauvegarde, état réel du dépôt, secrets, licences, plugins, dépendances et blocages.
-2. **Première build jouable :** une carte pilote, un mode, boucle FPS complète et build Windows testable ; bots/local autorisés pour valider le gameplay sans prétendre valider le réseau en ligne.
-3. **Fondations FPS et réseau :** qualité du tir/hit registration, autorité serveur, réplication, déplacements, dégâts, apparitions, équipes, bots, stabilité de la carte pilote et tests réseau progressifs. Établir dès ce stade une référence de performances et des budgets CPU/GPU/mémoire/temps de frame ; les optimisations avancées restent ultérieures.
-4. **EOS et parties privées :** identité/Connect, présence, amis/invitations nécessaires, lobbies et sessions privées ; valider création, invitation, rejoindre, lancer une partie, retour au lobby et reconnexion dans les scénarios réellement supportés. Garder un chemin LAN/direct de diagnostic.
-5. **Matchmaking public officiel :** file publique, constitution des équipes, lobby BO2, compte à rebours/seuil de joueurs, lancement automatique, continuité des groupes, gestion des départs, migration d'hôte, backfill et reconnexion selon les capacités réellement validées.
-6. **Fonctions sociales essentielles et intégrité :** stabiliser groupes, présence, modération, signalement et protection des parties ; activer le classé uniquement après validation de l'autorité, de l'intégrité des résultats et des conditions d'hébergement.
-7. **Systèmes dépendants :** score de contribution, statistiques, sauvegardes, progression, préférences de playlists/périphériques et fonctions communautaires, selon leurs dépendances et les ordres spécialisés.
-8. **Contenus et extensions :** étendre aux cartes/modes du périmètre approuvé, puis replays, création communautaire, événements, cross-play et plateformes supplémentaires lorsque leurs fondations sont prêtes.
-9. **Qualité et livraison alpha :** non-régression, tests réseau/performance multi-configurations, accessibilité, localisation, licences de distribution, build Shipping et procédure de retour arrière. Le profilage et l'optimisation finale complètent les mesures de performance commencées dès les premières phases.
+1. **Sécurisation et audit :** sauvegarde, état réel du dépôt, secrets, licences, plugins, dépendances et blocages ; aucune distribution publique avant clarification des licences.
+2. **Première build jouable :** une carte pilote, un mode, boucle FPS complète et build Windows de test ; bots/local autorisés pour valider le gameplay sans prétendre valider le réseau en ligne.
+3. **Fondations FPS et réseau :** qualité du tir/hit registration, autorité serveur, réplication, déplacements et mécaniques de base approuvées, dégâts, apparitions, équipes, bots, stabilité de la carte pilote et tests réseau progressifs. Établir la référence de performances dès ce stade.
+4. **EOS et parties privées :** identité/Connect, présence, amis/invitations, lobbies et sessions privées ; valider création, invitation, rejoindre, lancer une partie, retour au lobby et reconnexion. Garder un chemin LAN/direct de diagnostic et préparer les protections communautaires minimales.
+5. **Matchmaking public officiel :** file publique, constitution des équipes, lobby BO2, compte à rebours/seuil de joueurs, lancement automatique et continuité des groupes ; ajouter progressivement gestion des départs, migration d'hôte, backfill et reconnexion selon les capacités réellement validées. Finaliser les autres cartes/modes de lancement avant l'alpha publique, sans bloquer les prototypes internes.
+6. **Sécurité communautaire et intégrité :** disposer avant l'ouverture publique de la sourdine, du blocage, du signalement et des protections anti-spam de base ; développer ensuite la modération avancée. Activer le classé uniquement après validation de l'autorité, de l'intégrité des résultats et des conditions d'hébergement.
+7. **Données persistantes et systèmes dépendants :** statistiques détaillées, sauvegardes, progression, défis, préférences synchronisées et fonctions communautaires avancées. Le score de match de base et son affichage sont déjà requis dans la première boucle jouable ; sa validation serveur appartient aux fondations FPS.
+8. **Extensions :** replays, création communautaire, événements, fonctions sociales avancées, cross-play et plateformes supplémentaires lorsque leurs fondations sont prêtes.
+9. **Qualité et livraison alpha :** non-régression, tests réseau/performance multi-configurations, accessibilité, localisation, audit final des licences de distribution, build Shipping et procédure de retour arrière. Le profilage et l'optimisation finale complètent les mesures commencées dès les premières phases.
 
 Ne pas développer tous les systèmes sociaux simultanément. À chaque étape, appliquer les critères de passage de la section 12 et les critères spécialisés du système concerné. Une dépendance non validée bloque le jalon qui en dépend, pas les tâches indépendantes et réversibles de même priorité. Les fonctionnalités reportées restent planifiées ; elles ne sont ni supprimées ni déclarées livrées.
 
