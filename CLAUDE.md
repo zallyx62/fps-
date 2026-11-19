@@ -6,6 +6,9 @@ Avant toute modification, lire intégralement `CAHIER_DES_CHARGES_RIXE.md` à la
 ## Exigence multiplateforme RIXE
 Respecter la section « Jeu multiplateforme et parité de gameplay » du cahier des charges. Ne pas réduire l'objectif à un simple site vitrine : le navigateur doit permettre de jouer réellement. Étudier d'abord un prototype Pixel Streaming Unreal (rendu Unreal réel mais infrastructure GPU distante et latence/coût à mesurer), puis comparer à un client navigateur WebGL/WebGPU distinct si le streaming n'est pas viable. Ne jamais prétendre qu'un client web allégé est rendu par Unreal. Dans les deux cas, préserver strictement les mêmes règles, armes, cartes fonctionnelles, timings, validations serveur, progression et équité compétitive ; seuls les détails visuels/performance peuvent varier. Priorité à Windows Unreal stable, puis prototype web et autres plateformes par étapes. Budget 0 € : aucun hébergement GPU ou service payant sans accord.
 
+## Nouveaux chantiers approuvés : réseau, communauté et équilibrage
+Prendre en compte la section 17 du cahier des charges : réseau compétitif (diagnostic ping/jitter/pertes, compensation de latence et prédiction/réconciliation contrôlées), protection communautaire (blocage, sourdine, signalements, anti-spam et modération proportionnée), et équilibrage fondé sur des statistiques agrégées avec échantillons suffisants et tests avant/après. Ne pas sacrifier l'autorité serveur, la vie privée ou le budget 0 €. Commencer par les outils locaux et les mesures/tests les plus simples ; aucune sanction grave entièrement automatisée, aucune collecte superflue, aucun ajustement automatique des règles en pleine partie. Ces fonctions ne sont pas réputées existantes avant implémentation et tests.
+
 ## PRIORITÉ ABSOLUE N°1 : audit et clarification de la licence
 Traiter la licence comme le tout premier chantier, avant les nouvelles fonctionnalités et avant toute publication.
 
