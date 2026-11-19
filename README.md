@@ -19,7 +19,7 @@ fourni avec le moteur, puis est adapté : arène, règles de match par équipes,
 
 Le prototype documenté dans `UNREAL.md` utilise actuellement `OnlineSubsystem Null` et une connexion directe par IP (port UDP 7777) : un joueur héberge, les autres le rejoignent. Hors réseau local, cette méthode peut nécessiter une configuration du routeur ou un réseau virtuel.
 
-**Important : ce parcours décrit l'état actuel du prototype, pas l'expérience multijoueur finale approuvée.** La cible produit prévoit un matchmaking public automatique comme parcours principal, ainsi que des groupes, invitations et salons privés via EOS. Leur réalisation et leur validation suivent les phases 2 à 6 de la section 12 du cahier des charges. Ne pas présenter EOS ou le matchmaking public comme déjà disponibles.
+**Important : ce parcours décrit l'état actuel du prototype, pas l'expérience multijoueur finale approuvée.** La cible produit prévoit un matchmaking public automatique comme parcours principal, ainsi que des groupes, invitations et salons privés via EOS. Leur réalisation et leur validation suivent les phases 3 et 4 de la section 12 du cahier des charges : EOS et les parties privées en phase 3, puis le matchmaking public et la consolidation du contenu en phase 4. Ne pas présenter EOS ou le matchmaking public comme déjà disponibles.
 
 ## Touches
 
