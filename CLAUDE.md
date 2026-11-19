@@ -221,3 +221,16 @@ Le propriétaire a approuvé les cinq propositions de la dernière liste. Respec
 5. Remplaçants volontaires pour les parties en cours, avec statistiques séparées, entrée équitable et protections anti-abus ; classé désactivé tant que les règles strictes ne sont pas validées.
 
 Ne pas commencer ces chantiers avant que le socle gameplay/réseau et le matchmaking/lobby public soient suffisamment stables. Prioriser d'abord les préférences humains/bots et l'entraînement en recherche ; les trois autres sont ultérieurs. Budget 0 €, confidentialité et sécurité obligatoires. Les fonctions sont approuvées mais non implémentées tant que les tests ne les valident pas.
+
+## Huit nouvelles fonctionnalités approuvées — section 29
+Le propriétaire a explicitement approuvé les huit propositions de la liste communautaire/compétitive. Respecter la section 29 de `CAHIER_DES_CHARGES_RIXE.md` et les critères ci-dessous :
+1. Annulation/réparation de parties compromises uniquement sur preuves et critères publiés ; pas de sanction/annulation sur simple suspicion ; information, audit et contestation.
+2. Matchmaking tenant compte des groupes préformés, avec préférences solo/groupes si la population le permet, sans séparer silencieusement les amis.
+3. Entraînement entièrement hors ligne contre bots, avec statistiques/progression locales strictement séparées des résultats officiels.
+4. Temps morts tactiques limités et vote d'abandon encadré, activables seulement dans les modes compatibles et avec protections anti-abus ; ne pas les imposer à toutes les parties publiques.
+5. Armurerie transparente et laboratoire joueur : essayer/comparer armes et accessoires, consulter les valeurs réellement utilisées en jeu. Étendre le stand de tir/laboratoire existant plutôt que créer un système doublon.
+6. Équilibrage explicite des deux équipes avant chaque match, intégré au matchmaking existant, en tenant compte du niveau estimé, de l'incertitude, des performances, du mode et des groupes ; préserver les amis autant que possible.
+7. Environnement/playlist facultatif de test communautaire pour essayer les changements officiels, avec version clairement identifiée et données/rangs séparés des parties officielles.
+8. Transparence sur le ping estimé des membres d'un groupe et les régions candidates, avec choix qualité/attente ; ne jamais révéler IP ou localisation précise et ne pas présenter une estimation comme une garantie.
+
+Ordre de priorité : protéger l'intégrité des résultats et consolider le matchmaking/réseau d'abord ; intégrer groupes, équilibrage d'équipes et ping dans un seul système de matchmaking ; étendre le laboratoire/stand de tir existant ; développer l'entraînement hors ligne ; ajouter ensuite temps morts/abandon et environnement de test communautaire. Toutes ces fonctions sont approuvées mais restent planifiées jusqu'à tests sur build. Respecter strictement le budget de 0 €, les exigences de confidentialité, la sécurité serveur, la modération et les sauvegardes. Aucun achat/service payant sans accord explicite.
