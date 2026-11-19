@@ -9,12 +9,12 @@
 
 ## 1. Vision et principes
 
-RIXE est un FPS d'arène en équipes, gratuit, open source et communautaire. Il doit accueillir des joueurs internationaux sans imposer le matchmaking automatique ni dépendre de serveurs dédiés permanents.
+RIXE est un FPS d'arène en équipes, gratuit et communautaire, avec une ambition open source pour les éléments originaux dont les licences le permettent. Il doit accueillir des joueurs internationaux. L'expérience officielle par défaut repose sur le matchmaking et les lobbies publics automatiques inspirés de Black Ops II ; les invitations, parties privées et serveurs communautaires restent des voies complémentaires.
 
 Principes :
 - Jeu de base gratuit, sans avantage compétitif payant.
 - Parties hébergées par les joueurs autant que possible.
-- Salons, invitations et découverte de parties ; matchmaking facultatif.
+- Matchmaking officiel et lobby public automatiques comme parcours principal ; conserver en complément les invitations, salons privés et la découverte de serveurs communautaires.
 - Score valorisant objectifs, assistance, défense et soutien, pas uniquement les éliminations.
 - Priorité à la stabilité, la sécurité et l'équilibrage avant l'ajout massif de contenu.
 
@@ -84,7 +84,7 @@ Ces chiffres sont des hypothèses de tuning. Ajouter des conditions d'éligibili
 Étudier puis intégrer Epic Online Services (EOS) pour identités, sessions/salons, invitations, recherche de parties et éventuellement classements.
 
 Contraintes :
-- Ne pas imposer le matchmaking : rejoindre par invitation ou salon doit rester possible.
+- Le matchmaking public est le parcours par défaut du bouton « Jouer ». Les invitations, groupes préformés et salons privés doivent rester accessibles sans obligation de passer par une file publique.
 - Privilégier l'hébergement par un joueur pour éviter les coûts de serveurs dédiés permanents.
 - Documenter NAT, pare-feu, qualité de connexion, avantage de l'hôte et indisponibilité d'un hôte.
 - Étudier la migration d'hôte, sans la promettre avant un prototype testé.
@@ -939,7 +939,11 @@ Règles obligatoires :
 - Préserver la visibilité des adversaires, les silhouettes, les télégraphies, les projectiles et tous les indices visuels qui transmettent une information tactique.
 - Ne pas supprimer un effet fonctionnel de gameplay (fumée, explosion, signal d'objectif, etc.) ; réduire uniquement son coût ou sa présentation sans changer son information, sa durée, sa portée ou son comportement.
 - Les options graphiques avancées doivent être activées uniquement si le matériel et le chemin de rendu les prennent réellement en charge.
-- Permettre de personnaliser individuellement les réglages après le choix d'un préréglage, d'afficher les valeurs actives et de restaurer le préréglage.
+- **Équilibré est le préréglage sélectionné par défaut** lors d'une première installation, puis le jeu peut proposer un benchmark pour affiner le choix sans rien modifier sans accord.
+- Ajouter une entrée **Personnalisé**, distincte des six préréglages : elle permet de modifier individuellement les options, de sauvegarder plusieurs configurations nommées, de les renommer/supprimer et de restaurer un préréglage de départ. Ne pas créer un septième préréglage prédéfini.
+- Afficher les valeurs réellement actives et signaler clairement lorsqu'une option est indisponible ou remplacée par une solution de secours.
+- Ne fixer aucun quota universel de FPS par préréglage. Chercher la meilleure fluidité réellement possible selon le matériel, la résolution et les options choisies, avec une priorité particulière à la régularité des images (frame pacing) plutôt qu'à une moyenne élevée mais instable.
+- Mesurer, lorsque possible, FPS moyens, 1 % low, temps de frame, pics de temps de frame et saccades. Distinguer les FPS réellement rendus des images interpolées/générées.
 - Les préréglages sont des points de départ et non une garantie de FPS identique sur tous les matériels.
 
 ### 30.2 Benchmark graphique intégré
@@ -976,6 +980,30 @@ Règles obligatoires :
 - Mémoriser les performances et réglages testés par carte afin de signaler les cartes plus exigeantes et proposer un ajustement avant leur lancement.
 - Le joueur garde toujours le contrôle : pas de changement silencieux en pleine partie, possibilité de désactiver les recommandations et de conserver ses réglages globaux.
 - Les profils par carte ne doivent jamais créer de différence de gameplay ou d'information tactique.
+
+### 30.7 Mise à l'échelle, technologies GPU et génération d'images
+- Étudier et intégrer, lorsque les versions, licences, pilotes, API de rendu et cartes graphiques le permettent, les solutions suivantes : **NVIDIA DLSS**, **AMD FSR**, **Intel XeSS** et **Unreal TSR**.
+- Utiliser Unreal TSR comme voie de mise à l'échelle de référence largement compatible lorsque les solutions spécialisées ne sont pas disponibles ; ne jamais rendre DLSS, FSR ou XeSS obligatoires au démarrage.
+- Détecter les capacités réellement disponibles sur la machine (GPU, API/RHI, pilote et fonctionnalités prises en charge) et n'afficher que les options compatibles. Prévoir une solution de secours testée si un plugin, pilote ou chemin de rendu est absent ou échoue.
+- Permettre au joueur de choisir la solution et le niveau de qualité lorsqu'ils sont compatibles ; ne jamais imposer silencieusement une technologie ni remplacer un choix sans l'en informer.
+- Ne jamais activer simultanément plusieurs upscalers concurrents sur la même chaîne de rendu. Vérifier les conflits de plugins et de génération d'images ; une seule technologie de frame generation peut être active à la fois.
+- Étudier les fonctions de réduction de latence adaptées au matériel : **NVIDIA Reflex**, **AMD Radeon Anti-Lag 2** et **Intel Xe Low Latency (XeLL)** lorsqu'elles sont prises en charge. Ces fonctions sont distinctes de l'upscaling et ne doivent pas être présentées comme un gain de FPS garanti.
+- Distinguer **NVIDIA Reflex** et ses options éventuelles de **Boost** des fonctions de gestion dynamique de puissance propres à certains matériels. Ne pas promettre ni piloter une fonction matérielle qui n'est pas exposée de façon fiable au jeu.
+- Proposer la génération d'images (Frame Generation / Multi Frame Generation) uniquement si la configuration et la solution sélectionnée la prennent réellement en charge. Elle doit rester facultative et désactivable, particulièrement pour le jeu compétitif.
+- Expliquer que les images générées améliorent la fluidité visuelle mais n'augmentent pas dans les mêmes proportions la fréquence de simulation, la réactivité des entrées ou les FPS réellement calculés. Afficher séparément, lorsque possible, les FPS natifs et les FPS incluant les images générées.
+- Ne jamais sacrifier la précision, la latence, la lisibilité des adversaires ou la stabilité du gameplay pour afficher un chiffre de FPS supérieur. Tester chaque technologie en mouvement, en combat et dans les scènes chargées.
+- Prévoir les options HDR uniquement lorsque l'écran, le système et le chemin de rendu sont compatibles, avec calibration et retour à un affichage SDR fiable.
+- Auditer les licences, conditions de redistribution, versions et dépendances de chaque SDK/plugin avant intégration. Privilégier les composants gratuits compatibles avec le budget de 0 € ; aucun achat, abonnement ou service payant sans accord explicite.
+- Verrouiller et documenter les versions testées des plugins. Ne pas considérer une compatibilité annoncée par un fournisseur comme une validation suffisante : vérifier réellement le build, le lancement, le rendu, les performances et le comportement de secours sous Unreal Engine 5.8.
+
+### 30.8 Réglages personnalisés et validation multi-matériels
+- Regrouper dans le mode Personnalisé les réglages détaillés déjà prévus par le jeu : textures/matériaux, ombres, éclairage, reflets, effets, post-traitement, distance d'affichage, résolution/résolution dynamique, anti-aliasing/upscaler, limite FPS, synchronisation, faible latence et HDR si disponibles.
+- N'exposer que les paramètres réellement pris en charge par la plateforme ; expliquer brièvement les options avancées sans imposer de choix technique au joueur.
+- Prévoir une fonction de comparaison avant/après et de restauration sûre des valeurs précédentes si un changement provoque un écran noir, une instabilité ou une dégradation importante.
+- Valider les six préréglages et le mode Personnalisé sur plusieurs catégories de GPU (modestes, intermédiaires et haut de gamme), résolutions et fréquences d'écran, ainsi que sur les chemins de rendu effectivement pris en charge.
+- Inclure des tests spécifiques sur matériel NVIDIA, AMD et Intel lorsque disponible. Une option non testée sur une famille de matériel ne doit pas être annoncée comme pleinement prise en charge.
+- Ne pas limiter la qualité maximale du projet à la GTX 1070 du propriétaire : conserver des niveaux évolutifs, tout en fournissant une voie de rendu jouable et stable aux machines plus modestes.
+- Commencer par une carte de référence représentative, mesurer les coûts GPU/CPU et la lisibilité compétitive, puis appliquer les réglages validés aux autres cartes.
 
 ### Critères communs et ordre de réalisation
 - Commencer par les préréglages et leur validation sur plusieurs configurations, puis le benchmark reproductible.
@@ -1469,3 +1497,46 @@ Cette section formalise le veto compétitif approuvé et la règle de circulatio
 - Tester lisibilité, navigation clavier/manette/tactile, localisation, changements de règles, exclusions de playlists, synchronisation et reprise des défis.
 - Ces fonctionnalités ne doivent pas retarder la première build jouable ni la correction des risques critiques.
 - Respecter le budget de 0 € : aucun service payant, hébergement supplémentaire ou abonnement sans accord explicite.
+
+
+## 43. Consolidation des décisions de gameplay et de direction artistique approuvées
+
+Cette section rassemble des décisions approuvées lors des échanges de cadrage antérieurs, qui n'étaient pas formulées assez explicitement dans les sections précédentes. Elles complètent les systèmes existants : ne pas créer de doublons.
+
+### 43.1 Identité du jeu et direction artistique
+- Construire une identité propre à RIXE : sensations de FPS d'arène rapides et lisibles, avec une direction de gameplay principalement inspirée de XDefiant et une ambiance militaire évoquant Call of Duty 2/3.
+- Éviter que l'identité visuelle ou le rythme général fasse penser à un clone de Valorant ou Counter-Strike ; ne pas reprendre leurs codes tactiques/visuels comme direction principale.
+- Conserver une interface originale, simple, rapide et arrondie, avec des rayons cohérents de 8 à 16 px ; cette règle complète les exigences d'interface des sections 26 et 27.
+- Les références à des jeux commerciaux décrivent uniquement des sensations et objectifs qualitatifs : ne copier aucun code, asset, carte, interface, animation, son ou élément protégé.
+
+### 43.2 Playlists avec et sans capacités
+- Prévoir quatre playlists distinctes : **Classé avec capacités**, **Standard avec capacités**, **Non classé avec capacités** et **Non classé sans capacités**.
+- Les capacités doivent compléter les armes et le tir, jamais les remplacer ; elles doivent être équilibrées, lisibles, contrables et testées pour ne pas dominer les affrontements.
+- La fiche universelle de mode (section 42.2) doit indiquer clairement si les capacités sont actives, leurs règles essentielles et les conditions de victoire.
+- Ne pas activer les capacités dans la playlist sans capacités, y compris via un équipement, bonus temporaire ou effet indirect.
+- Ne pas activer le classé tant que l'autorité serveur, l'intégrité des résultats, l'anti-triche et les conditions d'équité ne satisfont pas les critères déjà définis.
+
+### 43.3 Déplacements et interactions avec l'environnement
+- Développer une boucle de déplacement fluide comprenant sprint, glissade, saut et franchissement d'obstacles lorsque le level design le permet.
+- La glissade doit être naturelle, contrôlable et cohérente avec le rythme rapide visé ; elle ne doit pas créer d'invulnérabilité, de hitbox incohérente ni d'avantage réseau.
+- Les portes et passages interactifs doivent être rapides, prévisibles et naturels à utiliser, sans ralentir artificiellement les déplacements ni créer de blocage injuste.
+- Conserver une autorité serveur sur les mouvements et interactions compétitifs ; tester collisions, réplication, latence, anti-exploit et cohérence des animations.
+
+### 43.4 Variantes cosmétiques d'animations de rechargement
+- Prévoir plusieurs animations de rechargement pour une même arme, avec une animation de base gratuite et des variantes déblocables par la maîtrise, des défis ou des événements communautaires.
+- Toutes les variantes d'une même arme doivent conserver exactement les mêmes timings de gameplay : durée, fenêtre d'interruption, transfert des munitions, reprise du tir et comportement serveur.
+- Les variantes ne donnent aucun avantage, ne changent pas la cadence réelle et ne modifient ni la quantité de munitions ni les règles de rechargement.
+- Utiliser un seul système de maîtrise par arme (section 32.1) pour attribuer les variantes ; ne pas créer une progression parallèle.
+
+### 43.5 Éléments tactiques et évolution communautaire
+- Étudier des équipements tactiques déployables lorsque leur rôle, leur contre-mesure, leur coût réseau et leur équilibre sont définis ; ils doivent compléter les armes et capacités sans rendre les combats illisibles.
+- Prévoir des cycles ou saisons communautaires gratuits et des événements jour/nuit uniquement lorsqu'ils sont compatibles avec la lisibilité, la performance et les cartes approuvées. Les variations jour/nuit ne doivent jamais donner un avantage visuel injuste à une équipe.
+- Permettre aux joueurs de proposer, tester et partager des défis communautaires à travers le système de défis existant ; validation, modération, anti-farming et licences restent obligatoires.
+- Réutiliser les systèmes de laboratoire, événements, variantes de règles et création communautaire existants. Aucun nouveau système parallèle de progression ou de publication ne doit être créé.
+
+### Critères de validation
+- Valider ces décisions dans les documents techniques et les fiches de modes avant leur implémentation.
+- Prototyper les déplacements, capacités, équipements et variantes d'animation sur une seule carte et un ensemble réduit d'armes avant extension.
+- Mesurer équité, lisibilité, performances, réseau et accessibilité ; désactiver ou réviser toute mécanique qui dégrade le combat.
+- Ces ajouts restent soumis aux priorités de livraison, au plafond de trois cartes au lancement et au budget de 0 €.
+
