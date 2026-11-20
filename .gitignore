@@ -22,3 +22,19 @@ Plugins/*/Intermediate/
 # Système
 Thumbs.db
 .DS_Store
+
+# Python — caches et environnements locaux
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+# Secrets et certificats locaux (ne jamais versionner)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx

@@ -2,7 +2,7 @@
 
 **Référence fonctionnelle unique :** `CAHIER_DES_CHARGES_RIXE.md` (version la plus récente de la branche de travail).  
 **Moteur :** Unreal Engine 5.8. **Projet :** principalement Blueprint.  
-**Budget autorisé :** 0 €. **Branche de développement principale :** `jeu-unreal`.  
+**Budget autorisé :** 0 €. **Branche par défaut GitHub :** `main` (branche de référence et de développement tant qu'aucune branche de tâche n'est explicitement ouverte). `jeu-unreal` doit rester synchronisée avec `main` tant qu'elle n'a pas de travail distinct.  
 **Objectif :** construire un FPS multijoueur réellement jouable, stable, accessible avec des amis à distance et maintenable.
 
 ---
@@ -128,13 +128,13 @@ Ne pas forcer une qualité graphique unique pour tous les PC. Le projet doit avo
 - Ne pas activer le ray tracing matériel par défaut ; le traiter comme option haut de gamme uniquement après mesures.
 - Lumen/Nanite/VSM ne doivent pas être des prérequis absolus pour jouer. Prévoir une configuration basse avec éclairage précalculé ou solution plus légère, géométrie/LOD classiques et ombres moins coûteuses lorsque techniquement possible.
 - Vérifier si le projet peut compiler et démarrer un chemin D3D11/SM5 de secours. Ne pas supposer que Nanite ou toutes les fonctionnalités Lumen y seront disponibles.
-- Prévoir profils Bas, Moyen, Élevé, Ultra avec résolution, résolution dynamique/TSR si compatible, ombres, effets, post-process, distance d'affichage et limites FPS. Le profil Bas doit conserver lisibilité, silhouettes, hitboxes et visibilité compétitive.
+- Respecter les six préréglages du cahier des charges, section 30.1 : Ultra performance, Performance, Équilibré (défaut), Qualité élevée, Très haute qualité et Ultra. Ajouter Personnalisé séparément, sans en faire un septième préréglage. Le profil le plus performant doit conserver lisibilité, silhouettes, hitboxes et visibilité compétitive.
 - Ne pas activer simultanément des paramètres RHI/Shader contradictoires ou des cibles Vulkan/Metal non testées. Ne conserver que les plateformes effectivement ciblées et compilées.
-- Écart de configuration constaté à traiter : `Config/DefaultEngine.ini` active actuellement `r.RayTracing=True`, alors que le ray tracing doit rester une option haut de gamme et non un prérequis. Ne pas modifier ce réglage à l'aveugle : mesurer, vérifier compatibilité/cook/build et aligner les profils avant décision.
+- Réglage par défaut corrigé : `Config/DefaultEngine.ini` désactive le ray tracing matériel au démarrage (`r.RayTracing=False`) afin de ne pas en faire un prérequis. Son activation reste une option haut de gamme à exposer uniquement dans un profil compatible, après validation du rendu, des shaders, du cook, du packaging et des performances.
 - Le fichier actuel déclare également des cibles shader Linux/Mac en SM6 et D3D11 SM5. Vérifier que chaque plateforme/RHI est réellement ciblée, compilée et testée ; Windows reste la cible de livraison initiale. Auditer aussi les entrées de configuration répétées avant tout nettoyage.
 - Éviter les effets coûteux qui nuisent à la lisibilité FPS : motion blur excessif, exposition automatique instable, fumées opaques et post-process masquant les ennemis.
 - Mesurer temps GPU/CPU, mémoire, FPS et stabilité sur au moins une machine modeste et une machine de référence. Définir les spécifications minimales à partir des tests, pas d'une supposition.
-- Avant de modifier `DefaultEngine.ini`, faire une copie, relever les valeurs actuelles, expliquer le changement, compiler shaders et tester les profils ; ne pas supprimer des lignes sans comprendre leur provenance.
+- Toute modification future de `DefaultEngine.ini` doit relever les valeurs précédentes, expliquer le changement, compiler les shaders et tester les profils ; ne pas supprimer des lignes sans comprendre leur provenance.
 
 ## 8. Bots, équipes, modes et équilibre
 

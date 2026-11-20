@@ -9,6 +9,10 @@ Voir [UNREAL.md](UNREAL.md) pour le détail des modifications faites dans Unreal
 Le dépôt accueille le projet Unreal du jeu. Le projet part du modèle « First Person / Arena Shooter »
 fourni avec le moteur, puis est adapté : arène, règles de match par équipes, bots, interface, réglages.
 
+## Validation automatique du dépôt
+
+Le workflow GitHub Actions vérifie la syntaxe des scripts Python, la structure JSON du projet Unreal et les métadonnées des armes. Il exécute également un test de génération géométrique des modèles d'armes. **Ce contrôle statique ne compile pas le projet Unreal, ne charge pas les Blueprints et ne remplace pas les tests dans l'éditeur ni les builds Windows.**
+
 ## Ouvrir le projet
 
 1. Installer Unreal Engine 5.8 (Epic Games Launcher).
@@ -42,7 +46,7 @@ basculant (Menu > Commandes).
 
 ## Licence
 
-Le dépôt contient actuellement un fichier [LICENSE](LICENSE) rédigé sous GNU GPL-3.0. **La compatibilité de cette licence avec l'intégration à Unreal Engine et aux contenus Epic n'est pas encore établie** ; elle fait l'objet de l'audit décrit à la section 25 de `CAHIER_DES_CHARGES_RIXE.md`.
+Le dépôt contient actuellement un fichier [LICENSE](LICENSE) rédigé sous GNU GPL-3.0. **La compatibilité de cette licence avec l'intégration à Unreal Engine et aux contenus Epic n'est pas encore établie** ; elle fait l'objet de l'audit décrit à la section 25 de `CAHIER_DES_CHARGES_RIXE.md` et du registre [LICENCE_DISTRIBUTION.md](LICENCE_DISTRIBUTION.md).
 
 Ne pas considérer la présence du fichier `LICENSE` comme une validation juridique de la redistribution du projet. Les contenus Epic, plugins et ressources tierces restent soumis à leurs propres conditions. Aucune publication ou distribution publique ne doit être faite avant la clôture de cet audit et une décision explicite du propriétaire.
 

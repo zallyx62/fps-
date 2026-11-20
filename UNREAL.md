@@ -8,7 +8,7 @@ Projet de base : modèle « First Person », variante « Arena Shooter » (Bluep
 
 ## Écarts de configuration détectés — à auditer, non validés
 
-- `Config/DefaultEngine.ini` active actuellement `r.RayTracing=True`, avec DX12 comme RHI Windows par défaut. Le ray tracing ne doit pas être considéré comme un prérequis de jeu : mesurer son coût et vérifier son activation par profil avant de décider de le conserver par défaut.
+- `Config/DefaultEngine.ini` désactive désormais le ray tracing matériel par défaut (`r.RayTracing=False`), conformément au cahier des charges. Son activation reste à implémenter et à tester comme option haut de gamme ; ce changement de configuration ne prouve pas encore la compatibilité de tous les profils.
 - La configuration déclare D3D11/SM5 ainsi que des cibles Linux et Mac en SM6. Leur présence dans le fichier ne prouve ni la compilation ni le fonctionnement de ces plateformes ; Windows reste la cible initiale.
 - **Nettoyage effectué le 19 novembre 2026** : les doublons stricts de `DefaultGraphicsRHI=DefaultGraphicsRHI_DX12` et de `r.DefaultFeature.AutoExposure.ExtendDefaultLuminanceRange` ont été retirés de `Config/DefaultEngine.ini` sur les deux branches. Aucune valeur graphique différente n'a été arbitrée ; vérifier le comportement effectif dans Unreal avant toute autre modification.
 - `fps.uproject` active `GameplayStateTree`, `ModelContextProtocol`, `MCPClientToolset` et `AllToolsets`, en plus de `ModelingToolsEditorMode` limité à l'éditeur. Vérifier les dépendances, licences, modules Editor/Runtime et le comportement lors du packaging Shipping ; ne pas retirer les outils MCP utilisés pour le développement sans vérifier leur portée.
@@ -39,7 +39,7 @@ Projet de base : modèle « First Person », variante « Arena Shooter » (Bluep
   (dans l'éditeur, Échap arrête la partie : utiliser M). La partie continue derrière le menu, comme dans
   un FPS en ligne ; le joueur ne peut plus bouger, viser ni tirer tant que le menu est ouvert.
   - Graphismes : qualité (Basse, Moyenne, Élevée, Épique), affichage (plein écran, fenêtre sans bordure,
-    fenêtré), synchro verticale, limite d'images par seconde (60, 120, 144, sans limite), champ de vision (70 à 120).
+    fenêtré), synchro verticale, limite d'images par seconde (60, 120, 144, sans limite), champ de vision (70 à 120). **Écart à corriger :** le cahier des charges, section 30.1, exige six préréglages (Ultra performance, Performance, Équilibré, Qualité élevée, Très haute qualité, Ultra) et un mode Personnalisé distinct ; les quatre niveaux du prototype ne satisfont pas encore cette cible.
   - Commandes : sensibilité de la visée (0,1 à 3), inversion de l'axe vertical.
   - Audio : volume général.
   - Afficher ou masquer le compteur d'images par seconde, quitter le jeu.
@@ -130,7 +130,7 @@ futuriste (fond sombre, liserés cyan). Le bouton de l'option active est surlign
   « pompage » de la luminosité), limite les fuites du ciel (`LumenSkylightLeaking` 0,1), éclaircit les
   ombres sans les rendre noires (exposition locale : ombres 0,75, hautes lumières 0,9) et pousse un peu le
   contraste (1,15) et la saturation (1,08 à 1,12).
-- **Qualité** Basse / Moyenne / Haute / Ultra (`GameUserSettings`) ; en **Basse**, Lumen est coupé
+- **Qualité du prototype** Basse / Moyenne / Haute / Ultra (`GameUserSettings`) ; en **Basse**, Lumen est coupé
   (`r.Lumen.DiffuseIndirect.Allow 0`, `r.Lumen.Reflections.Allow 0`) pour les petites cartes graphiques.
   Anticrénelage au choix **TSR / TAA / FXAA** (`r.AntiAliasingMethod` 4 / 2 / 1), limite d'images par seconde
   (60 / 120 / 144 / sans limite), synchro verticale, mode d'affichage, champ de vision **80 à 120**.

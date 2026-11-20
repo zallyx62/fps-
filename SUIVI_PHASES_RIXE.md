@@ -9,14 +9,13 @@ Ce fichier consigne l'état démontré des jalons. Il ne remplace pas la feuille
 
 | Référence | Valeur |
 |---|---|
-| Branche documentaire | `main` |
-| Commit de référence `main` avant cette mise à jour | `f1800b492e440494570e9f3b92b5f22ba0355515` |
-| Branche de développement | `jeu-unreal` |
-| Commit de référence `jeu-unreal` avant cette mise à jour | `c42f465e15afdab139b9aae90065ec3b57334e72` |
+| Branche par défaut GitHub | `main` |
+| Branche miroir | `jeu-unreal` |
+| Commit commun avant les corrections documentaires de cet audit | `b78c826e9f85651a2afa91a3f4844ad25f22ff11` |
 | Release GitHub publique observée | Aucune release publiée au moment du contrôle |
 | Build Windows distribuable vérifiée dans ce suivi | Aucune preuve enregistrée |
 
-Ces SHA identifient les états du dépôt consultés ; ils ne constituent pas des preuves de compilation, de test ou de franchissement de phase. Après toute mise à jour, consigner le nouveau commit documentaire séparément du commit du code réellement testé.
+Ce commit commun confirme uniquement la synchronisation des branches. Il ne constitue pas une preuve de compilation, de test ou de franchissement de phase. Après toute mise à jour, consigner le commit documentaire séparément du commit du code réellement testé. La branche `main` est la branche par défaut du dépôt ; `jeu-unreal` reste une branche miroir tant qu'aucun travail distinct n'y est engagé.
 
 ## État des phases
 
