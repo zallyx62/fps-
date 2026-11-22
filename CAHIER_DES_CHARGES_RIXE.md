@@ -1176,6 +1176,9 @@ Règles obligatoires :
 - Regrouper dans le mode Personnalisé les réglages détaillés déjà prévus par le jeu : textures/matériaux, ombres, éclairage, reflets, effets, post-traitement, distance d'affichage, résolution/résolution dynamique, anti-aliasing/upscaler, limite FPS, synchronisation, faible latence et HDR si disponibles.
 - N'exposer que les paramètres réellement pris en charge par la plateforme ; expliquer brièvement les options avancées sans imposer de choix technique au joueur.
 - Prévoir une fonction de comparaison avant/après et de restauration sûre des valeurs précédentes si un changement provoque un écran noir, une instabilité ou une dégradation importante.
+- Lorsqu'un changement de résolution, de fréquence d'écran ou de mode d'affichage est appliqué, proposer une période de confirmation temporaire avec compte à rebours et aperçu du résultat ; demander au joueur de confirmer explicitement pour conserver le nouveau réglage.
+- En l'absence de confirmation avant la fin du délai, rétablir automatiquement les paramètres précédents. Prévoir également un mécanisme de secours permettant de revenir à une configuration d'affichage fonctionnelle si le changement provoque un écran noir ou rend l'interface inaccessible.
+- Ne jamais laisser un réglage d'affichage non confirmé devenir permanent ; sauvegarder les dernières valeurs fonctionnelles avant toute tentative et tester le retour arrière après plantage, fermeture forcée et redémarrage.
 - Valider les six préréglages et le mode Personnalisé sur plusieurs catégories de GPU (modestes, intermédiaires et haut de gamme), résolutions et fréquences d'écran, ainsi que sur les chemins de rendu effectivement pris en charge.
 - Inclure des tests spécifiques sur matériel NVIDIA, AMD et Intel lorsque disponible. Une option non testée sur une famille de matériel ne doit pas être annoncée comme pleinement prise en charge.
 - Ne pas limiter la qualité maximale du projet à la GTX 1070 du propriétaire : conserver des niveaux évolutifs, tout en fournissant une voie de rendu jouable et stable aux machines plus modestes.
@@ -1819,6 +1822,9 @@ Ces quatre fonctionnalités complètent les réglages d'interface et d'accessibi
 - Présenter les détails visuels pertinents : matériaux, finitions, accessoires équipés, animations d'inspection et éléments cosmétiques effectivement possédés ou disponibles.
 - Permettre de lancer les animations d'inspection depuis cet espace sans interrompre une partie ni modifier l'état de l'arme en combat.
 - Si des variantes cosmétiques sont prévues, permettre de les comparer dans cet aperçu sans confondre aperçu et déblocage réel.
+- Ajouter une galerie de comparaison permettant d'afficher simultanément plusieurs apparences d'une même arme côte à côte, afin de comparer directement leurs couleurs, matériaux, motifs et finitions.
+- Conserver pour chaque aperçu les contrôles de rotation et de zoom déjà prévus ; permettre d'examiner les variantes sous un éclairage cohérent et identique, avec un retour simple à la vue d'origine.
+- La galerie ne doit afficher que les apparences réellement disponibles ou clairement identifiées comme aperçus ; comparer une apparence ne la débloque pas et ne l'équipe pas automatiquement.
 - Ne pas permettre de voir à travers les modèles, d'inspecter des éléments internes utiles au gameplay ou d'obtenir des informations tactiques indisponibles en partie.
 - L'inspection ne doit jamais modifier les dégâts, le recul, la précision, la cadence, les sons tactiques, les hitboxes ou toute autre propriété compétitive.
 - Réutiliser les modèles, matériaux et animations de l'armurerie ; éviter de maintenir une seconde représentation de chaque arme.
