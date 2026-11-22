@@ -2087,3 +2087,93 @@ Créer un mode arcade de précision où chaque joueur dispose d'une seule balle 
 - Réutiliser le système d'armes, de munitions, d'éliminations, de réapparition et de validation serveur.
 - Commencer par une variante simple sur une carte existante ; les variantes de règles restent facultatives.
 - Ce mode arcade ne doit pas retarder la première build Windows jouable. Respecter le budget de 0 €.
+
+## 55. Approfondissements approuvés du combat et de l'armement — 22 novembre 2026
+
+Cette section formalise cinq décisions de gameplay explicitement approuvées. Elle complète les systèmes d'armes, d'accessoires, de dégâts, de score et de rechargement déjà décrits dans les sections précédentes. Elle ne doit pas créer de systèmes parallèles.
+
+### 55.1 Gestion avancée des accessoires
+- Permettre une gestion plus complète des accessoires compatibles avec chaque arme : sélection, montage, retrait et remplacement depuis l'atelier ou l'écran de configuration.
+- Définir les compatibilités par arme et par emplacement ; empêcher les combinaisons techniquement impossibles.
+- Afficher clairement les effets réels de chaque accessoire sur les caractéristiques utiles (maniabilité, recul, précision, vitesse de visée, mobilité ou autres paramètres effectivement implémentés).
+- Éviter les accessoires strictement obligatoires : chaque choix doit présenter des compromis compréhensibles et équilibrables.
+- Réutiliser le système de personnalisation et de maîtrise des armes existant ; ne pas créer une progression d'accessoires indépendante.
+
+### 55.2 Tirs traversants selon le calibre et les matériaux
+- Permettre à certains projectiles de traverser des matériaux lorsque leur énergie et leur comportement balistique le permettent.
+- Déterminer la pénétration selon le calibre, le type de munition, la vitesse ou l'énergie restante et les propriétés du matériau traversé.
+- Différencier les surfaces et épaisseurs ; une même arme ne doit pas traverser tous les murs ni toutes les protections.
+- Appliquer une perte d'énergie et, lorsque pertinent, une modification des dégâts et de la précision après chaque traversée.
+- Valider les impacts et dégâts côté serveur ; synchroniser les résultats de manière cohérente en multijoueur.
+- Prévoir des effets visuels et sonores lisibles sans révéler artificiellement la position d'un joueur qui ne devrait pas être détectée.
+
+### 55.3 Ramassage des armes laissées par les adversaires
+- Autoriser un joueur à récupérer une arme abandonnée par un adversaire lorsque les règles du mode le permettent.
+- Afficher une interaction claire indiquant l'arme récupérable et les conditions de ramassage.
+- Définir les limites de transport, le remplacement de l'arme actuellement portée, les munitions récupérées et la durée de disponibilité au sol.
+- Éviter les duplications, les ramassages simultanés incohérents et les abus de génération de munitions ; le serveur arbitre la possession.
+- Respecter les restrictions des modes à équipement verrouillé ou à progression d'armes, notamment Jeu d'armes.
+
+### 55.4 Signalement visuel des ennemis
+- Fournir un retour visuel temporaire lorsqu'un ennemi est effectivement repéré par un mécanisme autorisé du jeu.
+- Définir la durée, la précision et les conditions de visibilité du signalement selon le mode et la source du repérage.
+- Ne pas transformer le signalement en suivi permanent à travers les murs ; limiter les informations transmises pour préserver le contre-jeu.
+- Réutiliser les marqueurs tactiques contextuels et les règles d'information déjà prévues ; éviter les marqueurs redondants ou contradictoires.
+- Valider côté serveur les événements de repérage qui influencent le gameplay ou le score.
+
+### 55.5 Reconnaissance et compensation des assistances
+- Reconnaître les contributions significatives ayant facilité une élimination, même lorsque le joueur n'a pas porté le coup final.
+- Répartir ou attribuer la reconnaissance selon des critères mesurables : dégâts réellement infligés, actions de soutien ou repérage utile, dans les limites déjà prévues par le score de contribution.
+- Définir des fenêtres temporelles, seuils et plafonds afin d'éviter les assistances artificielles et le farming.
+- Présenter distinctement éliminations, assistances et contributions de soutien dans le tableau de résultats.
+- Ne pas attribuer plusieurs fois une récompense complète pour une même élimination ; conserver un barème cohérent entre les modes.
+
+### Priorités et critères communs
+- Réutiliser les systèmes d'armes, d'accessoires, de dégâts, de munitions, de repérage et de score déjà prévus.
+- Prototyper chaque mécanisme séparément, puis vérifier leur interaction en multijoueur avec latence et déconnexions.
+- Tester les cas limites : traversée de plusieurs matériaux, armes ramassées simultanément, changement d'arme, signalement expiré, assistances multiples et résultats serveur/client divergents.
+- Le rechargement tactique interruptible reste régi par les règles et animations de rechargement déjà prévues ; conserver une seule implémentation cohérente de la fenêtre d'interruption et du transfert de munitions.
+- Ces ajouts restent soumis aux priorités de livraison, à la stabilité réseau et au budget de 0 €.
+
+## 56. Tournois communautaires — ajout approuvé le 22 novembre 2026
+
+Créer un système permettant aux joueurs et aux communautés d'organiser des tournois directement dans RIXE, sans imposer le recours à un site externe pour gérer les inscriptions et les résultats.
+
+### 56.1 Création et configuration
+- Permettre à un organisateur autorisé de créer un tournoi public ou privé.
+- Configurer le nom, la description, le mode compatible, la taille des équipes, le nombre de participants, les dates, les règles et les conditions d'inscription.
+- Prévoir des formats individuels et par équipes, selon les modes réellement compatibles.
+- Permettre de définir une limite d'inscription, une liste d'attente et une heure de clôture.
+- Afficher clairement les règles, le fuseau horaire, le calendrier et les éventuelles conditions d'accès.
+- Ne pas autoriser de frais d'inscription ou de récompenses monétaires intégrés sans étude juridique et approbation distincte ; le projet conserve son budget de 0 €.
+
+### 56.2 Inscriptions et équipes
+- Permettre aux joueurs de s'inscrire individuellement ou de rejoindre une équipe déjà constituée.
+- Permettre aux capitaines ou organisateurs de gérer les compositions dans les limites définies.
+- Prévoir une validation des participants, des remplaçants et des abandons avant le début du tournoi.
+- Empêcher les inscriptions multiples abusives et les changements d'équipe destinés à contourner les règles.
+- Afficher la liste des participants et le statut de chaque inscription, dans le respect des paramètres de confidentialité.
+
+### 56.3 Déroulement et résultats
+- Générer automatiquement un arbre à élimination directe pour les tournois utilisant ce format.
+- Prévoir ultérieurement d'autres formats (poules ou championnat) seulement après validation de leur complexité et de leur utilité.
+- Créer les salons ou organiser les rencontres à partir des systèmes de lobby existants.
+- Enregistrer les résultats à partir des données de match vérifiées ; prévoir une procédure de contestation en cas de résultat incorrect ou de déconnexion.
+- Gérer les retards, forfaits, égalités, abandons, reconnexions et matchs non terminés selon des règles annoncées à l'avance.
+- Afficher les prochains matchs, les horaires, les adversaires, les scores et les qualifications.
+- Produire un classement final et un historique des tournois terminés.
+
+### 56.4 Administration et intégrité
+- Fournir aux organisateurs des outils pour gérer les inscriptions, lancer les rencontres, signaler un incident et appliquer les règles annoncées.
+- Séparer les permissions d'organisateur, d'arbitre et de participant.
+- Journaliser les changements importants : résultats corrigés, forfaits, sanctions et décisions de contestation.
+- Prévoir des protections contre les faux résultats, les comptes multiples abusifs, les arrangements de matchs et les manipulations de classement.
+- Ne pas considérer comme incontestables les résultats de parties hébergées par un joueur si l'intégrité serveur ne peut pas être garantie.
+- Permettre de signaler un tournoi ou un organisateur en cas d'abus, avec un traitement proportionné et traçable.
+
+### Priorités et critères communs
+- Réutiliser les comptes, groupes, équipes, salons, statistiques, modes et outils d'administration existants.
+- Commencer par un tournoi privé simple à élimination directe, puis tester l'inscription, la génération des rencontres, la validation des résultats et les contestations.
+- Ne pas lancer de classement ou de récompense compétitive de grande valeur avant de disposer de résultats suffisamment fiables.
+- Le système doit rester facultatif et ne pas retarder la première build Windows jouable ni les fondations du multijoueur.
+- Respecter le budget de 0 € et ne pas dépendre d'un service payant externe.
