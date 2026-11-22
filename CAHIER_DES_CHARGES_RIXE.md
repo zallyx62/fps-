@@ -1982,3 +1982,56 @@ Créer une campagne originale dans l'univers de RIXE, jouable en solo avec des a
 - Privilégier des dialogues écrits et des ressources audio originales ou clairement licenciées. Ne pas engager de dépenses de doublage, d'assets ou de services sans autorisation explicite ; budget actuel : 0 €.
 - Tester la continuité narrative, les checkpoints, les sauvegardes, les difficultés, les bots et les scénarios coopératifs réellement pris en charge.
 - Ne déclarer la campagne terminée qu'après validation de toutes les missions incluses, de leur conclusion et de la sauvegarde de progression.
+
+## 51. Mode Domination — ajout approuvé le 22 novembre 2026
+
+Créer un mode en équipes où les joueurs gagnent en contrôlant plusieurs zones stratégiques réparties sur la carte.
+
+### 51.1 Règles et déroulement
+- Prévoir trois zones de contrôle principales, nommées A, B et C, lorsque la configuration de la carte le permet.
+- Les joueurs capturent une zone en y entrant et en la sécurisant selon une durée et des conditions clairement affichées.
+- Une zone contrôlée rapporte des points à intervalles réguliers à l'équipe qui la détient ; la cadence et les seuils de score sont configurables.
+- L'équipe qui atteint le score cible ou possède le meilleur score à la fin du temps imparti remporte la partie.
+- Définir précisément les règles de capture contestée : présence des deux équipes, progression interrompue ou neutralisation selon le prototype retenu.
+- Éviter qu'une accumulation de joueurs accélère indéfiniment la capture ; plafonner le bonus de présence si cette règle est testée.
+- Afficher l'état des zones, leur progression, leur propriétaire et le score de chaque équipe sur le HUD et la carte.
+- Récompenser la capture, la défense et la présence utile sur les objectifs, sans encourager le farming ou l'abandon des autres zones.
+
+### 51.2 Équilibrage et validation
+- Concevoir des zones accessibles par plusieurs itinéraires, avec des couvertures et des possibilités de reprise pour les deux équipes.
+- Éviter les apparitions trop proches des objectifs, les positions impossibles à déloger et les enchaînements de captures qui enferment une équipe.
+- Adapter les apparitions automatiques au contrôle des zones sans permettre de choisir ou prédire précisément un point d'apparition adverse.
+- Tester les parties en avance, en retard, à égalité, avec zones contestées, joueurs déconnectés et équipes incomplètes.
+- Enregistrer séparément temps de contrôle, captures, défenses et contributions ; appliquer les règles de fiabilité des statistiques et du classé déjà prévues.
+
+### Priorités et critères communs
+- Réutiliser les systèmes de score, d'apparition, de HUD, de statistiques et de matchmaking existants.
+- Prototyper d'abord une carte et trois zones ; valider la lisibilité et l'équilibre avant toute extension.
+- Ce mode ne doit pas retarder la première build Windows jouable ni les fondations du combat et du réseau. Respecter le budget de 0 €.
+
+## 52. Mode Jeu d'armes (Gun Game) — ajout approuvé le 22 novembre 2026
+
+Créer un mode arcade où chaque joueur progresse dans une séquence d'armes en réalisant des éliminations. Le mode doit être jouable en chacun pour soi, avec une variante en équipes éventuellement étudiée séparément.
+
+### 52.1 Progression des armes
+- Tous les joueurs commencent au même niveau avec la même première arme et suivent une séquence prédéfinie et identique pour tous.
+- Une élimination valide fait passer le joueur à l'arme suivante ; la progression est confirmée par le serveur.
+- Le premier joueur à obtenir une élimination avec la dernière arme remporte la partie, sous réserve des règles de fin et de validation.
+- Définir une liste d'armes suffisamment variée, avec une progression cohérente entre catégories et difficultés d'utilisation.
+- Définir explicitement le traitement des assistances, suicides, éliminations simultanées, déconnexions et égalités.
+- Étudier une règle de recul d'un niveau après une élimination au corps-à-corps uniquement si elle est lisible, équilibrée et confirmée par le serveur ; cette règle n'est pas obligatoire pour le premier prototype.
+- Afficher l'arme actuelle, la prochaine étape et la progression des adversaires sans révéler d'information tactique cachée.
+- Les équipements et capacités donnant un avantage extérieur à la séquence d'armes doivent être désactivés ou strictement encadrés.
+
+### 52.2 Équité et expérience
+- Garantir que tous les joueurs ont accès à la même séquence et aux mêmes conditions de progression.
+- Équilibrer les armes difficiles en tenant compte de leur position dans la séquence ; éviter qu'une arme impose un blocage disproportionné.
+- Concevoir des cartes compactes adaptées aux rencontres fréquentes, sans apparitions directement visibles par un adversaire.
+- Prévoir une durée maximale, une règle d'égalité et une fin de partie claire si personne n'atteint la dernière arme.
+- Séparer les statistiques du mode des performances des modes compétitifs classiques ; aucune progression de maîtrise ne doit être artificiellement gonflée.
+- Tester les abus possibles : éliminations organisées, progression par bots, échanges volontaires de morts et tentatives de manipulation du classement.
+
+### Priorités et critères communs
+- Réutiliser les armes, les règles d'élimination, le serveur autoritaire, le HUD et les statistiques existants.
+- Commencer par une variante chacun pour soi sur une carte déjà validée ; les variantes en équipes et les règles spéciales restent facultatives.
+- Ce mode arcade est secondaire et ne doit pas retarder la première build Windows jouable. Respecter le budget de 0 €.
