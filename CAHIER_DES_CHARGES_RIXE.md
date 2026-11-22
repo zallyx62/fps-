@@ -2128,6 +2128,15 @@ Cette section formalise cinq décisions de gameplay explicitement approuvées. E
 - Présenter distinctement éliminations, assistances et contributions de soutien dans le tableau de résultats.
 - Ne pas attribuer plusieurs fois une récompense complète pour une même élimination ; conserver un barème cohérent entre les modes.
 
+### 55.6 Rechargement tactique interruptible
+- Permettre au joueur d'interrompre un rechargement pour reprendre le tir ou effectuer une autre action autorisée.
+- Définir précisément à quel moment les munitions quittent le chargeur de réserve et deviennent disponibles dans l'arme ; l'interruption ne doit jamais créer, dupliquer ou perdre des munitions de manière incohérente.
+- Distinguer les étapes d'animation et leurs fenêtres d'interruption selon les familles d'armes, sans rendre les timings arbitraires ou imprévisibles.
+- Après interruption, reprendre ou terminer correctement l'état du rechargement selon l'étape atteinte ; synchroniser l'état réel avec l'animation affichée.
+- Valider toutes les transitions côté serveur et gérer les cas de tir, changement d'arme, sprint, équipement, élimination et déconnexion pendant le rechargement.
+- Les variantes cosmétiques d'animations prévues en section 43.4 doivent conserver les mêmes timings et fenêtres d'interruption pour une même arme.
+- Tester la latence, les interruptions répétées, les changements rapides d'arme et les divergences entre état serveur et client.
+
 ### Priorités et critères communs
 - Réutiliser les systèmes d'armes, d'accessoires, de dégâts, de munitions, de repérage et de score déjà prévus.
 - Prototyper chaque mécanisme séparément, puis vérifier leur interaction en multijoueur avec latence et déconnexions.
