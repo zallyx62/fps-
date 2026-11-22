@@ -1,6 +1,6 @@
 # RIXE — Cahier des charges consolidé
 
-**Version :** 19 novembre 2026 — mise à jour multiplateforme  
+**Version :** 22 novembre 2026 — mise à jour consolidée  
 **Dépôt :** https://github.com/zallyx62/fps-  
 **Branche de référence documentaire :** `main`  
 **Moteur :** Unreal Engine 5.8 — projet principalement Blueprint.
@@ -285,6 +285,9 @@ Cette matrice sert à vérifier qu'aucune exigence approuvée ne disparaît entr
 | 30–33 | 2, 6 et 7 | Référence graphique et combat sur carte pilote ; profils finaux, internationalisation et extensions après mesures.  | Non vérifié | Aucun enregistré |
 | 34–38 | 2, 4, 5 et 7 | Équité des cartes/mouvements, informations de match, progression et systèmes communautaires selon leurs prérequis.  | Non vérifié | Aucun enregistré |
 | 39–43 | 2, 4, 5 et 7 | Matchmaking, protection des nouveaux, fin de partie, duel, progression, identité et variantes ; jamais avant les fondations correspondantes.  | Non vérifié | Aucun enregistré |
+| 44–47 | 2–7 selon dépendances | Maintenance, présence en partie, écran partagé, voix, HUD, commandes, informations tactiques et analyse des combats ; réutiliser les systèmes existants et valider chaque extension. | Non vérifié | Aucun enregistré |
+| 48–54 | Après les fondations 2–5 et avant extension compétitive | Modes et expériences complémentaires ; prototypes indépendants, équilibre et validation spécifiques avant intégration aux playlists. | Non vérifié | Aucun enregistré |
+| 55–59 | 2–7 selon dépendances | Approfondissements du combat/armement, tournois et modes supplémentaires ; fusionner avec les systèmes propriétaires et garder le classé désactivé tant que l'intégrité n'est pas démontrée. | Non vérifié | Aucun enregistré |
 
 Une exigence peut contribuer à plusieurs phases : sa version minimale nécessaire à la jouabilité ou à la sécurité est traitée tôt ; ses fonctions persistantes, sociales ou avancées sont livrées plus tard. Le report d'une partie avancée ne reporte pas une protection critique, et ne supprime jamais l'exigence.
 - Une priorité locale indique l'ordre à respecter **dans son propre chantier**. Elle ne permet pas de passer devant un blocage de sécurité, de licence, de sauvegarde, de boucle jouable ou de réseau qui empêche le chantier de fonctionner.
