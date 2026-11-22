@@ -1898,11 +1898,15 @@ Créer un mode indépendant des parties compétitives dans lequel les joueurs pa
 - Ne donner aucun avantage, bonus ou progression compétitive aux résultats obtenus dans ce mode.
 
 ### 48.2 Ambiance musicale et satisfaction
-- Intégrer plusieurs morceaux musicaux originaux ou correctement licenciés, spécialement choisis ou composés pour rendre les parcours agréables, rythmés et particulièrement satisfaisants à terminer.
-- Proposer une sélection de musiques variées : morceaux énergiques pour les parcours rapides, ambiances électroniques/rythmiques pour les enchaînements de mouvements et morceaux plus intenses pour les défis difficiles.
-- Permettre de choisir un morceau, de mélanger la sélection ou de laisser le jeu choisir automatiquement une musique différente à chaque tentative.
+- Intégrer au lancement une sélection de trois morceaux musicaux au maximum, originaux ou correctement licenciés, spécialement choisis ou composés pour rendre les parcours agréables, rythmés et satisfaisants à terminer. Cette limite concerne la sélection officielle intégrée au jeu et pourra évoluer ultérieurement après décision explicite.
+- Permettre au joueur de rechercher et de sélectionner une musique personnelle de deux façons complémentaires : recherche/lecture via un service musical en ligne compatible et autorisé, et recherche/lecture de fichiers audio locaux présents sur son PC.
+- Pour la recherche en ligne, ne connecter que des services dont les API, conditions d'utilisation, mécanismes d'authentification et droits de diffusion autorisent réellement l'intégration. Ne pas contourner DRM, restrictions d'accès ou abonnements, et ne pas promettre la disponibilité de tous les morceaux. Si un service ne permet pas la lecture intégrée, proposer uniquement une solution de liaison ou de contrôle externe conforme à ses règles.
+- Pour les fichiers locaux, proposer un sélecteur et une recherche dans les emplacements autorisés par le joueur, sans parcourir ni envoyer ses fichiers personnels sur Internet. Prendre en charge uniquement les formats audio effectivement validés par le moteur et afficher clairement les fichiers incompatibles.
+- Permettre de choisir un morceau, de mélanger les morceaux disponibles ou de laisser le jeu choisir automatiquement une musique différente à chaque tentative. Conserver les préférences musicales du joueur localement lorsque cela est possible.
 - Synchroniser avec subtilité certains retours sonores ou effets d'ambiance avec le rythme musical, sans rendre les obstacles, les repères ou les sons utiles au gameplay moins audibles.
 - Prévoir des réglages de volume séparés pour la musique et les effets sonores, ainsi qu'une option pour couper complètement la musique.
+- Fournir une interface de recherche claire avec source du morceau (sélection officielle, service en ligne ou fichier local), état de lecture, commandes lecture/pause/suivant et gestion des erreurs d'accès ou de connexion.
+- Respecter la confidentialité : ne transmettre à aucun service les chemins de fichiers locaux ni la bibliothèque personnelle du joueur ; ne demander que les autorisations strictement nécessaires.
 - Faire évoluer la musique de manière satisfaisante pendant le parcours et lors de la réussite : montée musicale à l'approche de l'arrivée, accent sonore lors d'un passage réussi et conclusion musicale valorisante à la fin, sans ralentir ni bloquer le joueur.
 - Éviter les répétitions trop fréquentes : varier les morceaux et, si possible, leurs transitions afin que les sessions restent plaisantes.
 - Ne pas utiliser de morceaux commerciaux sans licence. Privilégier des compositions originales libres d'utilisation ou des ressources dont les droits sont clairement compatibles avec le jeu.
