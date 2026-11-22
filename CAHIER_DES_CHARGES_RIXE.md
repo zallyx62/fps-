@@ -669,6 +669,12 @@ Ces cinq fonctionnalités sont approuvées et planifiées. Elles ne sont pas con
 - Transmettre uniquement les informations que le joueur est autorisé à communiquer ; une indication directionnelle ou de position ne doit pas révéler une information inconnue du joueur.
 - Ajouter limitation de fréquence, mute, désactivation et protections anti-spam.
 - Adapter l'interface aux plateformes et périphériques pris en charge.
+- Ajouter quelques gestes tactiques silencieux déclenchés depuis la roue ou des raccourcis : « suivre », « rester ici », « danger », « zone à surveiller » et « besoin d'aide ».
+- Représenter le geste par une animation courte du personnage et, si nécessaire, un pictogramme discret pour les alliés ; ne pas révéler une information que le joueur ne connaît pas.
+- Rendre les gestes visibles uniquement dans des conditions cohérentes avec la visibilité réelle du personnage ; ne pas transmettre de signal à travers les murs ou à distance irréaliste.
+- Permettre de réduire ou désactiver les animations reçues, tout en conservant éventuellement le pictogramme ou le texte ; les gestes ne doivent jamais bloquer le tir, le rechargement, le sprint ou une action essentielle.
+- Répliquer seulement le type de geste et les informations utiles, avec des limites anti-spam ; ne pas attribuer de points ou de progression à leur répétition.
+- Prévoir des commandes accessibles au clavier et à la manette, configurables et compatibles avec les options d'accessibilité.
 
 ### 23.2 Échauffement pré-match de dix secondes — isolation totale des équipes
 - Avant le début officiel de chaque partie, prévoir une phase d'échauffement de **10 secondes**, inspirée des salons d'échauffement des anciens Call of Duty.
@@ -1303,6 +1309,9 @@ Les sept idées suivantes sont approuvées et ajoutées au cahier des charges. E
 - Répliquer uniquement les événements nécessaires ; privilégier des effets locaux déterministes lorsque l'état partagé n'a pas d'incidence sur le gameplay.
 - Préserver les performances sur les configurations modestes grâce à des budgets GPU, CPU, mémoire et réseau, des niveaux de détail et une désactivation contrôlée des effets secondaires.
 - Vérifier que les effets ne masquent pas les silhouettes, projectiles, objectifs ou indices visuels importants.
+- Ajouter, lorsque cela est pertinent, les douilles éjectées et quelques effets résiduels légers (poussière retombante, fumée qui se dissipe ou petites projections), avec une durée de vie courte et des limites strictes.
+- Distinguer les effets purement décoratifs des éléments qui modifient réellement la géométrie ou la collision ; les effets décoratifs ne doivent pas révéler d'information tactique supplémentaire.
+- Réduire ou désactiver automatiquement les effets secondaires selon la charge matérielle et proposer un réglage de densité, sans masquer les silhouettes, projectiles ou objectifs.
 
 ### 33.6 Dégâts par zone corporelle
 - Étudier des multiplicateurs de dégâts distincts pour les zones corporelles pertinentes (tête, torse, bras et jambes), définis arme par arme et mode par mode si nécessaire.
@@ -2272,57 +2281,3 @@ Créer un mode tactique en petites équipes de deux joueurs, fondé sur des manc
 - Réutiliser les équipes, salons, manches, arsenal, HUD, score, statistiques et règles réseau existants.
 - Prototyper une carte compacte et une courte séquence d'équipements identiques ; valider ensuite le changement de côté et les cas de déconnexion.
 - Mode facultatif ; ne doit pas retarder la première build Windows jouable. Respecter le budget de 0 €.
-
-## 60. Traces de combat persistantes — ajout approuvé le 22 novembre 2026
-
-Ajouter des traces visuelles temporaires qui permettent de lire l'histoire récente d'un affrontement dans l'environnement, sans transformer les cartes en scènes encombrées ni dégrader les performances.
-
-### 60.1 Types de traces
-- Afficher temporairement les impacts de balles sur les surfaces, avec une apparence cohérente avec le matériau touché.
-- Faire apparaître les douilles éjectées par les armes lorsque leur présence est pertinente ; leur nombre et leur durée d'affichage doivent être limités.
-- Ajouter des effets résiduels légers après certains événements : poussière retombante, fumée dissipée, petites projections ou marques de frottement.
-- Différencier les traces selon leur origine et leur intensité, sans afficher d'informations tactiques qui ne seraient pas normalement accessibles au joueur.
-- Éviter les traces permanentes qui s'accumuleraient au fil de la partie ; chaque catégorie possède une durée de vie et des règles de nettoyage définies.
-
-### 60.2 Cohérence multijoueur et performances
-- Les effets purement visuels peuvent être générés localement lorsque cela ne modifie ni collision, ni dégâts, ni information tactique ; les événements ayant un impact sur le gameplay restent validés par le serveur.
-- Définir des limites configurables de traces simultanées, de distance d'affichage et de durée, avec réduction automatique selon la charge matérielle.
-- Ne pas répliquer individuellement chaque douille ou particule si une représentation locale suffit ; limiter le trafic réseau aux événements réellement nécessaires.
-- Prévoir des réglages de densité ou de désactivation pour les joueurs privilégiant les performances et la lisibilité.
-- Tester les scènes chargées avec plusieurs joueurs, tirs automatiques, explosions et effets simultanés ; vérifier le coût CPU, GPU, mémoire et réseau.
-- Garantir que les traces ne masquent pas les adversaires, les viseurs, les objectifs ou les éléments importants de l'interface.
-
-### Priorités et critères communs
-- Commencer par les impacts de balles et quelques effets résiduels simples ; ajouter les douilles après mesure de leur coût.
-- Réutiliser les matériaux, effets et systèmes de nettoyage existants lorsqu'ils conviennent.
-- Les traces restent décoratives : elles ne doivent pas révéler une position au-delà des informations déjà perceptibles ni influencer les dégâts ou les collisions.
-
-## 61. Communication gestuelle silencieuse entre coéquipiers — ajout approuvé le 22 novembre 2026
-
-Ajouter un petit ensemble de gestes tactiques non vocaux permettant aux coéquipiers de communiquer rapidement lorsqu'ils ne souhaitent pas utiliser le chat vocal ou lorsque le silence est préférable.
-
-### 61.1 Gestes disponibles
-- Prévoir un ensemble limité de gestes immédiatement reconnaissables : « suivre », « rester ici », « danger », « zone à surveiller », « merci » et « besoin d'aide ».
-- Permettre de déclencher les gestes depuis une roue de communication ou des raccourcis configurables, sans interrompre durablement les déplacements ou le combat.
-- Afficher le geste par une animation courte du personnage et, si nécessaire, un pictogramme discret compréhensible par les alliés.
-- Associer certains gestes à une direction ou à un point du monde désigné par le joueur, sans créer de marqueur permanent ni remplacer le système de ping déjà prévu.
-- Limiter la durée et la fréquence des animations pour éviter le spam et ne pas gêner la visibilité.
-
-### 61.2 Règles d'utilisation et lisibilité
-- Les gestes sont visibles uniquement dans des conditions cohérentes avec la visibilité réelle du personnage ; ne pas afficher à distance ou à travers les murs une information qui ne pourrait pas être perçue.
-- Distinguer clairement les gestes alliés des animations adverses, sans donner d'avantage artificiel à une équipe.
-- Prévoir une option permettant de réduire ou désactiver les animations gestuelles reçues, tout en conservant éventuellement leur indication textuelle ou pictographique.
-- Ne pas attribuer de points ou de progression à la répétition des gestes ; empêcher leur utilisation comme source de farming.
-- Les gestes ne remplacent ni le chat vocal, ni les marqueurs tactiques, ni les outils d'accessibilité déjà spécifiés.
-
-### 61.3 Multijoueur et accessibilité
-- Répliquer de manière fiable le déclenchement, le type de geste et, le cas échéant, la direction associée, sans transmettre inutilement des données d'animation à haute fréquence.
-- Prévoir des commandes accessibles au clavier, à la manette et aux périphériques pris en charge ; permettre la reconfiguration des raccourcis.
-- Tester les interruptions par tir, rechargement, sprint, saut, élimination et changement d'arme ; l'animation ne doit jamais bloquer une action essentielle.
-- Éviter les gestes ambigus, offensants ou trop longs ; documenter leur signification dans l'interface.
-
-### Priorités et critères communs
-- Commencer avec quelques gestes universels et des animations courtes, puis étendre uniquement si leur usage réel le justifie.
-- Réutiliser les systèmes d'animation, de communication, de marqueurs et de réplication existants.
-- Fonctionnalité facultative, sans avantage statistique ou compétitif ; respecter les priorités de livraison et le budget de 0 €.
-
