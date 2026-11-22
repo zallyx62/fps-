@@ -1913,3 +1913,72 @@ Créer un mode indépendant des parties compétitives dans lequel les joueurs pa
 - Tester la précision du chronométrage, la reproductibilité des temps, les collisions, les raccourcis, les performances et les transitions audio.
 - La musique doit rester facultative et ne jamais masquer les informations sonores utiles dans les autres modes.
 - Fonction secondaire : ne pas retarder la première build Windows jouable et respecter le budget de 0 €.
+
+
+## 49. Mode Recherche et destruction — ajout approuvé le 22 novembre 2026
+
+Créer un mode tactique en manches inspiré du principe classique « Search and Destroy » de Call of Duty, avec une identité, des cartes et une présentation propres à RIXE.
+
+### 49.1 Objectifs et déroulement des manches
+- Deux équipes alternent les rôles d'attaque et de défense.
+- L'équipe attaquante doit installer un dispositif sur l'un des sites désignés (par exemple A ou B), puis empêcher son désamorçage jusqu'à la fin du compte à rebours.
+- L'équipe défensive doit empêcher l'installation ou désamorcer le dispositif après sa pose.
+- Une manche peut également être remportée par élimination complète de l'équipe adverse, selon les règles précises du mode.
+- Prévoir une seule vie par joueur et par manche : aucune réapparition après élimination avant la manche suivante.
+- Définir une durée de manche, une durée d'installation et une durée de désamorçage configurables et équilibrées.
+- Après un nombre défini de manches, les équipes échangent leurs rôles. Prévoir un nombre de manches gagnantes et, si nécessaire, des manches supplémentaires pour départager une égalité.
+- Afficher clairement le temps restant, l'état du dispositif, le nombre de joueurs encore en vie et le résultat de chaque manche.
+- Permettre de regarder ses coéquipiers après élimination, avec les restrictions anti-triche et anti-fuite d'information adaptées.
+
+### 49.2 Équilibrage et règles compétitives
+- Concevoir des cartes avec plusieurs itinéraires viables, des sites distincts, des possibilités de rotation et des positions défensives contestables.
+- Éviter les sites impossibles à reprendre, les angles sans contre-jeu, les apparitions trop proches des sites et les raccourcis exploitables.
+- Garantir des conditions équitables lors du changement de côté : mêmes équipements autorisés, mêmes règles et mêmes conditions de départ.
+- Définir les règles d'égalité, de fin de manche, de déconnexion, d'abandon et de reconnexion sans créer d'avantage artificiel.
+- Prévoir des variantes non classées et, uniquement lorsque l'intégrité des résultats est garantie, une version classée avec règles verrouillées.
+- Réutiliser les systèmes de groupes, de lobby, de score et de statistiques déjà prévus ; ne pas créer un système parallèle.
+- Les statistiques du mode doivent distinguer notamment installations, désamorçages, éliminations, survies et contributions aux objectifs.
+
+### Priorités et critères communs
+- Ce mode constitue une playlist tactique distincte des modes à réapparitions ; il doit être clairement présenté avant la recherche de partie.
+- Prototyper d'abord une carte et des règles simples, puis tester l'équilibre des deux côtés avec des équipes de niveaux variés.
+- Tester les cas limites : éliminations simultanées, dispositif posé à la dernière seconde, désamorçage interrompu, déconnexion, reconnexion, égalité et fin de temps.
+- Ne pas commencer son développement avant la stabilisation du combat, des dégâts, du réseau, des réapparitions et de la première build jouable.
+- Respecter le budget de 0 €, les règles d'autorité serveur et les exigences anti-triche.
+
+## 50. Campagne scénarisée coopérative — ajout approuvé le 22 novembre 2026
+
+Créer une campagne originale dans l'univers de RIXE, jouable en solo avec des alliés contrôlés par l'IA et, si la technique le permet, en coopération avec d'autres joueurs. L'histoire, les personnages et le monde restent à concevoir : aucune intrigue ni aucun personnage ne sont considérés comme déjà décidés.
+
+### 50.1 Création de l'univers et de l'histoire
+- Écrire une véritable histoire originale adaptée à l'identité de RIXE : contexte du conflit, factions, motivations, enjeux, événements déclencheurs et conséquences.
+- Créer une bible narrative avant la production des missions : chronologie, géographie, factions, personnages, relations, vocabulaire, règles de l'univers et éléments de continuité.
+- Définir un protagoniste ou une escouade identifiable, des alliés récurrents et des antagonistes avec des motivations compréhensibles.
+- Construire une progression narrative cohérente avec un début, des développements, des révélations, un climax et une conclusion. Éviter une simple succession de missions sans lien.
+- Prévoir des dialogues et des séquences narratives courtes intégrées au rythme du FPS, sans imposer de longues interruptions répétitives.
+- Les choix du joueur peuvent influencer certaines situations, relations, objectifs secondaires ou conséquences, à condition que leurs effets soient compréhensibles et réalisables dans le budget du projet.
+- Garder une cohérence entre la campagne, les cartes multijoueurs et l'univers général de RIXE, sans rendre la campagne obligatoire pour comprendre le multijoueur.
+
+### 50.2 Missions et expérience de jeu
+- Construire plusieurs missions variées avec des objectifs clairs : progression au combat, défense, récupération, sabotage, évacuation, reconnaissance ou affrontements majeurs.
+- Alterner combats intenses, déplacements, moments de préparation et séquences narratives pour éviter la répétition.
+- Proposer des environnements et situations distincts, avec une progression de difficulté maîtrisée.
+- Intégrer des objectifs principaux et, lorsque cela apporte un intérêt réel, des objectifs secondaires facultatifs.
+- Prévoir des checkpoints, sauvegardes fiables et reprise de mission après fermeture ou déconnexion.
+- Permettre de rejouer les missions et de consulter les objectifs accomplis sans obliger à recommencer toute la campagne.
+- Éviter les séquences artificiellement longues ou les passages qui retirent durablement le contrôle au joueur.
+
+### 50.3 Solo, coopération et IA
+- Permettre de jouer seul avec des coéquipiers IA dont les comportements soutiennent le joueur sans accomplir systématiquement les objectifs à sa place.
+- Étudier la coopération en ligne, avec progression de mission synchronisée, difficulté adaptée au nombre de participants et règles claires pour les départs/reconnexions.
+- Définir comment les choix narratifs et la progression sont enregistrés en coopération : hôte, progression individuelle, décisions communes et reprise d'une session.
+- Prévoir des difficultés réglables, avec des adversaires et ressources adaptés sans modifier arbitrairement les règles fondamentales.
+- Les bots doivent rester utiles, lisibles et testables ; ne pas dépendre d'un modèle d'apprentissage expérimental pour faire fonctionner la campagne.
+
+### Priorités et critères communs
+- La campagne est une extension importante, distincte du multijoueur compétitif ; elle ne doit pas retarder la première build Windows jouable ni les fondations réseau.
+- Commencer par un document de conception narrative, puis un synopsis global, les personnages principaux, l'arc de l'histoire et le découpage des missions avant de produire tous les niveaux.
+- Réaliser d'abord une mission verticale complète pour valider gunplay, IA, rythme, sauvegarde, dialogues et performance.
+- Privilégier des dialogues écrits et des ressources audio originales ou clairement licenciées. Ne pas engager de dépenses de doublage, d'assets ou de services sans autorisation explicite ; budget actuel : 0 €.
+- Tester la continuité narrative, les checkpoints, les sauvegardes, les difficultés, les bots et les scénarios coopératifs réellement pris en charge.
+- Ne déclarer la campagne terminée qu'après validation de toutes les missions incluses, de leur conclusion et de la sauvegarde de progression.
