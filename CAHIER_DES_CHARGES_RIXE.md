@@ -709,6 +709,9 @@ Ces cinq fonctionnalités sont approuvées et planifiées. Elles ne sont pas con
 - Demander une confirmation pour les actions destructrices ou difficiles à annuler, par exemple supprimer un profil local ou réinitialiser des paramètres.
 - Prévoir une restauration des paramètres par défaut et, lorsque cela est faisable, une sauvegarde des configurations avant modification.
 - Permettre plusieurs profils de commandes et de réglages sans écraser accidentellement le profil actif.
+- Étendre cette gestion avec des profils de commandes associés à un contexte choisi (par exemple entraînement, menus ou partie), avec sélection automatique uniquement si le joueur l'active.
+- Permettre de nommer, dupliquer, importer et exporter les profils dans des formats sûrs ; signaler les conflits et périphériques/commandes indisponibles avant application.
+- Préserver un profil global de secours, permettre le retour au profil précédent et éviter toute modification silencieuse des affectations.
 - Éviter les confirmations répétitives pour les actions quotidiennes non risquées.
 - Ne jamais présenter une suppression distante ou une restauration cloud comme réversible si elle ne l'est pas réellement.
 
@@ -2458,4 +2461,99 @@ Permettre au joueur d'exporter une copie exploitable de ses propres statistiques
 ### Validation
 - Tester les fichiers CSV/JSON, les caractères internationaux, les grands historiques, les filtres de période, les données incomplètes et les autorisations.
 - Vérifier que l'export ne ralentit pas les menus et qu'il ne révèle aucune donnée non autorisée.
+
+
+
+## 66. Gestionnaire intelligent des mises à jour — ajout approuvé le 23 novembre 2026
+
+Améliorer le téléchargement et l'installation des mises à jour de RIXE afin de donner au joueur davantage de contrôle sur les téléchargements, leur consommation de ressources et leur fiabilité.
+
+### 66.1 Contrôle des téléchargements
+- Afficher la taille totale estimée d'une mise à jour et, lorsque l'information est disponible, la quantité réellement à télécharger après déduction des fichiers déjà présents.
+- Permettre de mettre en pause, reprendre ou annuler un téléchargement sans corrompre l'installation.
+- Proposer une limite facultative de débit afin de ne pas saturer la connexion pendant que le joueur utilise d'autres services.
+- Indiquer la progression, le débit, le temps restant estimé et l'espace disque nécessaire, en précisant qu'une estimation peut varier.
+- Distinguer le téléchargement, la vérification, la préparation et l'installation ; expliquer lorsqu'un redémarrage du jeu est nécessaire.
+
+### 66.2 Fiabilité et consommation
+- Étudier les mises à jour différentielles afin de ne télécharger que les éléments modifiés lorsque cela est techniquement fiable et réellement avantageux.
+- Vérifier l'intégrité des fichiers téléchargés et reprendre proprement après une coupure réseau ou un arrêt inattendu.
+- Prévoir une vérification/réparation des fichiers du jeu sans imposer une réinstallation complète lorsque les éléments peuvent être réparés individuellement.
+- Éviter les écritures et vérifications inutiles sur le disque ; prévenir avant toute opération exigeant un espace temporaire important.
+- Ne jamais supprimer les fichiers personnels ou configurations du joueur lors d'une mise à jour.
+
+### 66.3 Contraintes et validation
+- Privilégier une solution compatible avec le budget cible de 0 €, sans service payant obligatoire.
+- Tester les téléchargements interrompus, les fichiers corrompus, les espaces disque insuffisants, les limites de débit et les mises à jour de tailles différentes.
+- Mesurer le gain réel des mises à jour différentielles et conserver une méthode de mise à jour complète de secours.
+
+## 67. Vérification des périphériques audio avant une partie — ajout approuvé le 23 novembre 2026
+
+Ajouter un contrôle audio facultatif avant de rejoindre une partie afin que le joueur puisse vérifier rapidement son microphone, son casque ou ses haut-parleurs et éviter de découvrir un problème une fois la partie commencée.
+
+### 67.1 Test du microphone
+- Permettre au joueur d'enregistrer ou d'écouter un court aperçu de sa voix, avec une indication claire du niveau détecté.
+- Afficher le périphérique d'entrée actuellement sélectionné et permettre de choisir un autre microphone disponible.
+- Signaler les situations courantes : microphone muet, périphérique débranché, autorisation système refusée, niveau trop faible ou signal saturé.
+- Permettre de vérifier le fonctionnement du push-to-talk et de son raccourci sans diffuser le test aux autres joueurs.
+
+### 67.2 Test de sortie audio
+- Permettre de sélectionner le casque ou les haut-parleurs et de jouer un signal de test clairement identifiable.
+- Aider à détecter une sortie incorrecte, un périphérique indisponible ou un volume de sortie nul.
+- Vérifier séparément les canaux gauche et droit lorsque le matériel le permet.
+- Ne pas modifier automatiquement les volumes système ou les périphériques par défaut sans accord du joueur.
+
+### 67.3 Respect du joueur et validation
+- Rendre le test facultatif, rapide, accessible depuis les réglages et le lobby, sans bloquer l'accès à une partie.
+- Ne pas enregistrer ni conserver les échantillons vocaux du test ; les supprimer à la fin de celui-ci.
+- Ne pas considérer l'absence de microphone comme une anomalie empêchant de jouer.
+- Tester les périphériques USB, Bluetooth et analogiques, les changements à chaud, les autorisations système et les configurations multi-sorties.
+
+## 68. Tableau de santé des services RIXE — ajout approuvé le 23 novembre 2026
+
+Créer une page d'état des services permettant aux joueurs de savoir si les fonctions en ligne de RIXE rencontrent un incident, plutôt que de confondre une panne générale avec un problème de leur installation ou de leur connexion.
+
+### 68.1 Services et informations affichés
+- Présenter séparément l'état des services réellement déployés, par exemple authentification, groupes et invitations, matchmaking, sessions de jeu, statistiques et services communautaires.
+- Afficher des états simples et compréhensibles : opérationnel, dégradé, indisponible ou maintenance planifiée.
+- Indiquer les régions concernées lorsqu'un incident est régionalisé.
+- Afficher l'heure de début connue, la dernière actualisation et, lorsqu'elle est confirmée, une estimation de rétablissement.
+- Présenter les maintenances planifiées et un historique concis des incidents récents.
+
+### 68.2 Fiabilité de l'information
+- Ne jamais afficher un service comme opérationnel si son état n'a pas pu être vérifié ; distinguer « état inconnu » d'un fonctionnement normal.
+- Éviter les estimations de résolution non confirmées et horodater les informations.
+- Prévoir une mise à jour automatique raisonnablement espacée et un rafraîchissement manuel.
+- Garder la page consultable même lorsqu'un service principal est indisponible, dans la mesure permise par l'architecture.
+- Ne pas exposer d'informations internes sensibles, de données personnelles ou de détails facilitant une attaque.
+
+### 68.3 Contraintes et validation
+- Concevoir le système pour qu'il reste léger et compatible avec le budget cible de 0 €, sans dépendance obligatoire à une plateforme de statut payante.
+- Tester les pannes partielles, les états incohérents, les changements de région, les maintenances et l'indisponibilité du système de statut lui-même.
+- Ne déclarer que les composants réellement surveillés ; ne pas simuler une surveillance qui n'existe pas.
+
+## 69. Signalement de bugs avec rapport technique facultatif — ajout approuvé le 23 novembre 2026
+
+Permettre au joueur de transmettre un signalement de bug structuré depuis RIXE afin de faciliter la reproduction et la correction des problèmes, sans lui demander de connaître les détails techniques.
+
+### 69.1 Création du signalement
+- Proposer une entrée accessible depuis les menus et, lorsque cela est pertinent, depuis l'écran de fin de partie.
+- Permettre de décrire le problème en texte libre et de choisir une catégorie : crash, problème visuel, audio, commandes, réseau, interface ou gameplay.
+- Proposer des champs facultatifs pour préciser les étapes permettant de reproduire le problème, le résultat attendu et le résultat observé.
+- Associer automatiquement, uniquement si le joueur l'autorise, les informations utiles comme la version du jeu, le numéro de build, la plateforme et le contexte général de survenue.
+- Permettre de joindre une capture d'écran ou une courte séquence lorsque cela est pris en charge et explicitement choisi par le joueur.
+
+### 69.2 Rapport technique et confidentialité
+- Proposer séparément un rapport technique facultatif contenant uniquement les éléments utiles au diagnostic, par exemple journaux pertinents, catégorie d'erreur, informations matérielles générales et état de connexion résumé.
+- Présenter un aperçu des données techniques qui seront envoyées et demander un consentement explicite avant leur transmission.
+- Exclure les mots de passe, jetons d'authentification, contenus privés du joueur et données personnelles non nécessaires.
+- Ne pas enregistrer le chat vocal ni transmettre les conversations privées dans le cadre d'un rapport de bug.
+- Permettre l'envoi sans rapport technique et afficher clairement si le signalement a été transmis, mis en attente ou n'a pas pu être envoyé.
+- Prévoir une file locale temporaire et une suppression possible des rapports en attente avant leur transmission.
+
+### 69.3 Suivi et validation
+- Fournir un identifiant de signalement permettant au joueur de retrouver son envoi et son état général, sans promettre une réponse individuelle.
+- Éviter les envois multiples involontaires et permettre de compléter un rapport existant lorsque c'est possible.
+- Tester les rapports incomplets, les pièces jointes, les échecs réseau, les autorisations et la suppression des données sensibles.
+- Respecter le budget cible de 0 € ; le volume de stockage et de traitement des rapports doit être maîtrisé.
 
