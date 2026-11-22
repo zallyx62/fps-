@@ -1296,6 +1296,14 @@ Les huit idées suivantes sont approuvées et ajoutées au cahier des charges. E
 - Le renvoi ne doit ni réinitialiser la fusée, ni modifier artificiellement les dégâts, ni garantir que la grenade atteigne un adversaire ; conserver une trajectoire physique cohérente et un contre-jeu possible.
 - Limiter cette interaction aux types de grenades dont la forme et le fonctionnement la rendent plausible ; désactiver ou adapter la mécanique dans les modes où elle déséquilibrerait les affrontements.
 
+
+- Ajouter une grenade adhésive (« grenade collante ») capable de se fixer aux surfaces compatibles — murs, plafonds et certains objets — au point d'impact, avant sa détonation selon une temporisation définie.
+- Définir précisément les surfaces autorisées, le comportement en cas d'impact sur un joueur ou un objet mobile, ainsi que les règles de rebond ou de chute lorsque l'adhérence n'est pas possible ; ne jamais permettre de traverser la géométrie.
+- Conserver un délai de détonation lisible et cohérent ; la fusée reste continue et validée par le serveur. Le joueur qui la lance ne peut pas la récupérer ni la réinitialiser après fixation.
+- Prévoir un contre-jeu proportionné : signal visuel/sonore perceptible, possibilité de s'éloigner ou de quitter la zone menacée, et éventuelle neutralisation uniquement si elle est testée et équilibrée.
+- Limiter le nombre transporté et les conditions de réapprovisionnement ; tester les interactions avec cuisson, renvoi des grenades, dégâts, physique, latence et collisions en multijoueur.
+- Traiter cette grenade comme un équipement distinct, facultatif et non systématiquement supérieur aux grenades classiques ; vérifier son équilibre sur chaque carte et dans chaque mode compatible.
+
 ### 33.3 Audio spatial intelligent
 - Améliorer la spatialisation des tirs, pas, rechargements, explosions et autres sons utiles selon la distance, la direction, les obstacles, les portes, les étages et les matériaux.
 - Appliquer une occlusion et une atténuation cohérentes lorsqu'un mur, une porte ou un obstacle sépare la source du joueur ; éviter qu'un son traverse artificiellement plusieurs surfaces.
