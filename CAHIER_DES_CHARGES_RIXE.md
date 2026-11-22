@@ -1263,9 +1263,9 @@ Ces ajouts complètent les systèmes d'armurerie, de personnalisation, de progre
 - Ne pas retarder la première build jouable pour ces fonctionnalités ; les livrer progressivement après validation du socle gameplay et réseau.
 
 
-## 33. Destruction tactique, lancer de grenades, audio spatial et approfondissement du combat — sept ajouts approuvés le 19 novembre 2026
+## 33. Destruction tactique, lancer de grenades, audio spatial et approfondissement du combat — huit ajouts approuvés le 19 novembre 2026
 
-Les sept idées suivantes sont approuvées et ajoutées au cahier des charges. Elles restent planifiées tant qu'elles ne sont pas implémentées, testées et validées sur une build réelle. Elles ne doivent pas retarder la première build jouable ni compromettre l'équilibre compétitif, la lisibilité ou les performances.
+Les huit idées suivantes sont approuvées et ajoutées au cahier des charges. Elles restent planifiées tant qu'elles ne sont pas implémentées, testées et validées sur une build réelle. Elles ne doivent pas retarder la première build jouable ni compromettre l'équilibre compétitif, la lisibilité ou les performances.
 
 ### 33.1 Destruction tactique limitée des décors
 - Autoriser la destruction de certains éléments de couverture clairement identifiés : panneaux, cloisons légères, barricades, portes ou ouvertures prévues par le level design.
@@ -1290,6 +1290,11 @@ Les sept idées suivantes sont approuvées et ajoutées au cahier des charges. E
 - La durée restante est gérée par le serveur et continue pendant le lancer, les rebonds et les déplacements ; aucune pause, réinitialisation ou duplication de fusée ne doit être possible.
 - Autoriser l'explosion avant le lancer si le joueur attend trop longtemps, avec les risques normaux pour lui-même et ses alliés ; ne pas garantir un lancer à la dernière fraction de seconde.
 - Réserver cette mécanique aux types de grenades dont le fonctionnement le justifie ; elle ne doit pas être appliquée automatiquement à tous les équipements explosifs.
+- Pour les grenades compatibles, permettre à un joueur de tenter de les repousser ou de les renvoyer vers leur zone d'origine lorsqu'elles sont encore accessibles et suffisamment éloignées de leur explosion.
+- Définir une fenêtre d'interaction courte, une portée et une animation dédiées ; l'action doit être volontaire, lisible et exposer le joueur à un risque réel pendant son exécution.
+- Ne pas permettre de renvoyer une grenade déjà explosée, inaccessible, derrière un obstacle ou trop proche de sa détonation ; la cuisson et le temps de fusée restent continus et sous autorité serveur.
+- Le renvoi ne doit ni réinitialiser la fusée, ni modifier artificiellement les dégâts, ni garantir que la grenade atteigne un adversaire ; conserver une trajectoire physique cohérente et un contre-jeu possible.
+- Limiter cette interaction aux types de grenades dont la forme et le fonctionnement la rendent plausible ; désactiver ou adapter la mécanique dans les modes où elle déséquilibrerait les affrontements.
 
 ### 33.3 Audio spatial intelligent
 - Améliorer la spatialisation des tirs, pas, rechargements, explosions et autres sons utiles selon la distance, la direction, les obstacles, les portes, les étages et les matériaux.
@@ -2162,6 +2167,17 @@ Cette section formalise sept décisions de gameplay explicitement approuvées. E
 - Valider le mode actif et les tirs côté serveur ; synchroniser le changement de mode et empêcher les changements impossibles, les tirs supplémentaires ou les désynchronisations en cas de latence.
 - Définir le comportement à la réapparition, au ramassage d'une arme, au changement d'arme et lors d'une partie avec équipement verrouillé ; ne pas contourner les règles des modes à équipement imposé.
 - Prévoir une option d'accessibilité et une indication claire pour clavier/souris et manette ; tester les erreurs de commande et les changements involontaires en combat.
+
+### 55.8 Caisses de ravitaillement à stock limité
+- Ajouter sur certaines cartes ou dans les règles de certains modes des caisses de ravitaillement permettant de récupérer une quantité limitée de munitions et, si le mode l'autorise, un équipement compatible.
+- Définir un stock commun clairement borné pour chaque caisse ; chaque utilisation consomme réellement une quantité disponible et une caisse vide ne fournit rien tant qu'elle n'a pas été réapprovisionnée selon les règles prévues.
+- Déterminer à l'avance si les caisses sont neutres ou réservées à une équipe ; afficher leur disponibilité et leur état de manière identique et compréhensible pour tous les joueurs concernés.
+- Prévoir des quantités, délais de réapprovisionnement et conditions d'accès équilibrés ; éviter qu'une équipe contrôle indéfiniment une caisse ou qu'un joueur monopolise toutes les ressources.
+- Le serveur valide les interactions, le stock, les consommations et les éventuels réapprovisionnements ; empêcher les doubles prélèvements, duplications, demandes simultanées incohérentes et abus de latence.
+- Ne pas transformer les caisses en source illimitée de grenades, de capacités ou d'équipements puissants ; respecter les restrictions de chaque mode et les limites de transport du joueur.
+- Leur emplacement doit être lisible et contestable, sans créer de position dominante ni rendre le ravitaillement obligatoire pour gagner ; prévoir des alternatives par l'arsenal de départ ou les ressources normales du mode.
+- Commencer par un prototype avec munitions uniquement, puis n'ajouter d'autres ressources qu'après mesure de leur impact sur le rythme, l'équilibre et les performances.
+- Réutiliser les systèmes d'interaction, d'inventaire, de munitions et de réplication existants ; respecter le budget de 0 € et ne pas dépendre d'un service externe payant.
 
 ### Priorités et critères communs
 - Réutiliser les systèmes d'armes, d'accessoires, de dégâts, de munitions, de repérage et de score déjà prévus.
