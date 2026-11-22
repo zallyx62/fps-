@@ -2374,3 +2374,88 @@ Ajouter un diagnostic réseau facultatif, accessible avant de rejoindre une part
 - Tester les pertes, la gigue, les pics de latence, les points de mesure indisponibles, les réseaux mobiles ou limités et les changements de région.
 - Confirmer que le diagnostic ne retarde pas excessivement l'accès à une partie, ne consomme pas de bande passante de façon disproportionnée et ne modifie pas l'équité du matchmaking.
 
+## 62. Traduction instantanée du chat textuel — ajout approuvé le 22 novembre 2026
+
+Ajouter une traduction facultative des messages du chat textuel afin de faciliter les échanges entre joueurs qui ne parlent pas la même langue.
+
+### 62.1 Fonctionnement
+- Permettre au joueur de choisir sa langue de traduction et de consulter la traduction d'un message reçu directement dans le chat.
+- Conserver un accès simple au texte original, affichable à la demande ou en parallèle de la traduction.
+- Permettre de désactiver la traduction globalement ou pour certains joueurs/canaux lorsque cette granularité est disponible.
+- Signaler visuellement qu'un texte est une traduction automatique et non le message original.
+- Ne jamais modifier le message source stocké ou transmis aux outils de modération.
+
+### 62.2 Fiabilité, confidentialité et modération
+- Afficher clairement qu'une traduction peut être approximative, notamment pour l'argot, les abréviations, les expressions et les messages très courts.
+- Ne pas traduire silencieusement les noms de joueurs, identifiants, codes de salon ou commandes qui doivent rester exacts.
+- Appliquer les règles de sécurité et de modération au message original ; ne pas considérer une erreur de traduction comme une preuve suffisante pour sanctionner un joueur.
+- Éviter l'envoi de conversations à un service tiers sans information claire et base technique/juridique appropriée. Privilégier une solution gratuite et respectueuse de la vie privée ; si aucune solution adaptée au budget de 0 € n'est disponible, différer la fonction plutôt que d'introduire un coût caché.
+- Prévoir un comportement de secours lorsque le service de traduction est indisponible : afficher le texte original sans bloquer le chat.
+
+### Validation
+- Tester les langues prises en charge, les caractères spéciaux, les messages longs, l'argot, les erreurs de service et le retour au texte original.
+- Vérifier que la traduction ne retarde pas sensiblement l'affichage du chat et ne contourne ni filtres, ni blocages, ni signalements.
+
+## 63. Centre d'aide interactif intégré — ajout approuvé le 22 novembre 2026
+
+Créer une rubrique d'aide accessible depuis les menus de RIXE, destinée à expliquer les fonctionnalités et à guider le joueur sans l'obliger à consulter des ressources externes.
+
+### 63.1 Contenu et recherche
+- Organiser les explications par thèmes : commandes, réglages, armes, accessoires, modes, groupes, compte, réseau, accessibilité et fonctionnalités communautaires.
+- Proposer une recherche par mots-clés et des réponses courtes, illustrées si utile, avec des étapes clairement ordonnées.
+- Ajouter des aides contextuelles accessibles depuis les écrans concernés, sans interrompre la partie ni imposer des fenêtres répétitives.
+- Prévoir des explications adaptées aux erreurs courantes et aux messages affichés par le jeu.
+- Rendre consultables hors connexion les informations essentielles déjà installées avec le jeu.
+
+### 63.2 Maintenance et expérience
+- Versionner les articles et les associer à la version du jeu afin d'éviter les instructions obsolètes.
+- Permettre de signaler une explication incorrecte ou devenue obsolète, sans transformer ce mécanisme en canal de signalement des joueurs.
+- Garder l'interface légère, accessible à la manette et au clavier/souris, traduisible et cohérente avec les menus arrondis de RIXE.
+- Ne pas dépendre d'un service payant obligatoire ni d'une IA distante pour les fonctions essentielles.
+
+### Validation
+- Vérifier la pertinence des résultats de recherche, les liens entre aides contextuelles et articles, les traductions, l'affichage sur différentes résolutions et la disponibilité hors ligne des contenus essentiels.
+
+## 64. Pause technique encadrée pour les parties privées — ajout approuvé le 22 novembre 2026
+
+Permettre une pause technique limitée dans les parties privées et les rencontres de tournoi compatibles, afin de gérer un incident matériel ou réseau ponctuel sans fausser le résultat.
+
+### 64.1 Règles de pause
+- Autoriser un nombre limité de pauses par équipe ou par rencontre, avec une durée maximale configurable par le créateur ou le règlement du tournoi.
+- Afficher clairement l'équipe ou le joueur à l'origine de la demande, le motif sélectionné et le temps restant.
+- Synchroniser l'arrêt et la reprise pour tous les participants, sous autorité serveur lorsque l'architecture le permet.
+- Prévoir une reprise annoncée avec un court compte à rebours, afin que tous les joueurs soient prêts.
+- Définir le traitement des joueurs qui restent absents à la fin du délai : reprise, forfait ou autre procédure selon le règlement de la rencontre.
+- Réserver cette fonction aux contextes privés/compétitifs explicitement compatibles ; ne pas l'activer dans les parties publiques ordinaires.
+
+### 64.2 Prévention des abus et intégrité
+- Empêcher les demandes répétées, les pauses en chaîne et l'utilisation de la fonction pour casser le rythme ou obtenir un avantage tactique.
+- Ne pas permettre de modifier les équipes, équipements, règles ou paramètres de la rencontre pendant la pause, sauf disposition explicitement prévue par le règlement.
+- Journaliser les demandes, durées et reprises pour permettre aux organisateurs de traiter les contestations.
+- Prévoir une procédure de reprise sûre en cas de déconnexion de l'hôte ou d'un participant pendant la pause.
+
+### Validation
+- Tester les demandes simultanées, les limites de durée, les refus, les déconnexions, les reprises synchronisées et les abus possibles.
+- Vérifier que l'état de partie, le chronomètre, les objectifs et les statistiques reprennent sans duplication ni perte d'événement.
+
+## 65. Export détaillé des statistiques personnelles — ajout approuvé le 22 novembre 2026
+
+Permettre au joueur d'exporter une copie exploitable de ses propres statistiques afin de réaliser des analyses personnelles avec des outils externes.
+
+### 65.1 Données et formats
+- Proposer des formats ouverts et courants, notamment CSV et JSON, lorsque les données concernées sont disponibles.
+- Laisser le joueur choisir les catégories et la période : statistiques globales, par partie, carte, arme, mode ou période, selon les données effectivement enregistrées.
+- Inclure les définitions des champs, unités, dates et versions nécessaires pour interpréter correctement les données.
+- Distinguer les valeurs calculées, les valeurs validées par le serveur et les données indisponibles ou incomplètes.
+- Permettre un export local déclenché par le joueur, sans abonnement, service cloud payant ni publication automatique.
+
+### 65.2 Confidentialité et limites
+- N'exporter que les données personnelles du joueur et les informations agrégées ou anonymisées autorisées ; exclure les données privées et identifiants sensibles des autres joueurs.
+- Respecter les paramètres de confidentialité, les règles de conservation et les droits applicables aux données du compte.
+- Indiquer clairement les limites de l'export et ne pas présenter les données manquantes comme des statistiques nulles.
+- Ne pas garantir un historique antérieur à la mise en place effective de la collecte.
+
+### Validation
+- Tester les fichiers CSV/JSON, les caractères internationaux, les grands historiques, les filtres de période, les données incomplètes et les autorisations.
+- Vérifier que l'export ne ralentit pas les menus et qu'il ne révèle aucune donnée non autorisée.
+
