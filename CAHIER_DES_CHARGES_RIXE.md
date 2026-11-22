@@ -1515,7 +1515,6 @@ Cette section formalise le veto compétitif approuvé et la règle de circulatio
 - Ajouter les rivalités personnelles ensuite, à partir des statistiques déjà disponibles et avec les contrôles de confidentialité.
 - Ouvrir le laboratoire communautaire lorsque les modes officiels, les statistiques et les outils de modération sont suffisamment stables.
 - Ces trois fonctions ne doivent jamais retarder la première build jouable, la correction du secret exposé dans le dépôt, l'audit des licences, la stabilité réseau ou les fonctionnalités essentielles.
-- Respecter le budget de 0 € : aucun service payant, hébergement supplémentaire ou abonnement sans accord explicite.
 
 ## 39. Choix du matchmaking, protection des débutants et recommandations entre joueurs — trois décisions approuvées le 19 novembre 2026
 
@@ -1565,7 +1564,6 @@ Cette section formalise le veto compétitif approuvé et la règle de circulatio
 - Déployer la protection des débutants uniquement après stabilisation des données de niveau, du matchmaking et du remplissage transparent par bots.
 - Ajouter les recommandations positives en dernier, après validation des outils de modération, de confidentialité et d'anti-abus.
 - Ces fonctions ne doivent pas retarder la première build jouable, les corrections réseau, l'audit de licence ou la sécurisation du dépôt.
-- Respecter le budget de 0 € : aucun service payant, hébergement supplémentaire ou abonnement sans accord explicite.
 
 ## 40. Fin de partie équilibrée, partage de configurations et meilleurs moments — trois décisions approuvées le 19 novembre 2026
 
@@ -1611,7 +1609,6 @@ Cette section formalise le veto compétitif approuvé et la règle de circulatio
 - Le système de meilleurs moments dépend de la fiabilité du replay et doit commencer par une sélection simple, sans montage complexe ni service cloud.
 - La fin anticipée est la plus sensible pour l'équité : la tester longuement en parties publiques non classées avant d'envisager d'autres modes ; la désactiver si les abus ne peuvent pas être maîtrisés.
 - Ces fonctions ne doivent jamais retarder la première build jouable, la sécurité du dépôt, l'audit des licences ou la stabilité réseau.
-- Respecter le budget de 0 € : aucun service payant, hébergement supplémentaire ou abonnement sans accord explicite.
 
 ## 41. Rematch amical en duel — décision approuvée le 19 novembre 2026
 
@@ -1633,7 +1630,6 @@ Cette section formalise le veto compétitif approuvé et la règle de circulatio
 - Commencer par une seule règle de duel, une carte adaptée et un équipement symétrique ; élargir seulement après tests.
 - Tester l'équité réseau, la reconnexion, le refus, les invitations abusives, les groupes et les différences de périphériques.
 - Ne pas retarder la première build jouable, la sécurité du dépôt, l'audit des licences ou la stabilité du multijoueur.
-- Respecter le budget de 0 € : aucun service payant, hébergement supplémentaire ou abonnement sans accord explicite.
 
 ## 42. Progression durable, fiche de mode universelle et favoris de playlists — décisions approuvées le 19 novembre 2026
 
@@ -1670,7 +1666,6 @@ Cette section formalise le veto compétitif approuvé et la règle de circulatio
 - La progression durable dépend du catalogue de récompenses, des défis et de la sauvegarde ; commencer par une architecture simple et sans service payant.
 - Tester lisibilité, navigation clavier/manette/tactile, localisation, changements de règles, exclusions de playlists, synchronisation et reprise des défis.
 - Ces fonctionnalités ne doivent pas retarder la première build jouable ni la correction des risques critiques.
-- Respecter le budget de 0 € : aucun service payant, hébergement supplémentaire ou abonnement sans accord explicite.
 
 
 ## 43. Consolidation des décisions de gameplay et de direction artistique approuvées
@@ -1774,7 +1769,6 @@ Cette section formalise quatre fonctionnalités approuvées. Elles complètent l
 - Priorité de livraison : première build Windows jouable, stabilité du combat et du réseau, sécurité et intégrité des fichiers ; les fonctionnalités locales et vocales viennent ensuite selon leur coût réel.
 - Réaliser des prototypes techniques courts avant de figer l'architecture, notamment pour l'écran partagé et les canaux vocaux.
 - Réutiliser les systèmes existants de mise à jour, reconnexion, remplacement par bot, audio spatial, proximité, groupes, comptes, accessibilité et modération.
-- Respecter le budget de 0 € : aucun service payant, hébergement supplémentaire ou abonnement sans accord explicite.
 
 ## 45. Personnalisation avancée du HUD, inspection des armes et nouvelles options de commandes/accessibilité — ajouts approuvés le 22 novembre 2026
 
