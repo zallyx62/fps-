@@ -2186,3 +2186,89 @@ Créer un système permettant aux joueurs et aux communautés d'organiser des to
 - Ne pas lancer de classement ou de récompense compétitive de grande valeur avant de disposer de résultats suffisamment fiables.
 - Le système doit rester facultatif et ne pas retarder la première build Windows jouable ni les fondations du multijoueur.
 - Respecter le budget de 0 € et ne pas dépendre d'un service payant externe.
+
+## 57. Mode Infection — ajout approuvé le 22 novembre 2026
+
+Créer un mode asymétrique et évolutif dans lequel un joueur ou une petite équipe commence comme survivant ; chaque survivant éliminé rejoint ensuite le camp des infectés. Le mode doit privilégier la poursuite, la fuite, le placement et la coopération, sans transformer les infectés en adversaires artificiellement invulnérables.
+
+### 57.1 Règles et progression
+- Définir au lancement le nombre de joueurs initiaux du camp des infectés, en fonction de la taille de la partie ; le choix doit éviter qu'une équipe soit immédiatement submergée.
+- Lorsqu'un survivant est éliminé par un infecté, il rejoint le camp des infectés après une transition courte et lisible. Le changement d'équipe et de rôle est validé par le serveur.
+- Les infectés disposent d'un équipement rapproché dédié et de capacités strictement équilibrées ; les survivants conservent un arsenal limité défini par la variante.
+- Définir clairement si les infectés réapparaissent, à quel délai et dans quelles conditions. Les survivants éliminés ne doivent pas pouvoir revenir dans leur ancien camp.
+- Les survivants gagnent en tenant jusqu'à la fin du temps imparti ou en remplissant une condition de survie annoncée ; les infectés gagnent lorsqu'ils ont converti tous les survivants ou atteint leur condition de victoire.
+- Prévoir une durée maximale, des règles d'égalité et une gestion explicite des déconnexions, abandons et parties devenues déséquilibrées.
+- Afficher en permanence le nombre de survivants et d'infectés, les conditions de victoire et le temps restant.
+
+### 57.2 Équilibrage, cartes et intégrité
+- Concevoir des cartes avec des itinéraires de fuite, des espaces de repli et plusieurs accès ; éviter les positions défensives impossibles à prendre ou les zones où les survivants peuvent rester invulnérables.
+- Encadrer les munitions, équipements, capacités et possibilités de réapprovisionnement des survivants pour maintenir la tension sans les rendre impuissants.
+- Éviter qu'un joueur infecté puisse camper un point de réapparition ou bloquer durablement les déplacements.
+- Adapter le nombre de joueurs initiaux, les délais et les ressources à la taille de lobby ; tester les petits et grands groupes.
+- Séparer les statistiques de ce mode des statistiques compétitives classiques et empêcher le farming par conversions organisées.
+- Le serveur arbitre les éliminations, conversions, changements d'équipe, réapparitions et résultats ; tester les conversions simultanées et les déconnexions au moment d'une élimination.
+
+### Priorités et critères communs
+- Réutiliser les systèmes d'équipes, d'élimination, de réapparition, de score, de HUD et de réseau.
+- Prototyper d'abord une carte existante et une règle de conversion simple avant d'ajouter des variantes ou capacités spécifiques.
+- Mode facultatif, classé désactivé au départ ; ne doit pas retarder la première build Windows jouable. Respecter le budget de 0 €.
+
+## 58. Mode Prime — ajout approuvé le 22 novembre 2026
+
+Créer un mode chacun pour soi dans lequel un joueur est désigné comme cible prioritaire (« joueur Prime »). Les autres joueurs cherchent à l'éliminer pour prendre sa place et obtenir la récompense associée. Le système doit maintenir une cible clairement identifiable sans révéler sa position exacte ni favoriser artificiellement le joueur déjà en tête.
+
+### 58.1 Désignation et rotation de la cible
+- Désigner une cible initiale selon une règle neutre et vérifiable, par exemple une sélection aléatoire parmi les participants éligibles.
+- Le joueur qui élimine la cible devient le nouveau joueur Prime ; le changement est confirmé par le serveur et annoncé à tous.
+- Si la cible est éliminée par un événement environnemental, un suicide ou une déconnexion, appliquer une règle de remplacement prédéfinie afin d'éviter les blocages et les attributions contestables.
+- Définir un délai de protection très court après la désignation, si nécessaire pour éviter une élimination instantanée, sans offrir d'invulnérabilité ni d'avantage de duel.
+- Prévoir une règle de départage en cas d'éliminations simultanées et une fin de partie au score cible ou à la fin du temps imparti.
+
+### 58.2 Score et informations de jeu
+- Accorder une récompense principale pour l'élimination du joueur Prime ; attribuer une récompense secondaire limitée aux éliminations ordinaires afin de maintenir l'activité de tous.
+- Le joueur Prime peut obtenir un bonus de score lié à sa durée de survie ou à ses éliminations, avec plafonds et coefficients décroissants pour éviter qu'il ne creuse un écart impossible à rattraper.
+- Afficher clairement l'identité de la cible et son statut, mais ne jamais transmettre sa position exacte à travers les murs ou hors des règles normales de visibilité.
+- Donner à la cible un retour HUD clair indiquant son statut et les changements de Prime, sans révéler les positions des chasseurs.
+- Définir explicitement les assistances, les dégâts infligés à la cible, les suicides, les éliminations environnementales, les égalités et les déconnexions.
+
+### 58.3 Équité et anti-abus
+- Empêcher les arrangements entre joueurs visant à se transmettre la prime ou à gonfler artificiellement le score ; appliquer des seuils, plafonds et contrôles de répétition.
+- Éviter que le joueur Prime soit pénalisé par une révélation permanente de sa position ; son statut public doit créer un enjeu, pas une traque à travers les murs.
+- Tester les écarts de score, les rotations rapides de cible, les joueurs qui quittent volontairement la partie et les lobbies de faible population.
+- Utiliser les règles d'autorité serveur et de fiabilité des résultats déjà définies dans le cahier des charges.
+
+### Priorités et critères communs
+- Réutiliser les éliminations, assistances, score, HUD, statistiques et validation serveur.
+- Commencer par une variante chacun pour soi avec une cible unique ; les variantes en équipes ou à plusieurs primes sont hors du premier prototype.
+- Mode facultatif, non classé au départ ; respecter les priorités de livraison et le budget de 0 €.
+
+## 59. Mode Gunfight 2v2 — ajout approuvé le 22 novembre 2026
+
+Créer un mode tactique en petites équipes de deux joueurs, fondé sur des manches courtes et des affrontements à une vie. Les deux équipes reçoivent un équipement identique au début de chaque manche ; la composition d'armes change entre les manches selon une séquence commune afin de tester l'adaptabilité plutôt que la seule maîtrise d'un équipement favori.
+
+### 59.1 Règles de manche
+- Former deux équipes de deux joueurs ; chaque joueur ne dispose que d'une vie par manche et ne réapparaît pas avant la manche suivante.
+- Une manche est gagnée lorsque les deux adversaires sont éliminés, ou lorsqu'une condition d'objectif/temps prédéfinie est remplie.
+- Prévoir un objectif neutre facultatif qui s'active après un délai pour départager les manches trop passives ; son activation, sa position et son fonctionnement doivent être identiques pour les deux équipes.
+- Définir le nombre de manches, le score nécessaire pour gagner la partie, le changement de côté et les règles en cas d'égalité.
+- Les manches doivent être rapides, avec une phase de préparation courte et un lancement synchronisé.
+- Gérer les éliminations simultanées, déconnexions, abandons, reconnexions et équipes incomplètes selon des règles annoncées avant le match.
+
+### 59.2 Équipement commun et rotation
+- Fournir aux deux équipes exactement le même équipement pour une manche donnée : armes, accessoires, munitions et équipements autorisés.
+- Faire évoluer la sélection d'armes entre les manches selon une séquence prédéfinie ou un ensemble commun tiré au sort avant la partie ; aucune équipe ne doit recevoir une configuration plus favorable.
+- Désactiver le ramassage d'armes adverses et les modifications d'équipement en cours de manche, sauf variante explicitement testée.
+- Encadrer ou désactiver les capacités et équipements qui pourraient rompre l'égalité des conditions.
+- Afficher avant chaque manche la configuration commune et les éventuelles règles particulières.
+
+### 59.3 Équité, cartes et compétition
+- Utiliser des cartes compactes adaptées au 2v2, avec plusieurs approches, des couvertures symétriques ou un équilibre démontré par les tests.
+- Éviter les apparitions permettant un tir immédiat sur l'adversaire ; synchroniser le départ et garantir un court temps de mise en place si nécessaire.
+- Prévoir des statistiques spécifiques : manches gagnées, éliminations, assistances, survie, dégâts et contribution à l'objectif.
+- Ne pas mélanger directement les statistiques de ce mode avec celles des modes à réapparition.
+- Le classé ne pourra être activé qu'après validation des résultats, de l'autorité serveur, des déconnexions et de l'équilibrage des cartes.
+
+### Priorités et critères communs
+- Réutiliser les équipes, salons, manches, arsenal, HUD, score, statistiques et règles réseau existants.
+- Prototyper une carte compacte et une courte séquence d'équipements identiques ; valider ensuite le changement de côté et les cas de déconnexion.
+- Mode facultatif ; ne doit pas retarder la première build Windows jouable. Respecter le budget de 0 €.
