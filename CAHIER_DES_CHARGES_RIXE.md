@@ -1882,3 +1882,34 @@ Cette fonctionnalité approfondit le récapitulatif après élimination déjà p
 - Afficher les indicateurs indisponibles comme tels et différencier faits confirmés, estimations et données absentes.
 - Mesurer le coût CPU, mémoire, stockage et réseau ; limiter la quantité et la durée de conservation des données.
 - Fonction facultative et secondaire : ne pas retarder la première build Windows jouable, la stabilité du combat ou du réseau. Respecter le budget de 0 €.
+
+
+## 48. Mode parcours chronométré — ajout approuvé le 22 novembre 2026
+
+Créer un mode indépendant des parties compétitives dans lequel les joueurs parcourent des circuits conçus pour tester la vitesse, la précision des déplacements et la maîtrise des mouvements.
+
+### 48.1 Parcours, chronomètre et records
+- Proposer des parcours composés d'obstacles, de plateformes, de passages étroits, de changements de hauteur et de séquences sollicitant les mouvements disponibles dans RIXE.
+- Afficher un chronomètre précis, les temps intermédiaires et le temps final. Permettre de recommencer rapidement un parcours.
+- Prévoir plusieurs niveaux de difficulté et des parcours de durées variées, des circuits courts axés sur un mouvement précis aux parcours plus longs combinant plusieurs techniques.
+- Enregistrer les meilleurs temps personnels et, si un classement en ligne est proposé, séparer clairement les classements par parcours, difficulté et version du circuit.
+- Garantir des conditions de comparaison identiques : même configuration du parcours, mêmes règles de déplacement et détection des raccourcis ou exploits qui invalideraient un temps.
+- Permettre de s'entraîner sans pression de classement et de consulter ses temps précédents pour mesurer ses progrès.
+- Ne donner aucun avantage, bonus ou progression compétitive aux résultats obtenus dans ce mode.
+
+### 48.2 Ambiance musicale et satisfaction
+- Intégrer plusieurs morceaux musicaux originaux ou correctement licenciés, spécialement choisis ou composés pour rendre les parcours agréables, rythmés et particulièrement satisfaisants à terminer.
+- Proposer une sélection de musiques variées : morceaux énergiques pour les parcours rapides, ambiances électroniques/rythmiques pour les enchaînements de mouvements et morceaux plus intenses pour les défis difficiles.
+- Permettre de choisir un morceau, de mélanger la sélection ou de laisser le jeu choisir automatiquement une musique différente à chaque tentative.
+- Synchroniser avec subtilité certains retours sonores ou effets d'ambiance avec le rythme musical, sans rendre les obstacles, les repères ou les sons utiles au gameplay moins audibles.
+- Prévoir des réglages de volume séparés pour la musique et les effets sonores, ainsi qu'une option pour couper complètement la musique.
+- Faire évoluer la musique de manière satisfaisante pendant le parcours et lors de la réussite : montée musicale à l'approche de l'arrivée, accent sonore lors d'un passage réussi et conclusion musicale valorisante à la fin, sans ralentir ni bloquer le joueur.
+- Éviter les répétitions trop fréquentes : varier les morceaux et, si possible, leurs transitions afin que les sessions restent plaisantes.
+- Ne pas utiliser de morceaux commerciaux sans licence. Privilégier des compositions originales libres d'utilisation ou des ressources dont les droits sont clairement compatibles avec le jeu.
+
+### Priorités et critères communs
+- Ce mode doit rester distinct du matchmaking et des statistiques compétitives ; ses records ne modifient ni le niveau du joueur ni son classement en partie.
+- Réutiliser le système de déplacement et les outils de création de cartes existants lorsque cela est techniquement pertinent, sans imposer la création d'un éditeur supplémentaire.
+- Tester la précision du chronométrage, la reproductibilité des temps, les collisions, les raccourcis, les performances et les transitions audio.
+- La musique doit rester facultative et ne jamais masquer les informations sonores utiles dans les autres modes.
+- Fonction secondaire : ne pas retarder la première build Windows jouable et respecter le budget de 0 €.
