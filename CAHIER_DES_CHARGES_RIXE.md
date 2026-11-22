@@ -1285,6 +1285,11 @@ Les sept idées suivantes sont approuvées et ajoutées au cahier des charges. E
 - Prévoir des limites pour empêcher les lancers impossibles, les traversées de géométrie et les abus de physique.
 - Conserver des commandes accessibles et configurables sur les périphériques pris en charge ; proposer une méthode alternative si l'appui prolongé n'est pas adapté.
 - Tester les distances, rebonds, dégâts et contre-mesures sur chaque carte ; ne pas rendre les grenades indispensables ni excessivement dominantes.
+- Pour les grenades compatibles, permettre une temporisation volontaire avant le lancer (« cuisson ») : le décompte commence au moment cohérent avec le fonctionnement de l'équipement, par exemple le retrait de la sécurité ou l'activation de la fusée.
+- Définir une durée de fusée fiable et identique pour tous les joueurs ; afficher un retour sonore/visuel discret et compréhensible sans fournir une précision artificielle.
+- La durée restante est gérée par le serveur et continue pendant le lancer, les rebonds et les déplacements ; aucune pause, réinitialisation ou duplication de fusée ne doit être possible.
+- Autoriser l'explosion avant le lancer si le joueur attend trop longtemps, avec les risques normaux pour lui-même et ses alliés ; ne pas garantir un lancer à la dernière fraction de seconde.
+- Réserver cette mécanique aux types de grenades dont le fonctionnement le justifie ; elle ne doit pas être appliquée automatiquement à tous les équipements explosifs.
 
 ### 33.3 Audio spatial intelligent
 - Améliorer la spatialisation des tirs, pas, rechargements, explosions et autres sons utiles selon la distance, la direction, les obstacles, les portes, les étages et les matériaux.
@@ -1315,6 +1320,10 @@ Les sept idées suivantes sont approuvées et ajoutées au cahier des charges. E
 - Ajouter, lorsque cela est pertinent, les douilles éjectées et quelques effets résiduels légers (poussière retombante, fumée qui se dissipe ou petites projections), avec une durée de vie courte et des limites strictes.
 - Distinguer les effets purement décoratifs des éléments qui modifient réellement la géométrie ou la collision ; les effets décoratifs ne doivent pas révéler d'information tactique supplémentaire.
 - Réduire ou désactiver automatiquement les effets secondaires selon la charge matérielle et proposer un réglage de densité, sans masquer les silhouettes, projectiles ou objectifs.
+- Permettre une personnalisation purement cosmétique des effets visuels de tir : variantes de flash de bouche, apparence des traînées visibles, étincelles d'impact et apparence des douilles lorsque ces effets existent.
+- Les variantes doivent rester lisibles, discrètes et équivalentes en durée, intensité utile et visibilité ; elles ne doivent jamais masquer une silhouette, modifier la visibilité d'un projectile, révéler une position autrement cachée ou changer les performances de gameplay.
+- Distinguer les effets locaux cosmétiques des événements d'impact confirmés et des effets partagés ; le client ne peut pas modifier les résultats de tir ni déclencher un effet donnant une information non validée par le serveur.
+- Prévoir des options de densité, de désactivation et des réglages d'accessibilité ; les effets cosmétiques doivent respecter les budgets de performances et les paramètres graphiques communs.
 
 ### 33.6 Dégâts par zone corporelle
 - Étudier des multiplicateurs de dégâts distincts pour les zones corporelles pertinentes (tête, torse, bras et jambes), définis arme par arme et mode par mode si nécessaire.
@@ -1793,6 +1802,10 @@ Ces quatre fonctionnalités complètent les réglages d'interface et d'accessibi
 - L'inspection ne doit jamais modifier les dégâts, le recul, la précision, la cadence, les sons tactiques, les hitboxes ou toute autre propriété compétitive.
 - Réutiliser les modèles, matériaux et animations de l'armurerie ; éviter de maintenir une seconde représentation de chaque arme.
 - Optimiser les ressources et charger les détails à la demande afin de ne pas pénaliser les performances du jeu ou le temps de chargement.
+- Ajouter une vérification rapide et facultative de l'état des munitions pour les armes compatibles : geste/animation permettant d'estimer visuellement le contenu du chargeur et, lorsque le modèle le permet, l'état de la chambre.
+- Afficher uniquement une information que le personnage peut réellement vérifier ; distinguer clairement une estimation visuelle du nombre exact de cartouches et ne pas inventer de lecture impossible pour un chargeur opaque.
+- La vérification ne recharge pas, ne modifie pas les munitions et ne crée aucune cartouche ; l'état réel reste celui validé par le serveur.
+- Définir si cette vérification est réservée à l'armurerie/inspection ou disponible en partie sous une animation courte et interrompable ; dans tous les cas, elle ne doit pas procurer d'invulnérabilité ni d'avantage d'information.
 - Valider les contrôles clavier/souris et manette, la lisibilité, les transitions d'animation et le comportement sur les configurations modestes.
 
 ### 45.3 Visée gyroscopique pour manettes compatibles
@@ -2102,7 +2115,7 @@ Créer un mode arcade de précision où chaque joueur dispose d'une seule balle 
 
 ## 55. Approfondissements approuvés du combat et de l'armement — 22 novembre 2026
 
-Cette section formalise six décisions de gameplay explicitement approuvées. Elle complète les systèmes d'armes, d'accessoires, de dégâts, de score et de rechargement déjà décrits dans les sections précédentes. Elle ne doit pas créer de systèmes parallèles.
+Cette section formalise sept décisions de gameplay explicitement approuvées. Elle complète les systèmes d'armes, d'accessoires, de dégâts, de score et de rechargement déjà décrits dans les sections précédentes. Elle ne doit pas créer de systèmes parallèles.
 
 ### 55.1 Gestion avancée des accessoires
 - Permettre une gestion plus complète des accessoires compatibles avec chaque arme : sélection, montage, retrait et remplacement depuis l'atelier ou l'écran de configuration.
@@ -2146,6 +2159,15 @@ Cette section formalise six décisions de gameplay explicitement approuvées. El
 - Vérifier les interruptions répétées, les changements rapides d'arme, la latence et toute divergence entre l'état serveur, les munitions réellement disponibles et l'animation affichée.
 - Les variantes cosmétiques d'animations prévues en section 43.4 doivent conserver les mêmes timings, fenêtres d'interruption et résultats fonctionnels pour une même arme.
 - Définir un seul état de rechargement faisant autorité côté serveur ; les sections 33.4 et 55.6 doivent être implémentées et testées comme une exigence unique.
+
+### 55.7 Sélecteur de mode de tir
+- Permettre de sélectionner, pour les armes réellement compatibles, le mode de tir adapté : semi-automatique, rafale avec le nombre de coups défini par l'arme, ou automatique.
+- Ne proposer que les modes plausibles pour chaque modèle d'arme ; ne pas ajouter artificiellement un mode de tir à une arme qui n'en dispose pas.
+- Utiliser une commande dédiée et configurable, avec un retour HUD discret indiquant le mode actif ; éviter toute confusion avec le changement d'arme ou les commandes d'équipement.
+- Chaque mode doit respecter les caractéristiques de l'arme : cadence, délai entre rafales, recul, dispersion, consommation de munitions et animation. Le sélecteur ne doit pas augmenter la cadence maximale autorisée.
+- Valider le mode actif et les tirs côté serveur ; synchroniser le changement de mode et empêcher les changements impossibles, les tirs supplémentaires ou les désynchronisations en cas de latence.
+- Définir le comportement à la réapparition, au ramassage d'une arme, au changement d'arme et lors d'une partie avec équipement verrouillé ; ne pas contourner les règles des modes à équipement imposé.
+- Prévoir une option d'accessibilité et une indication claire pour clavier/souris et manette ; tester les erreurs de commande et les changements involontaires en combat.
 
 ### Priorités et critères communs
 - Réutiliser les systèmes d'armes, d'accessoires, de dégâts, de munitions, de repérage et de score déjà prévus.
