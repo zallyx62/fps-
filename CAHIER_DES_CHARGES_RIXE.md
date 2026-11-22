@@ -1144,6 +1144,17 @@ Règles obligatoires :
 - Le joueur garde toujours le contrôle : pas de changement silencieux en pleine partie, possibilité de désactiver les recommandations et de conserver ses réglages globaux.
 - Les profils par carte ne doivent jamais créer de différence de gameplay ou d'information tactique.
 
+#### Comparateur de configuration matérielle
+
+- Ajouter au diagnostic local une fiche indiquant les caractéristiques matérielles utiles au fonctionnement de RIXE : processeur, carte graphique, mémoire vive, mémoire vidéo lorsque disponible, système d'exploitation et espace disque.
+- Comparer ces caractéristiques aux configurations minimale et recommandée officiellement définies pour la version du jeu installée. Ne pas inventer de seuils : les exigences doivent être établies et validées par des tests sur des configurations réelles.
+- Présenter clairement les composants qui respectent les recommandations, ceux qui se situent en dessous et les informations qui n'ont pas pu être détectées.
+- Fournir une estimation prudente des éventuels points limitants et des réglages à essayer, en précisant qu'un composant isolé ne permet pas de prédire exactement les FPS ni d'établir avec certitude la cause d'un ralentissement.
+- Distinguer les recommandations générales des résultats du benchmark intégré et des mesures réellement observées en jeu.
+- Effectuer l'analyse localement autant que possible ; ne transmettre aucune caractéristique matérielle sans information claire et consentement du joueur.
+- Ne jamais modifier automatiquement le PC, les pilotes, les fréquences, les tensions ou les paramètres système. Toute modification des réglages de RIXE reste soumise à l'accord du joueur.
+- Mettre à jour les configurations de référence lorsque les exigences du jeu évoluent et préciser la version à laquelle elles s'appliquent.
+
 ### 30.7 Mise à l'échelle, technologies GPU et génération d'images
 - Étudier et intégrer, lorsque les versions, licences, pilotes, API de rendu et cartes graphiques le permettent, les solutions suivantes : **NVIDIA DLSS**, **AMD FSR**, **Intel XeSS** et **Unreal TSR**.
 - Utiliser Unreal TSR comme voie de mise à l'échelle de référence largement compatible lorsque les solutions spécialisées ne sont pas disponibles ; ne jamais rendre DLSS, FSR ou XeSS obligatoires au démarrage.
