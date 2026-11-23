@@ -155,9 +155,7 @@ def main() -> None:
     # Test the scope texture generator in an isolated temporary directory.
     with tempfile.TemporaryDirectory(prefix="rixe-scope-") as tmp:
         output_dir = Path(tmp)
-        result = run_generator(TOOLS / "rixe_scope_texture.py", output_dir)
-        # This script writes to its working directory and does not accept an output argument.
-        if result.returncode != 0 and "unrecognized arguments" in result.stderr:
+        try:
             result = subprocess.run(
                 [sys.executable, str(TOOLS / "rixe_scope_texture.py")],
                 cwd=output_dir,
@@ -166,6 +164,8 @@ def main() -> None:
                 text=True,
                 timeout=180,
             )
+        except subprocess.TimeoutExpired as exc:
+            raise SystemExit("FAILED: scope texture generator exceeded its 180s timeout") from exc
         require(result.returncode == 0, f"scope texture generator failed: {result.stderr[-2000:]}")
         texture_path = output_dir / "T_RixeScope.png"
         require(texture_path.is_file() and texture_path.stat().st_size > 0, "scope texture PNG was not generated")
