@@ -11,7 +11,7 @@ Ce fichier consigne l'état démontré des jalons. Il ne remplace pas la feuille
 |---|---|
 | Branche par défaut GitHub | `main` |
 | Branche miroir | `jeu-unreal` |
-| Dernier commit observé sur `main` lors de la revue | `1870b6886ed670759bd1f053c63c1d954e4c2508` |
+| Dernier commit observé sur `main` lors de la revue | `c966a5bd5f1cb9f4d28eafb9aa12bd36a197114d` (fusion documentaire de la procédure de reprise) |
 | Release GitHub publique observée | Aucune release publiée au moment du contrôle |
 | Build Windows distribuable vérifiée dans ce suivi | Aucune preuve enregistrée |
 
@@ -72,3 +72,23 @@ Revue effectuée en lecture seule avant la présente mise à jour du suivi :
 À chaque modification du dépôt, validation réelle, audit demandé ou changement de statut connu, mettre à jour ce fichier dans le même travail : date, dernier commit observé, état des branches, preuves réellement obtenues, écarts, blocages et prochaines actions. Ne jamais convertir une intention, une note de conception, un commit documentaire ou une synchronisation Git en preuve de test. Si aucun nouveau test n'a été exécuté, conserver les phases non vérifiées et l'indiquer explicitement.
 
 Cette règle est appliquée lors des interventions sur le dépôt ; elle ne signifie pas qu'une surveillance automatique permanente est active entre les sessions ou en l'absence d'un événement GitHub configuré.
+
+
+## Audit GitHub complémentaire — 23 novembre 2026
+
+Audit en lecture seule du dépôt distant après fusion de la procédure de reprise dans `main`.
+
+- Branche `main` : `c966a5bd5f1cb9f4d28eafb9aa12bd36a197114d`.
+- Branche miroir `jeu-unreal` : même SHA ; égalité vérifiée après fusion.
+- Arborescence Git : 589 fichiers suivis, dont 536 `.uasset` et 3 `.umap`. L'arbre récursif n'est pas tronqué.
+- Recherche de doublons exacts par identifiant de blob Git : aucun doublon de contenu détecté. Deux fichiers portent le même basename `.gitignore` à des chemins distincts (`/.gitignore` et `/Tools/.gitignore`) ; ce n'est pas un doublon de contenu établi.
+- Workflow [Validate RIXE repository](https://github.com/zallyx62/fps-/actions/runs/45173474331) sur le commit courant : terminé avec succès. Les contrôles exécutés valident la structure JSON du projet, les métadonnées et géométries générées des armes/accessoires, la syntaxe des scripts Python et un smoke test OBJ. Ce workflow ne compile pas Unreal, ne charge pas les Blueprints et ne produit pas de build Windows.
+- Workflow [Keep jeu-unreal synchronized with main](https://github.com/zallyx62/fps-/actions/runs/45173474265) : terminé avec succès ; la branche miroir est à jour.
+- La configuration du projet déclare Unreal Engine 5.8 et les plugins `GameplayStateTree`, `ModelContextProtocol`, `MCPClientToolset`, `AllToolsets` et `ModelingToolsEditorMode`. Leurs dépendances, licences et exclusions éventuelles des builds Shipping restent à vérifier dans l'environnement Unreal.
+- `Config/DefaultEngine.ini`, `fps.uproject`, `README.md` et `UNREAL.md` sont cohérents sur la carte de démarrage et le mode de jeu du prototype : `Variant_Shooter/Lvl_ArenaShooter` et `BP_ShooterGameMode`. Le prototype décrit toujours `OnlineSubsystem Null` et la connexion IP directe ; EOS et le matchmaking public restent planifiés, non livrés.
+- `UNREAL.md` signale explicitement les écarts connus : apparitions statiques, bots limités en présence de plusieurs joueurs, score provisoire fondé sur les éliminations, profils graphiques incomplets et autorité serveur/anti-triche non entièrement auditée. Ces écarts ne doivent pas être requalifiés en fonctionnalités terminées.
+- `LICENCE_DISTRIBUTION.md` maintient à juste titre le blocage de distribution publique : compatibilité GPL-3.0 / contenus Epic, provenance des assets et licences des plugins/dépendances non établies.
+
+**Limites de cet audit :** l'API GitHub permet d'inventorier les fichiers mais pas d'inspecter la structure interne des assets binaires Unreal (`.uasset`, `.umap`). Aucun accès à la machine Unreal locale, à son état de travail, à ses sauvegardes, à l'éditeur ou à une compilation empaquetée n'a été disponible dans cet audit. La phase 0 reste donc **Non vérifiée** ; aucune phase 1 à 7 n'est promue. Le pipeline vert ne constitue pas une preuve de compilation Unreal ou de jouabilité.
+
+**Prochaine action prioritaire :** sur la machine de développement, ouvrir le projet avec Unreal Engine 5.8, vérifier les plugins déclarés, examiner les Blueprints de gameplay et les journaux, reproduire le démarrage, puis produire une première build Windows de test. Consigner les résultats et le commit de code exact avant de modifier les statuts des phases.
