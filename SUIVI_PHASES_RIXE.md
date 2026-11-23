@@ -1,6 +1,6 @@
 # RIXE — Suivi vérifiable des phases
 
-**Mise à jour :** 20 novembre 2026  
+**Mise à jour :** 23 novembre 2026  
 Ce fichier consigne l'état démontré des jalons. Il ne remplace pas la feuille de route de la section 12 de `CAHIER_DES_CHARGES_RIXE.md`.
 
 **Règle :** aucun jalon n'est déclaré franchi sur la seule base d'un titre de commit, d'une note historique, d'un fichier présent ou d'une affirmation non reproduite.
@@ -11,11 +11,11 @@ Ce fichier consigne l'état démontré des jalons. Il ne remplace pas la feuille
 |---|---|
 | Branche par défaut GitHub | `main` |
 | Branche miroir | `jeu-unreal` |
-| Commit commun avant les corrections documentaires de cet audit | `b78c826e9f85651a2afa91a3f4844ad25f22ff11` |
+| Dernier commit observé sur `main` lors de la revue | `1870b6886ed670759bd1f053c63c1d954e4c2508` |
 | Release GitHub publique observée | Aucune release publiée au moment du contrôle |
 | Build Windows distribuable vérifiée dans ce suivi | Aucune preuve enregistrée |
 
-Ce commit commun confirme uniquement la synchronisation des branches. Il ne constitue pas une preuve de compilation, de test ou de franchissement de phase. Après toute mise à jour, consigner le commit documentaire séparément du commit du code réellement testé. La branche `main` est la branche par défaut du dépôt ; `jeu-unreal` reste une branche miroir tant qu'aucun travail distinct n'y est engagé.
+Le commit indiqué est le dernier commit observé sur `main` pendant la revue du 23 novembre 2026. La comparaison GitHub entre `main` et `jeu-unreal` ne montre aucun commit d'avance ou de retard et aucun fichier différent à cet instant. Cette synchronisation ne constitue pas une preuve de compilation, de test ou de franchissement de phase. Le SHA de ce commit n'est pas présenté comme un commit de code testé : aucun SHA de code testé n'est actuellement consigné. Après chaque mise à jour documentaire, consigner le commit documentaire séparément du commit du code réellement testé. La branche `main` est la branche par défaut du dépôt ; `jeu-unreal` est la branche miroir.
 
 ## État des phases
 
@@ -52,3 +52,23 @@ Une mention « testé dans l'éditeur » reste une preuve limitée à son protoc
 ## Mise à jour du suivi
 
 Claude doit mettre à jour ce fichier après chaque validation réelle ou changement de statut. Ne jamais remplacer « Non vérifiée » par « En cours », « Validée » ou « Livrée » sans consigner les preuves correspondantes. En cas de blocage, conserver le statut non franchi et décrire la prochaine action concrète.
+
+
+## Dernière revue documentaire — 23 novembre 2026
+
+Revue effectuée en lecture seule avant la présente mise à jour du suivi :
+
+- Dépôt : `zallyx62/fps-`, branche de référence `main`.
+- Synchronisation : `main` et `jeu-unreal` étaient identiques lors de la comparaison (aucun commit en avance/en retard, aucun fichier divergent).
+- Dernier commit observé avant cette mise à jour du suivi : `1870b6886ed670759bd1f053c63c1d954e4c2508`.
+- Documentation Unreal : `UNREAL.md` décrit encore plusieurs écarts entre prototype et cible (apparitions fixes au lieu du système adaptatif, bots limités au solo dans le comportement documenté, score d'éliminations provisoire, connexion directe IP au lieu d'un parcours EOS/matchmaking public validé).
+- Arsenal : les scripts consultés décrivent des familles génériques d'armes et des accessoires de base ; ils ne démontrent pas l'existence d'un catalogue final individualisé ni de modèles 3D/Blueprints finalisés pour toutes les armes.
+- Validation : le statut GitHub du commit consulté ne fournissait aucun statut de contrôle. Les contrôles documentaires/Python ne constituent pas une compilation Unreal. Aucun rapport de build Windows empaquetée, de test multijoueur complet ou de validation EOS n'a été ajouté comme preuve.
+
+**Conséquence sur les phases :** aucune phase n'est déclarée franchie à la suite de cette revue. Les phases 0 à 7 restent « Non vérifiée » tant que les preuves exigées dans le tableau et le registre ci-dessus ne sont pas fournies. Les constats documentaires ci-dessus ne remplacent pas les tests sur le commit de code courant.
+
+## Règle de maintien à jour
+
+À chaque modification du dépôt, validation réelle, audit demandé ou changement de statut connu, mettre à jour ce fichier dans le même travail : date, dernier commit observé, état des branches, preuves réellement obtenues, écarts, blocages et prochaines actions. Ne jamais convertir une intention, une note de conception, un commit documentaire ou une synchronisation Git en preuve de test. Si aucun nouveau test n'a été exécuté, conserver les phases non vérifiées et l'indiquer explicitement.
+
+Cette règle est appliquée lors des interventions sur le dépôt ; elle ne signifie pas qu'une surveillance automatique permanente est active entre les sessions ou en l'absence d'un événement GitHub configuré.
