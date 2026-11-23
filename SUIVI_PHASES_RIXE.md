@@ -6,14 +6,14 @@
 
 Ce fichier est le registre des preuves et de l'avancement réellement démontré. Il ne remplace ni le cahier des charges, ni les instructions de développement de `CLAUDE.md`, ni le journal du prototype `UNREAL.md`.
 
-## 1. Current repository state
+## 1. Repository state at audit baseline — 24 November 2026
 
 | Item | Verified state |
 |---|---|
 | Canonical branch | `main` |
 | Mirror branch | `jeu-unreal` |
-| Current `main` SHA | `19ced966cef665be47c66e5f3a78f0039846dcf2` |
-| Current `jeu-unreal` SHA | `19ced966cef665be47c66e5f3a78f0039846dcf2` — identical to `main` |
+| `main` SHA before this audit PR | `19ced966cef665be47c66e5f3a78f0039846dcf2` |
+| `jeu-unreal` SHA before this audit PR | `19ced966cef665be47c66e5f3a78f0039846dcf2` — identical to `main` |
 | Latest main commit | `19ced966` — documentation-only refactor of `CLAUDE.md` |
 | Latest non-documentation project/configuration/tooling commit | `e8a40f4895e22212ce1298672a1db396f6dfcf60` (20 November 2026); the 45 commits after it change documentation and add the mirror workflow only |
 | Gameplay code commit validated with a reproducible protocol | **None recorded** |
@@ -23,7 +23,7 @@ Ce fichier est le registre des preuves et de l'avancement réellement démontré
 | Latest repository validation | Success — [workflow run 45288243208](https://github.com/zallyx62/fps-/actions/runs/45288243208) |
 | Latest mirror synchronization | Success — [workflow run 45288243001](https://github.com/zallyx62/fps-/actions/runs/45288243001) |
 
-The full recursive Git tree was retrieved without truncation at the current main commit: **589 tracked files**, including 536 `.uasset` files and 3 `.umap` files. No identical Git blob SHA was shared by two tracked paths. This checks exact file duplication only; it does not detect functional duplication inside Unreal assets.
+The full recursive Git tree was retrieved without truncation at the audit-baseline main commit: **589 tracked files**, including 536 `.uasset` files and 3 `.umap` files. No identical Git blob SHA was shared by two tracked paths. This checks exact file duplication only; it does not detect functional duplication inside Unreal assets.
 
 GitHub reports `protected=false` for both `main` and `jeu-unreal`; the repository rulesets endpoint returned an empty list. The branch-protection details endpoint could not be read by the connected integration. Therefore, do not describe `main` as server-side protected. It remains the canonical branch by project policy.
 
@@ -76,18 +76,18 @@ Les éléments ci-dessous décrivent le relevé initial effectué sur `main` au 
 
 L'API GitHub permet d'inventorier les chemins et les blobs, mais pas d'inspecter la structure interne des assets binaires Unreal (`.uasset`, `.umap`). Cet audit n'a pas accès à la machine locale, à l'éditeur Unreal, aux sauvegardes, aux modifications non commitées, aux journaux locaux ni à une compilation empaquetée. Il ne peut donc pas certifier l'absence de doublons internes dans les Blueprints, de problèmes d'exécution ou de défauts de gameplay.
 
-## 4 bis. Current GitHub audit — 24 November 2026
+## 4 bis. GitHub audit baseline — 24 November 2026
 
-The following repository state was checked against GitHub after PR #13 was merged.
+The following repository state was checked against GitHub after PR #13 was merged and before this audit PR was opened.
 
 - `main` and `jeu-unreal` both point to `19ced966cef665be47c66e5f3a78f0039846dcf2`.
 - The mirror workflow completed successfully after the merge: [run 45288243001](https://github.com/zallyx62/fps-/actions/runs/45288243001). The repository validation workflow also completed successfully: [run 45288243208](https://github.com/zallyx62/fps-/actions/runs/45288243208).
 - The validation job ran the Python dependency installation and `Tools/validate_project.py`, including project JSON, Python syntax, weapon metadata, generated geometry and OBJ smoke checks. It did **not** compile Unreal, load Blueprints or package a Windows build.
 - No pull request is currently open. PR #13, which refactored `CLAUDE.md`, is merged.
 - The recursive tree contains 589 tracked files and is not truncated. Exact duplicate Git blobs: none. Binary Unreal assets cannot be inspected internally through this tree audit.
-- The current branch listing contains nine historical `docs/*` branches in addition to `main` and `jeu-unreal`. Their commits unique to each branch affect documentation only; they are not current working branches. Do not reuse, merge or delete them without inspecting the unique commits. PR #13's source branch is also retained after its content was squash-merged.
+- At audit start, nine historical `docs/*` branches existed in addition to `main` and `jeu-unreal`. Their commits unique to each branch affect documentation only; they are not current working branches. The active branch for this audit, `docs/final-repo-audit-2026-11-24`, is listed separately. Do not reuse, merge or delete any stale branch without inspecting its unique commits. PR #13's source branch is also retained after its content was squash-merged.
 
-| Historical branch | Head SHA | Ahead of `main` | Behind `main` | Current handling |
+| Branch at audit baseline | Head SHA | Ahead of `main` | Behind `main` | Handling |
 |---|---|---:|---:|---|
 | `docs/clarify-claude-resume-workflow` | `a29400bf9ca5b44217559e8f4fbad045038527b9` | 1 | 9 | Divergent; inspect before reuse |
 | `docs/correct-current-audit-refs` | `9a7e4d4cdfa763cc52c53a4868930dc4185fd016` | 1 | 5 | Divergent; inspect before reuse |
@@ -98,6 +98,7 @@ The following repository state was checked against GitHub after PR #13 was merge
 | `docs/refactor-claude-md-2026-11-24` | `806f49c143a1b9bbaab1f9020fed397309533f51` | 1 | 1 | PR #13 merged; branch pointer remains |
 | `docs/token-context-efficiency` | `52469d35f0517317131524aa300f849ae1b7dff6` | 1 | 2 | Divergent; inspect before reuse |
 | `docs/update-current-github-audit` | `7635354620fbdf8c4293e506cdb4d26fd7649b80` | 3 | 4 | Divergent; inspect before reuse |
+| `docs/final-repo-audit-2026-11-24` | `9e90218b36edd962ef7097dc69f4aed0ed58066a` | 3 | 0 | Active branch for this audit; review via PR |
 
 The GitHub branch listing reports `protected=false` for `main` and `jeu-unreal`, and the rulesets query returned no rulesets. Branch-protection details could not be inspected with the connected integration. Server-side protection is therefore **not verified** and must not be claimed.
 ## 5. Registre de preuve obligatoire
