@@ -2,7 +2,7 @@
 
 **Référence fonctionnelle unique :** `CAHIER_DES_CHARGES_RIXE.md` (version la plus récente de la branche de travail).  
 **Moteur :** Unreal Engine 5.8. **Projet :** principalement Blueprint.  
-**Budget autorisé :** 0 €. **Branche par défaut GitHub :** `main` (branche de référence et de développement tant qu'aucune branche de tâche n'est explicitement ouverte). `jeu-unreal` doit rester synchronisée avec `main` tant qu'elle n'a pas de travail distinct.  
+**Budget autorisé :** 0 €. **Branche par défaut GitHub :** `main` (branche de référence et de développement tant qu'aucune branche de tâche n'est explicitement ouverte). `jeu-unreal` est une branche miroir strictement synchronisée avec `main` : une GitHub Action la met à jour automatiquement après chaque push sur `main` et peut être lancée manuellement. Ne jamais développer directement sur `jeu-unreal`, ne jamais forcer son historique ; si elle diverge ou contient des commits propres, arrêter la synchronisation et demander un arbitrage. Toute tâche distincte part de `main` dans une branche dédiée. Après chaque push, vérifier le résultat de l'action et l'égalité des SHA des deux branches.  
 **Objectif :** construire un FPS multijoueur réellement jouable, stable, accessible avec des amis à distance et maintenable.
 
 ---
