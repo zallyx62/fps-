@@ -105,7 +105,7 @@ Les cinq branches suivantes ont été vérifiées le 23 novembre 2026 et diverge
 | `docs/record-github-audit-2026-11-23` | Divergente : 1 commit en avance, 4 en retard ; ancien relevé d'audit | Ne pas checkout, fusionner ou réutiliser sans audit |
 | `docs/finalize-claude-handoff-2026-11-23` | Divergente : 3 commits en avance, 2 en retard ; ancienne passation Claude | Ne pas checkout, fusionner ou réutiliser sans audit |
 
-Ces branches sont **obsolètes et non autoritaires**. La branche de référence reste `main`, et `jeu-unreal` reste sa branche miroir. Ne pas supprimer ni forcer une branche sans vérifier son SHA et son contenu ; si leur suppression est souhaitée, effectuer cette opération séparément après confirmation qu'aucun travail utile n'y subsiste.
+Ces branches sont **divergentes et non autoritaires** tant qu'un audit de leur contenu n'a pas établi si elles contiennent encore un travail utile. La branche de référence reste `main`, et `jeu-unreal` reste sa branche miroir. Ne pas supprimer ni forcer une branche sans vérifier son SHA et son contenu ; si leur suppression est souhaitée, effectuer cette opération séparément après confirmation qu'aucun travail utile n'y subsiste.
 
 ## 6. Registre de preuve obligatoire
 
