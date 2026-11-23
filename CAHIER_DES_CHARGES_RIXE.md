@@ -1,6 +1,6 @@
 # RIXE — Cahier des charges consolidé
 
-**Version :** 22 novembre 2026 — mise à jour consolidée  
+**Version :** 23 novembre 2026 — mise à jour consolidée  
 **Dépôt :** https://github.com/zallyx62/fps-  
 **Branche de référence documentaire :** `main`  
 **Moteur :** Unreal Engine 5.8 — projet principalement Blueprint.
@@ -34,7 +34,7 @@ L'architecture actuelle documentée utilise `OnlineSubsystem Null`. Les élémen
 ## 3. Gameplay et cartes
 
 ### Cartes de lancement
-- Viser trois cartes maximum au lancement initial.
+- Viser trois cartes maximum au lancement initial. Ce plafond concerne l'alpha de lancement : les modes des sections 48 à 59 n'y sont inclus que s'ils peuvent utiliser ces cartes ou leurs variantes (section 33.7) ; leurs cartes ou parcours dédiés sont planifiés après le lancement.
 - Équilibrer courte, moyenne et longue portée.
 - Éviter les lignes de vue et positions dominantes impossibles à déloger.
 - Autoriser le jeu défensif, mais limiter le camping abusif par le level design : itinéraires alternatifs, couvertures, lignes de vue cassées et objectifs qui encouragent la rotation.
@@ -273,6 +273,7 @@ Learning Agents doit rester une expérimentation isolée : définir un cas d'usa
 - Les sections 26 à 29 détaillent le parcours multijoueur, le matchmaking, les groupes et les fonctions communautaires. Elles s'intègrent après les fondations réseau et les services en ligne, sans créer plusieurs systèmes concurrents.
 - Les sections 30 à 33 détaillent les performances, l'internationalisation, la maîtrise des armes et les approfondissements du combat. Les fonctions nécessaires à la stabilité ou à l'équité sont traitées avant les finitions et extensions.
 - Les sections 34 à 43 ajoutent ou consolident des règles et fonctions spécifiques. Leur présence dans le cahier ne signifie pas qu'elles sont toutes exigées pour la première alpha ; suivre leurs dépendances et leur ordre local après validation du socle concerné.
+- Les sections 44 à 70 ajoutent des outils, modes et services complémentaires (maintenance, HUD, modes de jeu, tournois, diffusion, aide, mises à jour, prolongation). Elles réutilisent les systèmes propriétaires existants et restent subordonnées à la première build jouable ; suivre leurs dépendances locales.
 
 #### Matrice de rattachement des sections à la chronologie
 
@@ -299,6 +300,7 @@ Cette matrice sert à vérifier qu'aucune exigence approuvée ne disparaît entr
 | 44–47 | 2–7 selon dépendances | Maintenance, présence en partie, écran partagé, voix, HUD, commandes, informations tactiques et analyse des combats ; réutiliser les systèmes existants et valider chaque extension. | Non vérifié | Aucun enregistré |
 | 48–54 | Après les fondations 2–5 et avant extension compétitive | Modes et expériences complémentaires ; prototypes indépendants, équilibre et validation spécifiques avant intégration aux playlists. | Non vérifié | Aucun enregistré |
 | 55–59 | 2–7 selon dépendances | Approfondissements du combat/armement, tournois et modes supplémentaires ; fusionner avec les systèmes propriétaires et garder le classé désactivé tant que l'intégrité n'est pas démontrée. | Non vérifié | Aucun enregistré |
+| 60–70 | 3–7 selon dépendances | Confidentialité en diffusion, vérification de connexion, traduction du chat, centre d'aide, pause technique, export des statistiques, mises à jour, test audio, état des services, signalement de bugs et prolongation ; réutiliser les systèmes de réseau, de matchmaking, de mise à jour et de statistiques existants. | Non vérifié | Aucun enregistré |
 
 Une exigence peut contribuer à plusieurs phases : sa version minimale nécessaire à la jouabilité ou à la sécurité est traitée tôt ; ses fonctions persistantes, sociales ou avancées sont livrées plus tard. Le report d'une partie avancée ne reporte pas une protection critique, et ne supprime jamais l'exigence.
 - Une priorité locale indique l'ordre à respecter **dans son propre chantier**. Elle ne permet pas de passer devant un blocage de sécurité, de licence, de sauvegarde, de boucle jouable ou de réseau qui empêche le chantier de fonctionner.
@@ -995,8 +997,7 @@ Ces cinq fonctionnalités sont approuvées pour RIXE. Elles complètent les syst
 - Permettre au joueur d'utiliser un stand de tir ou un espace d'entraînement pendant que le matchmaking recherche une partie, lorsque l'architecture réseau et les ressources le permettent.
 - Permettre de tester les armes, accessoires, déplacements, cibles mobiles et équipements disponibles.
 - Afficher clairement l'état de recherche et avertir le joueur lorsqu'une partie est trouvée.
-- Prévoir un transfert vers la partie avec un chargement fiable et un délai raisonnable ; ne pas faire perdre au joueur une place confirmée à cause d'une transition défaillante.
-- L'entraînement est isolé du match : aucun dégât, score, défi, statistique, replay officiel ou progression compétitive ne doit être attribué.
+- Prévoir un transfert vers la partie avec un chargement fiable et un délai raisonnable ; ne pas faire perdre au joueur une place confirmée à cause d'une transition défaillante.- L'entraînement est isolé du match : aucun dégât, score, défi, statistique, replay officiel ou progression compétitive ne doit être attribué.
 - Aucune information sur les équipes adverses, la carte en cours ou les positions de la partie recherchée ne doit être divulguée.
 - Si l'entraînement simultané n'est pas techniquement viable ou dépasse le budget/performance, proposer une version légère ou différer la fonction plutôt que fragiliser le matchmaking.
 
@@ -1052,7 +1053,7 @@ Les huit propositions suivantes sont approuvées par le propriétaire. Elles com
 - Signaler clairement les fonctions indisponibles hors ligne et prévoir une sauvegarde locale robuste.
 
 ### 29.4 Temps morts tactiques et abandon encadré
-- Étudier des temps morts limités par équipe dans les modes compétitifs compatibles, notamment classés et parties personnalisées ; ne pas les imposer à tous les modes publics.
+- Étudier des temps morts limités par équipe dans les modes compétitifs compatibles, notamment classés et parties personnalisées ; ne pas les imposer à tous les modes publics. Distinct de la pause technique de la section 64 (incident matériel ou réseau) : ne pas créer deux systèmes de pause concurrents, mais un mécanisme commun de synchronisation et de reprise.
 - Synchroniser le temps mort côté serveur, afficher clairement sa durée et ses conditions, et empêcher les abus de pause répétée ou déclenchée à un moment injuste.
 - Prévoir un vote d'abandon uniquement sous conditions définies (par exemple joueur manquant ou situation durablement compromise), avec seuil de votes, délai et protections contre la manipulation.
 - Définir les conséquences de l'abandon, les pertes éventuelles de rang et les cas d'exception avant activation en classé.
@@ -1095,7 +1096,7 @@ Les huit propositions suivantes sont approuvées par le propriétaire. Elles com
 - Respecter le budget autorisé de 0 € : aucune infrastructure, service, outil ou dépense nouvelle sans accord explicite. Privilégier les solutions locales et gratuites dans leurs limites réelles.
 - Toute fonction reste planifiée jusqu'à ce qu'elle soit implémentée, testée sur une build et documentée avec ses limites.
 
-## 30. Préréglages graphiques, diagnostic et optimisation — six ajouts approuvés le 19 novembre 2026
+## 30. Préréglages graphiques, diagnostic et optimisation — huit ajouts approuvés le 19 novembre 2026
 
 Cette section complète les paramètres vidéo et les objectifs de performance existants. Elle décrit des fonctions planifiées : aucune n'est considérée comme livrée avant implémentation et tests sur des builds réelles.
 
@@ -1316,21 +1317,13 @@ Les huit idées suivantes sont approuvées et ajoutées au cahier des charges. E
 - Pour les grenades compatibles, permettre une temporisation volontaire avant le lancer (« cuisson ») : le décompte commence au moment cohérent avec le fonctionnement de l'équipement, par exemple le retrait de la sécurité ou l'activation de la fusée.
 - Définir une durée de fusée fiable et identique pour tous les joueurs ; afficher un retour sonore/visuel discret et compréhensible sans fournir une précision artificielle.
 - La durée restante est gérée par le serveur et continue pendant le lancer, les rebonds et les déplacements ; aucune pause, réinitialisation ou duplication de fusée ne doit être possible.
-- Autoriser l'explosion avant le lancer si le joueur attend trop longtemps, avec les risques normaux pour lui-même et ses alliés ; ne pas garantir un lancer à la dernière fraction de seconde.
+- Autoriser l'explosion avant le lancer si le joueur attend trop longtemps, avec les risques normaux pour lui-même, et pour ses alliés uniquement dans les modes où le tir ami est explicitement activé (dans les modes officiels standards, la règle de la section 34.2 s'applique : aucun dégât allié) ; ne pas garantir un lancer à la dernière fraction de seconde.
 - Réserver cette mécanique aux types de grenades dont le fonctionnement le justifie ; elle ne doit pas être appliquée automatiquement à tous les équipements explosifs.
 - Pour les grenades compatibles, permettre à un joueur de tenter de les repousser ou de les renvoyer vers leur zone d'origine lorsqu'elles sont encore accessibles et suffisamment éloignées de leur explosion.
 - Définir une fenêtre d'interaction courte, une portée et une animation dédiées ; l'action doit être volontaire, lisible et exposer le joueur à un risque réel pendant son exécution.
 - Ne pas permettre de renvoyer une grenade déjà explosée, inaccessible, derrière un obstacle ou trop proche de sa détonation ; la cuisson et le temps de fusée restent continus et sous autorité serveur.
 - Le renvoi ne doit ni réinitialiser la fusée, ni modifier artificiellement les dégâts, ni garantir que la grenade atteigne un adversaire ; conserver une trajectoire physique cohérente et un contre-jeu possible.
 - Limiter cette interaction aux types de grenades dont la forme et le fonctionnement la rendent plausible ; désactiver ou adapter la mécanique dans les modes où elle déséquilibrerait les affrontements.
-
-
-- Ajouter une grenade adhésive (« grenade collante ») capable de se fixer aux surfaces compatibles — murs, plafonds et certains objets — au point d'impact, avant sa détonation selon une temporisation définie.
-- Définir précisément les surfaces autorisées, le comportement en cas d'impact sur un joueur ou un objet mobile, ainsi que les règles de rebond ou de chute lorsque l'adhérence n'est pas possible ; ne jamais permettre de traverser la géométrie.
-- Conserver un délai de détonation lisible et cohérent ; la fusée reste continue et validée par le serveur. Le joueur qui la lance ne peut pas la récupérer ni la réinitialiser après fixation.
-- Prévoir un contre-jeu proportionné : signal visuel/sonore perceptible, possibilité de s'éloigner ou de quitter la zone menacée, et éventuelle neutralisation uniquement si elle est testée et équilibrée.
-- Limiter le nombre transporté et les conditions de réapprovisionnement ; tester les interactions avec cuisson, renvoi des grenades, dégâts, physique, latence et collisions en multijoueur.
-- Traiter cette grenade comme un équipement distinct, facultatif et non systématiquement supérieur aux grenades classiques ; vérifier son équilibre sur chaque carte et dans chaque mode compatible.
 
 ### 33.3 Audio spatial intelligent
 - Améliorer la spatialisation des tirs, pas, rechargements, explosions et autres sons utiles selon la distance, la direction, les obstacles, les portes, les étages et les matériaux.
@@ -1386,9 +1379,17 @@ Les huit idées suivantes sont approuvées et ajoutées au cahier des charges. E
 - Garder un nombre maximal de trois cartes au lancement ; les variantes servent à diversifier les cartes existantes, pas à augmenter artificiellement le nombre de cartes.
 - Ne publier une variante dans les playlists officielles qu'après tests de navigation, de performance, de spawn et d'équilibre sur les deux équipes.
 
+### 33.8 Grenade adhésive
+- Ajouter une grenade adhésive (« grenade collante ») capable de se fixer aux surfaces compatibles — murs, plafonds et certains objets — au point d'impact, avant sa détonation selon une temporisation définie.
+- Définir précisément les surfaces autorisées, le comportement en cas d'impact sur un joueur ou un objet mobile, ainsi que les règles de rebond ou de chute lorsque l'adhérence n'est pas possible ; ne jamais permettre de traverser la géométrie.
+- Conserver un délai de détonation lisible et cohérent ; la fusée reste continue et validée par le serveur. Le joueur qui la lance ne peut pas la récupérer ni la réinitialiser après fixation.
+- Prévoir un contre-jeu proportionné : signal visuel/sonore perceptible, possibilité de s'éloigner ou de quitter la zone menacée, et éventuelle neutralisation uniquement si elle est testée et équilibrée.
+- Limiter le nombre transporté et les conditions de réapprovisionnement ; tester les interactions avec cuisson, renvoi des grenades, dégâts, physique, latence et collisions en multijoueur.
+- Traiter cette grenade comme un équipement distinct, facultatif et non systématiquement supérieur aux grenades classiques ; vérifier son équilibre sur chaque carte et dans chaque mode compatible.
+
 ### Priorités et critères communs
-- Ne pas développer les sept systèmes simultanément. Priorité à la fiabilité du tir, des dégâts, du rechargement et de la réplication avant les effets visuels avancés.
-- Prototyper d'abord 33.4 et 33.6 dans un environnement de test, puis 33.2 et 33.3 ; évaluer 33.1 et 33.7 sur une carte pilote avant toute extension.
+- Ne pas développer les huit systèmes simultanément. Priorité à la fiabilité du tir, des dégâts, du rechargement et de la réplication avant les effets visuels avancés.
+- Prototyper d'abord 33.4 et 33.6 dans un environnement de test, puis 33.2 et 33.3 ; n'ajouter 33.8 qu'une fois la cuisson et le renvoi de 33.2 validés ; évaluer 33.1 et 33.7 sur une carte pilote avant toute extension.
 - Ajouter 33.5 progressivement avec des budgets stricts et une option de réduction des effets secondaires.
 - Toute fonctionnalité affectant la collision, les dégâts, les munitions, la géométrie ou les règles doit être autoritaire côté serveur et couverte par des tests de non-régression.
 - Ne pas modifier les règles d'un mode sans l'indiquer ; certaines fonctionnalités peuvent être limitées à des modes si les tests montrent un risque pour l'équilibre.
@@ -1555,7 +1556,7 @@ Cette section formalise le veto compétitif approuvé et la règle de circulatio
 - Commencer par un prototype simple du rapport d'intégrité, uniquement après stabilisation des validations serveur et des données de partie.
 - Ajouter les rivalités personnelles ensuite, à partir des statistiques déjà disponibles et avec les contrôles de confidentialité.
 - Ouvrir le laboratoire communautaire lorsque les modes officiels, les statistiques et les outils de modération sont suffisamment stables.
-- Ces trois fonctions ne doivent jamais retarder la première build jouable, la correction du secret exposé dans le dépôt, l'audit des licences, la stabilité réseau ou les fonctionnalités essentielles.
+- Ces trois fonctions ne doivent jamais retarder la première build jouable, la correction de tout secret exposé dans le dépôt (sections 8 et 15), l'audit des licences, la stabilité réseau ou les fonctionnalités essentielles.
 
 ## 39. Choix du matchmaking, protection des débutants et recommandations entre joueurs — trois décisions approuvées le 19 novembre 2026
 
@@ -1883,10 +1884,10 @@ Ces quatre fonctionnalités complètent les réglages d'interface et d'accessibi
 
 ## 46. Informations tactiques contextuelles, continuité des périphériques et statistiques par carte — ajouts approuvés le 22 novembre 2026
 
-Ces ajouts complètent les communications tactiques (section 28), les préférences et réglages de périphériques (sections 28.4 et 32.2), le diagnostic graphique/réseau (section 30.6) et la comparaison personnelle des performances (section 36.4). Ils restent planifiés et ne sont pas considérés comme implémentés avant validation sur une build réelle.
+Ces ajouts complètent les communications tactiques (sections 23.1 et 26), les préférences et réglages de périphériques (sections 28.4 et 32.2), le diagnostic graphique/réseau (section 30.6) et la comparaison personnelle des performances (section 36.4). Ils restent planifiés et ne sont pas considérés comme implémentés avant validation sur une build réelle.
 
 ### 46.1 Marqueurs tactiques contextuels et intelligents
-- Compléter les appellations de zones et les pings déjà prévus en section 28 par une communication rapide contextuelle : signaler un danger observé, demander un soutien, indiquer une direction, un objectif à défendre/attaquer ou un équipement/allier nécessitant de l'aide.
+- Compléter les appellations de zones et les pings déjà prévus aux sections 23.1 et 26 par une communication rapide contextuelle : signaler un danger observé, demander un soutien, indiquer une direction, un objectif à défendre/attaquer ou un équipement/allier nécessitant de l'aide.
 - Adapter les propositions au contexte réel (mode, proximité d'un objectif, état du joueur et éléments effectivement visibles) sans envoyer automatiquement un message non voulu ; le joueur conserve toujours la confirmation de l'envoi.
 - Associer si possible le marqueur à une zone ou un élément identifié, avec une durée de validité adaptée. Faire expirer ou atténuer les marqueurs devenus anciens, invalides ou contredits par l'évolution de la partie.
 - Distinguer clairement une observation directe, une demande d'aide et une hypothèse ; ne jamais transformer un ping en révélation de position ennemie non observée.
@@ -1925,7 +1926,7 @@ Ces ajouts complètent les communications tactiques (section 28), les préféren
 
 ## 47. Analyse détaillée des échanges de tirs — extension approuvée le 22 novembre 2026
 
-Cette fonctionnalité approfondit le récapitulatif après élimination déjà prévu en section 36.2. Elle ne doit pas créer un second système de replay ou de statistiques : elle réutilise les événements de combat et les données validées par le serveur. Elle reste planifiée et ne sera considérée comme implémentée qu'après validation sur une build réelle.
+Cette fonctionnalité approfondit le récapitulatif après élimination déjà prévu en section 36.1. Elle ne doit pas créer un second système de replay ou de statistiques : elle réutilise les événements de combat et les données validées par le serveur. Elle reste planifiée et ne sera considérée comme implémentée qu'après validation sur une build réelle.
 
 ### 47.1 Rapport personnel d'un échange de tirs
 - Après une élimination, proposer un rapport facultatif et consultable sans ralentir la reprise de partie, qui explique l'échange de tirs entre le joueur et son adversaire lorsque les données nécessaires sont disponibles.
@@ -1940,7 +1941,7 @@ Cette fonctionnalité approfondit le récapitulatif après élimination déjà p
 - Critères de validation : duel gagné/perdu, élimination simultanée, assistance, dégâts réduits, tirs traversant des matériaux autorisés, latence élevée, données incomplètes, plusieurs adversaires, modes sans réapparition et absence de fuite d'information.
 
 ### Priorités et critères communs
-- Étendre le récapitulatif de la section 36.2 au lieu de créer une interface ou un historique parallèle.
+- Étendre le récapitulatif de la section 36.1 au lieu de créer une interface ou un historique parallèle.
 - Réutiliser les événements de combat validés côté serveur et les données de replay strictement nécessaires ; ne pas enregistrer de vidéo continue pour cette fonction.
 - Afficher les indicateurs indisponibles comme tels et différencier faits confirmés, estimations et données absentes.
 - Mesurer le coût CPU, mémoire, stockage et réseau ; limiter la quantité et la durée de conservation des données.
@@ -1995,7 +1996,6 @@ Créer un mode tactique en manches inspiré du principe classique « Search and 
 - Après un nombre défini de manches, les équipes échangent leurs rôles. Prévoir un nombre de manches gagnantes et, si nécessaire, des manches supplémentaires pour départager une égalité.
 - Afficher clairement le temps restant, l'état du dispositif, le nombre de joueurs encore en vie et le résultat de chaque manche.
 - Permettre de regarder ses coéquipiers après élimination, avec les restrictions anti-triche et anti-fuite d'information adaptées.
-
 ### 49.2 Équilibrage et règles compétitives
 - Concevoir des cartes avec plusieurs itinéraires viables, des sites distincts, des possibilités de rotation et des positions défensives contestables.
 - Éviter les sites impossibles à reprendre, les angles sans contre-jeu, les apparitions trop proches des sites et les raccourcis exploitables.
@@ -2153,7 +2153,7 @@ Créer un mode arcade de précision où chaque joueur dispose d'une seule balle 
 
 ## 55. Approfondissements approuvés du combat et de l'armement — 22 novembre 2026
 
-Cette section formalise sept décisions de gameplay explicitement approuvées. Elle complète les systèmes d'armes, d'accessoires, de dégâts, de score et de rechargement déjà décrits dans les sections précédentes. Elle ne doit pas créer de systèmes parallèles.
+Cette section formalise huit décisions de gameplay explicitement approuvées. Elle complète les systèmes d'armes, d'accessoires, de dégâts, de score et de rechargement déjà décrits dans les sections précédentes. Elle ne doit pas créer de systèmes parallèles.
 
 ### 55.1 Gestion avancée des accessoires
 - Permettre une gestion plus complète des accessoires compatibles avec chaque arme : sélection, montage, retrait et remplacement depuis l'atelier ou l'écran de configuration.
@@ -2449,7 +2449,7 @@ Créer une rubrique d'aide accessible depuis les menus de RIXE, destinée à exp
 
 ## 64. Pause technique encadrée pour les parties privées — ajout approuvé le 22 novembre 2026
 
-Permettre une pause technique limitée dans les parties privées et les rencontres de tournoi compatibles, afin de gérer un incident matériel ou réseau ponctuel sans fausser le résultat.
+Permettre une pause technique limitée dans les parties privées et les rencontres de tournoi compatibles, afin de gérer un incident matériel ou réseau ponctuel sans fausser le résultat. Cette fonction complète les temps morts tactiques de la section 29.4 (choix stratégique) et doit partager avec eux le même mécanisme de pause synchronisée sous autorité serveur.
 
 ### 64.1 Règles de pause
 - Autoriser un nombre limité de pauses par équipe ou par rencontre, avec une durée maximale configurable par le créateur ou le règlement du tournoi.
@@ -2506,7 +2506,7 @@ Améliorer le téléchargement et l'installation des mises à jour de RIXE afin 
 ### 66.2 Fiabilité et consommation
 - Étudier les mises à jour différentielles afin de ne télécharger que les éléments modifiés lorsque cela est techniquement fiable et réellement avantageux.
 - Vérifier l'intégrité des fichiers téléchargés et reprendre proprement après une coupure réseau ou un arrêt inattendu.
-- Prévoir une vérification/réparation des fichiers du jeu sans imposer une réinstallation complète lorsque les éléments peuvent être réparés individuellement.
+- Prévoir une vérification/réparation des fichiers du jeu sans imposer une réinstallation complète lorsque les éléments peuvent être réparés individuellement ; réutiliser l'outil défini en section 44.1 et le système de versions de la section 22.8, sans créer un second mécanisme.
 - Éviter les écritures et vérifications inutiles sur le disque ; prévenir avant toute opération exigeant un espace temporaire important.
 - Ne jamais supprimer les fichiers personnels ou configurations du joueur lors d'une mise à jour.
 
