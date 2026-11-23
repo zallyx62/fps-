@@ -85,7 +85,7 @@ The following repository state was checked against GitHub after PR #13 was merge
 - The validation job ran the Python dependency installation and `Tools/validate_project.py`, including project JSON, Python syntax, weapon metadata, generated geometry and OBJ smoke checks. It did **not** compile Unreal, load Blueprints or package a Windows build.
 - No pull request is currently open. PR #13, which refactored `CLAUDE.md`, is merged.
 - The recursive tree contains 589 tracked files and is not truncated. Exact duplicate Git blobs: none. Binary Unreal assets cannot be inspected internally through this tree audit.
-- At audit start, nine historical `docs/*` branches existed in addition to `main` and `jeu-unreal`. Their commits unique to each branch affect documentation only; they are not current working branches. The active branch for this audit, `docs/final-repo-audit-2026-11-24`, is listed separately. Do not reuse, merge or delete any stale branch without inspecting its unique commits. PR #13's source branch is also retained after its content was squash-merged.
+- At audit start, nine historical `docs/*` branches existed in addition to `main` and `jeu-unreal`. Their commits unique to each branch affect documentation only; they are not current working branches. The active branch carrying this audit is intentionally excluded from the historical-branch table below. Do not reuse, merge or delete any stale branch without inspecting its unique commits. PR #13's source branch is also retained after its content was squash-merged.
 
 | Branch at audit baseline | Head SHA | Ahead of `main` | Behind `main` | Handling |
 |---|---|---:|---:|---|
@@ -98,7 +98,6 @@ The following repository state was checked against GitHub after PR #13 was merge
 | `docs/refactor-claude-md-2026-11-24` | `806f49c143a1b9bbaab1f9020fed397309533f51` | 1 | 1 | PR #13 merged; branch pointer remains |
 | `docs/token-context-efficiency` | `52469d35f0517317131524aa300f849ae1b7dff6` | 1 | 2 | Divergent; inspect before reuse |
 | `docs/update-current-github-audit` | `7635354620fbdf8c4293e506cdb4d26fd7649b80` | 3 | 4 | Divergent; inspect before reuse |
-| `docs/final-repo-audit-2026-11-24` | `9e90218b36edd962ef7097dc69f4aed0ed58066a` | 3 | 0 | Active branch for this audit; review via PR |
 
 The GitHub branch listing reports `protected=false` for `main` and `jeu-unreal`, and the rulesets query returned no rulesets. Branch-protection details could not be inspected with the connected integration. Server-side protection is therefore **not verified** and must not be claimed.
 ## 5. Registre de preuve obligatoire
