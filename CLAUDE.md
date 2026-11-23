@@ -1,119 +1,68 @@
-# RIXE — Claude Code Operating Instructions
+# RIXE — Claude Code Instructions
 
-These instructions define **how to work**, not what features RIXE should contain. Keep this file short, stable and operational. The approved project specification is the authority for product scope.
+This file defines the agent's operating rules, not RIXE's product specification. Keep product requirements in their authoritative documents; do not maintain a second copy here.
 
-## 1. Project and source-of-truth hierarchy
+## 1. Authority and document roles
 
-- Project: **RIXE**, a multiplayer arena FPS built with **Unreal Engine 5.8**, primarily using Blueprints.
-- Goal: deliver a genuinely playable, stable, maintainable FPS. Never confuse planned scope with implemented or validated functionality.
-- `CAHIER_DES_CHARGES_RIXE.md` is the sole authority for approved features, product decisions, exclusions, dependencies and roadmap.
-- `UNREAL.md` records the observed Unreal project, implementation details, technical findings and historical tests. It is not a product specification.
-- `SUIVI_PHASES_RIXE.md` records current progress, phase status, test evidence, blockers and next verifiable actions. Revalidate dated claims against the current commit.
-- Other documents (including licence, build, asset or technical records) are authoritative only within their stated subject. Follow references in the specification.
-- This file governs workflow and safety. It must not duplicate the feature catalogue, technical state or roadmap.
+- `CAHIER_DES_CHARGES_RIXE.md` is the sole source of truth for approved features, decisions, exclusions, dependencies, priorities, roadmap and acceptance criteria.
+- `UNREAL.md` records the implementation and technical state actually observed in Unreal. Historical editor tests are not proof of current build or network behaviour.
+- `SUIVI_PHASES_RIXE.md` records verified progress, evidence, blockers and the current repository audit.
+- `LICENCE_DISTRIBUTION.md` records third-party rights and distribution blockers. The root `LICENSE` file does not establish that every project asset is redistributable.
+- This file governs how to resume, investigate, change, test and deliver work. It does not override the approved specification.
 
-If sources conflict, identify the exact passages and dates. Apply an explicitly approved, unambiguous newer decision; otherwise stop and ask the owner. Never resolve uncertainty by silently deleting, weakening or inventing a requirement.
+If documents conflict, identify the exact passages and dates. Apply only a clear, explicitly approved newer decision; otherwise stop and ask. Never silently invent, weaken or discard a requirement.
 
-## 2. Session start: establish the real state
+## 2. Resume from verified state
 
-Before resuming work, do not rely on memory, old summaries or a previous session report.
+At the start of each session:
 
-1. Inspect the local workspace first: repository root, current branch, HEAD, `git status`, untracked files, local changes, running Unreal instances and available project/tool versions. Do not overwrite, reset, clean or discard work you do not understand.
-2. Fetch current remote references. Verify the latest `main` commit, the task branch, relevant open PRs, recent commits and relevant CI/workflow results. Check whether `jeu-unreal` still matches `main`.
-3. Read this file and the current `SUIVI_PHASES_RIXE.md`. Read `UNREAL.md` only where the task needs implementation or environment context.
-4. Inspect the specification's heading/index structure, identify the sections relevant to the task, then read those sections **in full**, including their explicitly referenced dependencies and acceptance criteria. Do not read the entire specification by default.
-5. Summarize the verified handoff briefly: active phase, last code commit actually tested, changes since that evidence, current blocker and next verifiable action.
+1. Inspect the actual workspace: repository root, branch, HEAD, `git status`, untracked/local changes, available tools and Unreal version. Never overwrite or discard work you do not understand.
+2. Fetch current remote state. Verify `main`, the task branch, open PRs, relevant CI runs and whether `jeu-unreal` matches `main`.
+3. Read this file and the current `SUIVI_PHASES_RIXE.md`. Consult `UNREAL.md` and the licence register when relevant.
+4. Find the current specification sections relevant to the task. Read each relevant section in full, including its dependencies, cross-references and acceptance criteria. Do not read all sections by default and do not blindly use obsolete section-number ranges.
+5. State the verified handoff briefly: current phase, last code commit actually tested, changes since that evidence, blockers and next verifiable action.
 
-If the local project or required tools are unavailable, state exactly what could and could not be verified. Never imply that a local build, Blueprint inspection or runtime test occurred when it did not.
+If the local project, editor or required tools are unavailable, say exactly what could not be inspected or tested. Never imply that local files, Blueprints or runtime behaviour were verified when they were not.
 
-## 3. Specification discovery and change control
+## 3. Scope and investigation
 
-Use the specification dynamically; section numbers and titles can change.
+- Work only within the owner's explicitly approved scope. A request to research, audit or recommend is not permission to implement. Do not add, remove or redesign features, priorities, phases, milestones or deliverables without approval.
+- Before proposing a new feature, search the entire current specification and all available decision records, prior proposals and conversation history for existing, overlapping, rejected or deferred ideas. Compare the user outcome and system responsibility, not just wording. Disclose when prior history is unavailable; do not claim exhaustive novelty.
+- Inspect the actual implementation and its existing owner system before planning a change. Prefer extending that system over creating parallel or duplicate systems.
+- Give a concise plan covering scope, relevant requirements, intended files and material risks. Ask before proceeding if ambiguity could change approved behaviour or scope.
 
-- For ordinary implementation, search the specification for the feature, its owner system, dependencies, constraints, exclusions and acceptance criteria. Read the complete relevant sections and follow their cross-references.
-- For architecture-wide, security, licence, release or migration work, broaden the inspection to every affected system and dependency. A targeted search must not become an excuse to miss a consequential requirement.
-- For a proposed new feature or idea, first search the **entire current specification** and all available decision/proposal records and conversation context for existing, overlapping, rejected or deferred ideas. Compare user outcome and technical responsibility, not just wording. If prior conversation history is unavailable, disclose that limitation; do not claim exhaustive novelty.
-- Preserve every approved requirement, including deferred requirements. Merge overlapping implementation under the existing owner system without dropping distinct approved behaviours.
-- Do not add, remove, redesign or modify product scope, features, priorities, phases, milestones or deliverables without the owner's explicit approval. A request to investigate or recommend is not approval to implement.
-- Before editing, state the task scope, relevant specification sections, intended files, approach and material risks. If an ambiguity changes product behaviour or scope, ask before proceeding.
+## 4. Git and review workflow
 
-For weapon work, use the exact approved weapon/source-game specification. Verify the source title, reference version or patch, configuration and test conditions; preserve the original weapon's documented characteristics as closely as the approved design requires. Do not invent reference statistics.
+- `main` is the canonical reference branch, not a development branch. Create a dedicated task branch from the latest verified `main`.
+- `jeu-unreal` is a mirror of `main`, not a development branch. Never develop on it or force-push it. If it diverges, stop and inspect the unique commits before any synchronization.
+- Keep commits focused. Never force-push, rewrite shared history, or reset/clean unknown work.
+- Open a PR to `main`. Review the full diff and changed-file list for scope, unintended changes, secrets, generated files and licence changes.
+- Merge only within the approved scope and after required checks have completed successfully. Pending, failed or unavailable checks are not a pass.
+- After merging, verify the merge commit, CI result and equality of the `main` and `jeu-unreal` SHAs. Never assume an automatic workflow succeeded.
 
-## 4. Git and delivery workflow
+## 5. Engineering, tests and evidence
 
-- `main` is the protected reference branch, **never a development workspace**.
-- Create a dedicated task branch from the latest verified `main`. Inspect any existing candidate branch before reuse; confirm its base, commits and diff.
-- Make focused, reviewable commits. Do not mix unrelated work. Never force-push, rewrite shared history or delete branches to hide divergence.
-- Open a pull request to `main` with a factual summary, scope, tests, evidence and known limitations. Review the complete diff and changed-file list before merging.
-- Merge only when the change is within the owner's authorization, the diff is correct, and required checks have completed successfully. If checks fail, are pending, or cannot be evaluated, report that state and stop rather than claiming validation.
-- `jeu-unreal` is intended to be an exact mirror of `main`, maintained by the repository workflow. Never develop on it or force it. If it has unique commits or diverges, stop and request an explicit resolution.
-- After a merge, verify the merge commit, resulting `main`, synchronization workflow and equality of `main` / `jeu-unreal` SHAs. Do not infer success from a workflow being merely queued or in progress.
+- Implement the smallest coherent change that satisfies the approved acceptance criteria. Avoid speculative refactors and unrelated cleanup.
+- Select validation according to risk: static checks, Blueprint/project compilation, editor/runtime tests, packaged builds, network tests and performance checks as applicable.
+- For networked changes, test multiple clients and separate machines/networks when relevant. A local PIE test does not prove Internet readiness.
+- Record the exact code commit, environment, procedure, results, logs/artifacts, regressions and limitations. Update the appropriate progress or technical record without copying product requirements into it.
+- Mark checks that were not run as **not run / not verified**, with the reason. Never turn an assumption, documentation change, static CI pass or editor-only test into proof of a packaged build or working online game.
+- For game changes, produce a Windows x64 test build and a verified direct link whenever the environment permits. Otherwise state that packaging or sharing was unavailable and explain why. Identify the tested commit and build configuration.
 
-Never amend unrelated files or historical branches as part of a task. Keep the change set limited to the approved scope.
+A task is complete only when its approved acceptance criteria and relevant checks are evidenced, limitations are declared, and the resulting commit/PR state is verified.
 
-## 5. Engineering workflow and quality bar
+## 6. Safety and authorization
 
-For each task:
+Follow the approved autonomy, budget, security and licensing requirements in the specification (especially sections 11, 13–15 and 25) and `LICENCE_DISTRIBUTION.md`.
 
-1. Establish the expected behaviour and acceptance criteria from the approved specification.
-2. Inspect the actual implementation and existing owner system before designing a change. Prefer extending the existing system over creating parallel systems.
-3. Identify dependencies, failure modes, data impact, security implications and rollback needs. Make a concise plan.
-4. Back up affected assets/data when appropriate and verify that the backup is usable before risky operations.
-5. Implement the smallest coherent change that fully satisfies the approved requirement. Avoid speculative refactors and unrelated cleanup.
-6. Validate progressively: syntax/static checks, Blueprint compilation, project compilation, editor/runtime tests, packaged-build tests, network tests and performance checks as applicable to the change.
-7. Test relevant regressions in dependent systems. For networked behaviour, use multiple clients and, where relevant, separate machines/networks; local PIE alone does not prove Internet readiness.
-8. Record exact branch/commit, environment, procedure, results, logs or artifacts, failures and limitations. Update the appropriate technical or progress document without duplicating the specification.
-9. Review the final diff for unintended changes, secrets, generated files, licence changes and unsupported claims before committing.
+- The current approved budget is €0. No purchase, subscription, paid service or other expenditure without explicit approval.
+- No public release/distribution, irreversible or destructive operation, data deletion, production migration, ownership transfer or licence change without explicit approval.
+- Never modify or replace `LICENSE` automatically. Protect credentials, tokens, signing keys and private data; never commit secrets.
+- Back up affected data before risky operations and verify that recovery is possible. If the impact or rollback path is unclear, stop and ask.
+- Autonomous execution is welcome inside the approved scope; it does not grant permission to spend, publish, destroy data or make legal decisions.
 
-Choose tests according to risk; do not run expensive or irrelevant suites merely for appearance. Equally, never skip a necessary test to save time or tokens.
+## 7. English and context discipline
 
-A task is complete only when its implementation is present, relevant checks have passed, dependent systems have been checked, evidence and limitations are recorded, and the resulting commit/PR state is verified. If a check cannot be run, mark it **not run / not verified** and explain why. Never turn an assumption, editor-only test, documentation commit or CI lint pass into proof of a packaged build or working online game.
+Use English for RIXE working communication, code, identifiers, comments, GitHub content, commit messages and new or modified technical documentation, unless the owner explicitly requests otherwise. Do not translate existing French documents wholesale. Prefer official English technical references.
 
-## 6. Safety, permissions, budget and licensing
-
-The approved budget is **€0**.
-
-- No purchases, subscriptions, paid plugins/assets, hosting, cloud compute, advertising, domains or other paid services without the owner's explicit approval.
-- No public release, publication, irreversible/destructive operation, data deletion, production migration, ownership transfer or licence change without explicit approval.
-- Never modify or replace `LICENSE` automatically. Do not claim that the project or its contents are redistributable until the applicable Unreal/Epic, third-party, plugin, asset, font, audio and code rights have been checked against the current licence records and official terms.
-- Protect credentials, tokens, signing keys, account data, private user information and local project data. Never commit secrets or expose sensitive logs. Use approved local secret-management mechanisms.
-- Before a risky operation, explain the impact, create a recoverable backup and verify the rollback path. If safe recovery cannot be established, stop and ask.
-- Use only tools, permissions and capabilities actually available in the current environment. Do not bypass permission prompts, security controls or tool restrictions.
-
-Autonomous execution is welcome **inside the approved scope**. It does not grant authority to spend money, expand scope, publish, destroy data or make legal/licensing decisions.
-
-## 7. Builds, artifacts and reporting
-
-When a change modifies the game, the owner expects a testable build link whenever a valid build can be produced.
-
-- Produce a Windows x64 Development or Shipping package when the environment and project state permit it.
-- Share a direct link only after the artifact exists and the exact link has been verified. Identify its version, branch, commit, platform and build configuration.
-- Report what was actually tested, including player count, network conditions and hardware when relevant. Separate successful, failed, blocked and untested checks.
-- If packaging or sharing is unavailable, say **unavailable**, explain the blocker and provide the strongest valid test evidence instead. Source-code links are not game-build links.
-- Do not use the web prototype as a substitute for the Unreal game.
-- Do not publish a public release or expose an artifact publicly without the required owner approval and licence/security checks.
-
-Keep reports concise and evidence-led: **scope / changes / tests and evidence / limitations or blockers / PR and build links / next action**. Do not repeat unchanged project context.
-
-## 8. Mandatory English-first convention
-
-Use English exclusively for RIXE working communication, explanations, reports, code, identifiers, comments, technical documentation, GitHub content and commit messages, unless the owner explicitly requests another language.
-
-Write all new or modified technical content in English. Do not translate existing French project documents wholesale or change them solely to enforce this convention. Prefer official English technical documentation.
-
-This is a working convention only. It creates no feature, task, phase, milestone, deliverable or roadmap change.
-
-## 9. Token and context discipline
-
-Maximize engineering quality per token, not token reduction at any cost.
-
-- Load only the files and ranges needed for the task; use headings, targeted search and cross-references before reading large documents.
-- Do not reread unchanged content already available in context unless freshness or correctness requires it.
-- Do not load or summarize the full repository or full specification by default.
-- Expand inspection when the task is broad, cross-cutting, safety-critical or requires a novelty/completeness audit.
-- Avoid redundant searches, tool calls, repeated explanations and unnecessary progress messages.
-- Use parallel work or subagents only when independent work provides a real benefit greater than its coordination cost.
-- Keep plans and reports compact, but preserve reasoning, edge-case analysis, implementation quality, required tests, security checks and evidence.
-- Never sacrifice correctness, completeness, maintainability or safety to reduce context usage.
-
-**Operating principle:** use the smallest sufficient context and workflow that can reliably complete the task—not the smallest possible context.
+Use the smallest context sufficient for reliable work: search headings and relevant terms first, read complete relevant sections and dependencies, and avoid re-reading unchanged material. Expand to a repository-wide audit for cross-cutting, security-critical or completeness/novelty tasks. Keep reports concise, but never sacrifice reasoning, correctness, testing, maintainability or safety to save tokens.
