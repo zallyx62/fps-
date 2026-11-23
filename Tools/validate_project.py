@@ -64,7 +64,7 @@ def main() -> None:
 
     # Keep the configured startup assets aligned with the checked-in project content.
     required_configured_assets = {
-        "EditorStartupMap": (" /Game/Variant_Shooter/Lvl_ArenaShooter", ROOT / "Content/Variant_Shooter/Lvl_ArenaShooter.umap"),
+        "EditorStartupMap": (" /Game/Variant_Shooter/Lvl_ArenaShooter.Lvl_ArenaShooter", ROOT / "Content/Variant_Shooter/Lvl_ArenaShooter.umap"),
         "GameDefaultMap": (" /Game/Variant_Shooter/Lvl_ArenaShooter", ROOT / "Content/Variant_Shooter/Lvl_ArenaShooter.umap"),
         "GlobalDefaultGameMode": (" /Game/Variant_Shooter/Blueprints/BP_ShooterGameMode.BP_ShooterGameMode_C", ROOT / "Content/Variant_Shooter/Blueprints/BP_ShooterGameMode.uasset"),
         "GameInstanceClass": (" /Game/Rixe/Blueprints/BP_RixeGameInstance.BP_RixeGameInstance_C", ROOT / "Content/Rixe/Blueprints/BP_RixeGameInstance.uasset"),
