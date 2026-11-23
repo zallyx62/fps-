@@ -85,6 +85,8 @@ The following repository state was checked against GitHub after PR #13 was merge
 - The validation job ran the Python dependency installation and `Tools/validate_project.py`, including project JSON, Python syntax, weapon metadata, generated geometry and OBJ smoke checks. It did **not** compile Unreal, load Blueprints or package a Windows build.
 - No pull request is currently open. PR #13, which refactored `CLAUDE.md`, is merged.
 - The recursive tree contains 589 tracked files and is not truncated. Exact duplicate Git blobs: none. Binary Unreal assets cannot be inspected internally through this tree audit.
+- Only one agent instruction file exists in the tracked tree: root `CLAUDE.md`; no `AGENTS.md` or `.claude/` instructions were found.
+- This audit PR removes `Tools/.gitignore`: its only two patterns are already covered recursively by the root `.gitignore`. No Unreal assets, gameplay code or project configuration are changed.
 - At audit start, nine historical `docs/*` branches existed in addition to `main` and `jeu-unreal`. Their commits unique to each branch affect documentation only; they are not current working branches. The active branch carrying this audit is intentionally excluded from the historical-branch table below. Do not reuse, merge or delete any stale branch without inspecting its unique commits. PR #13's source branch is also retained after its content was squash-merged.
 
 | Branch at audit baseline | Head SHA | Ahead of `main` | Behind `main` | Handling |
