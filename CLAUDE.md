@@ -251,3 +251,20 @@ Cette consigne est volontairement dynamique : le numéro 71 correspond à la der
 - Avant chaque modification, citer dans le plan de travail les sections concernées et leurs dépendances. Après modification, vérifier que l'implémentation et la documentation ne contredisent aucune autre section liée.
 - Le cahier des charges approuvé prévaut sur toute note historique, ancien résumé de conversation, commentaire de commit, prototype ou branche documentaire divergente. Une contradiction réelle entre exigences approuvées doit être signalée au propriétaire au lieu d'être arbitrée par supposition.
 
+## 16. Mandatory English-First Working Policy
+
+This is a permanent working convention, NOT a project objective, development phase, milestone, deliverable or additional task.
+
+Apply it immediately and consistently throughout every RIXE session.
+
+- Communicate exclusively in English, including responses, explanations, reports and progress updates.
+- Use English for all new or modified code, identifiers, comments, documentation, technical specifications, GitHub content and commit messages.
+- Use English technical terminology and conventions throughout development.
+- Prefer official English documentation and technical references.
+- Maintain English as the default working language for all technical activities.
+- Do not switch to French unless explicitly requested by the project owner.
+- Do not translate existing French project documents wholesale or modify the cahier des charges solely to enforce this policy.
+
+This policy must never create additional development work, change project priorities, delay existing milestones or modify the approved development roadmap.
+
+It is a working convention, not a new RIXE requirement.
