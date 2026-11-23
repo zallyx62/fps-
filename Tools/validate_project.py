@@ -145,7 +145,7 @@ def main() -> None:
             obj_path = output_dir / filename
             require(obj_path.is_file() and obj_path.stat().st_size > 0, f"OBJ export missing or empty: {filename}")
             obj_text = obj_path.read_text(encoding="utf-8")
-            require("\\nv " in obj_text and "\\nf " in obj_text, f"OBJ export has no vertices/faces: {filename}")
+            require("\nv " in obj_text and "\nf " in obj_text, f"OBJ export has no vertices/faces: {filename}")
 
     # Keep a small independent geometry smoke test for the shared mesh writer.
     with tempfile.TemporaryDirectory(prefix="rixe-meshgen-") as tmp:
@@ -154,7 +154,7 @@ def main() -> None:
 
         triangle_count = test_mesh().write_obj(str(output))
         require(output.is_file() and output.stat().st_size > 0, "meshgen smoke test produced no OBJ file")
-        require(triangle_count > 0 and "\\nf " in output.read_text(encoding="utf-8"), "meshgen smoke OBJ contains no faces")
+        require(triangle_count > 0 and "\nf " in output.read_text(encoding="utf-8"), "meshgen smoke OBJ contains no faces")
 
     # Test the scope texture generator in an isolated temporary directory.
     with tempfile.TemporaryDirectory(prefix="rixe-scope-") as tmp:
