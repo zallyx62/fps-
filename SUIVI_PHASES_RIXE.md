@@ -8,30 +8,30 @@ Ce document enregistre l'avancement réellement démontré et les preuves associ
 
 ## 1. État de référence GitHub — audit du 24 novembre 2026
 
-L'état ci-dessous a été relevé directement sur GitHub avant cette PR de maintenance, au commit `df3fcfbe77de0f8790194d9f387d5bb36835b51a`.
+L'état ci-dessous a été relevé directement sur GitHub avant cette PR de maintenance, au commit `345295ea2ab8d2b6417f1b81f4e3d0d26290cbf1`.
 
 | Élément | État vérifié |
 |---|---|
 | Branche de référence | `main` |
 | Branche miroir | `jeu-unreal` |
-| SHA de référence des deux branches | `df3fcfbe77de0f8790194d9f387d5bb36835b51a` |
+| SHA de référence des deux branches | `345295ea2ab8d2b6417f1b81f4e3d0d26290cbf1` |
 | PR ouvertes | 0 à l'ouverture de cet audit |
-| Fichiers suivis | 588 |
-| Entrées de l'arborescence récursive | 943, dossiers compris |
+| Fichiers suivis | 589 |
+| Entrées de l'arborescence récursive | 944, dossiers compris |
 | Assets Unreal | 536 `.uasset` et 3 `.umap` |
 | Fichiers sous `Content/` | 541 |
-| Somme des tailles des fichiers suivis | 165 778 865 octets ; ce n'est ni la taille du clone ni celle de tout l'historique Git |
+| Somme des tailles des fichiers suivis | 165 779 240 octets ; ce n'est ni la taille du clone ni celle de tout l'historique Git |
 | Blobs Git strictement identiques | Aucun doublon détecté |
-| Validation du dépôt | Réussie — [exécution 45289174444](https://github.com/zallyx62/fps-/actions/runs/45289174444) |
-| Synchronisation du miroir | Réussie — [exécution 45289174446](https://github.com/zallyx62/fps-/actions/runs/45289174446) |
+| Validation du dépôt | Réussie — [exécution 45291809769](https://github.com/zallyx62/fps-/actions/runs/45291809769) |
+| Synchronisation du miroir | Réussie — [exécution 45291809767](https://github.com/zallyx62/fps-/actions/runs/45291809767) |
 
 L'arborescence récursive a été récupérée intégralement, sans troncature. La comparaison des blobs ne détecte que les fichiers strictement identiques ; elle ne révèle pas les doublons fonctionnels à l'intérieur des Blueprints ou des assets Unreal.
 
 ### Branches historiques
 
-À la date de référence, le dépôt comptait 12 branches : `main`, `jeu-unreal` et dix anciennes branches `docs/*`. La comparaison de leurs arbres avec `main` montre uniquement des différences documentaires et l'ancien fichier `Tools/.gitignore`, déjà supprimé de `main`. Aucune de ces branches ne contient de changement unique de gameplay, de configuration Unreal ou d'asset. Leurs pull requests associées sont fusionnées.
+À la date de référence, le dépôt comptait 14 branches : `main`, `jeu-unreal`, dix anciennes branches `docs/*` et deux branches `maintenance/*`. La comparaison déjà effectuée des dix branches documentaires avec `main` n'a révélé que des différences documentaires et l'ancien fichier `Tools/.gitignore`, déjà supprimé de `main`. Leurs pull requests associées sont fusionnées ; elles peuvent être supprimées après vérification finale de leurs références.
 
-Ces dix branches sont donc des références de travail obsolètes. Leurs pointeurs distants n'ont pas été supprimés pendant cet audit.
+Les deux branches `maintenance/*` sont divergentes par rapport à `main` selon l'API GitHub. Leurs arbres finaux n'ont pas été certifiés identiques et elles n'ont pas de pull request ouverte. Elles sont conservées : ne pas les supprimer avant d'avoir comparé précisément leurs arbres et récupéré tout changement utile. La suppression des pointeurs de branches n'est pas disponible via l'intégration utilisée pendant cet audit.
 
 La règle du cahier des charges reste inchangée : `main` est la branche canonique et `jeu-unreal` est un miroir, pas une branche de développement indépendante.
 

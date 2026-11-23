@@ -1,0 +1,25 @@
+# Unreal Engine assets are binary and must not be text-merged.
+*.uasset binary
+*.umap binary
+*.ubulk binary
+*.uexp binary
+*.uptnl binary
+
+# Other binary media and generated textures.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.tga binary
+*.wav binary
+*.mp3 binary
+*.mp4 binary
+
+# Keep text files consistent across Windows, Linux and CI.
+*.md text eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.ini text eol=lf
+*.uproject text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.txt text eol=lf
