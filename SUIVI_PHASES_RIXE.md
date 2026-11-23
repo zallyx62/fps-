@@ -1,29 +1,33 @@
 # RIXE — Suivi vérifiable des phases
 
-**Mise à jour documentaire : 23 novembre 2026**  
+**Last verified update: 24 November 2026**  
 **Dépôt :** `zallyx62/fps-`  
 **Référence fonctionnelle :** `CAHIER_DES_CHARGES_RIXE.md`, version approuvée la plus récente.
 
 Ce fichier est le registre des preuves et de l'avancement réellement démontré. Il ne remplace ni le cahier des charges, ni les instructions de développement de `CLAUDE.md`, ni le journal du prototype `UNREAL.md`.
 
-## 1. Références GitHub et état documentaire
+## 1. Current repository state
 
-| Élément | État vérifié |
+| Item | Verified state |
 |---|---|
-| Branche de référence | `main` |
-| Branche miroir | `jeu-unreal` |
-| SHA de `main` au relevé GitHub du 23 novembre 2026, avant fusion de cette correction | `c2c3f41f6702e9b904024c09f6a18bfbbcd9d2af` |
-| SHA de `main` avant la consolidation documentaire du 23 novembre 2026 | `e378e1485691c523a7b2a769ab77a808ebd9ec14` |
-| État des branches de référence au relevé | `main` et `jeu-unreal` pointent toutes deux sur `c2c3f41f6702e9b904024c09f6a18bfbbcd9d2af` (vérifié le 23 novembre 2026, avant fusion de cette correction) |
-| Dernière section principale du cahier au 23 novembre 2026 | **71 — Fabrication de l'arsenal, pipeline 3D et cosmétiques de mêlée** |
-| Dernière modification du cahier avant ce nettoyage | `d6e2505b46ad9acf5e6f7e6dd019cc3e626f79f4` — ajout de la section 71 ; modification documentaire du cahier, pas preuve d'implémentation |
-| Dernier commit identifié touchant configuration/outillage du dépôt | `e8a40f4895e22212ce1298672a1db396f6dfcf60` — configuration, validation et documentation, 20 novembre 2026 |
-| Commit de code gameplay validé par un protocole reproductible | **Aucun enregistré** |
-| Build Windows empaquetée vérifiée | **Aucune preuve enregistrée** |
-| Release publique vérifiée | **Aucune** |
+| Canonical branch | `main` |
+| Mirror branch | `jeu-unreal` |
+| Current `main` SHA | `19ced966cef665be47c66e5f3a78f0039846dcf2` |
+| Current `jeu-unreal` SHA | `19ced966cef665be47c66e5f3a78f0039846dcf2` — identical to `main` |
+| Latest main commit | `19ced966` — documentation-only refactor of `CLAUDE.md` |
+| Latest non-documentation project/configuration/tooling commit | `e8a40f4895e22212ce1298672a1db396f6dfcf60` (20 November 2026); the 45 commits after it change documentation and add the mirror workflow only |
+| Gameplay code commit validated with a reproducible protocol | **None recorded** |
+| Verified Windows packaged build | **None recorded** |
+| Verified public release | **None recorded** |
+| Open pull requests | **None**; PR #13 is merged |
+| Latest repository validation | Success — [workflow run 45288243208](https://github.com/zallyx62/fps-/actions/runs/45288243208) |
+| Latest mirror synchronization | Success — [workflow run 45288243001](https://github.com/zallyx62/fps-/actions/runs/45288243001) |
 
-Les commits documentaires postérieurs à `d6e2505` ne doivent jamais être présentés comme des commits de code testé. Les SHA et états de branches de ce fichier sont des relevés datés : les revérifier après toute fusion ou nouvelle opération Git, sans modifier rétroactivement l'identité du dernier commit de code réellement testé.
+The full recursive Git tree was retrieved without truncation at the current main commit: **589 tracked files**, including 536 `.uasset` files and 3 `.umap` files. No identical Git blob SHA was shared by two tracked paths. This checks exact file duplication only; it does not detect functional duplication inside Unreal assets.
 
+GitHub reports `protected=false` for both `main` and `jeu-unreal`; the repository rulesets endpoint returned an empty list. The branch-protection details endpoint could not be read by the connected integration. Therefore, do not describe `main` as server-side protected. It remains the canonical branch by project policy.
+
+The latest project/configuration/tooling commit is not proof of a gameplay implementation or a tested game build. Keep all gameplay phases unverified until the evidence required by the specification is recorded.
 ## 2. Cahier des charges — autorité et périmètre actuel
 
 Le cahier des charges est la source de vérité pour les fonctionnalités, décisions produit, contraintes et priorités.
@@ -32,7 +36,7 @@ Le cahier des charges est la source de vérité pour les fonctionnalités, déci
 - La section 71 est approuvée le 23 novembre 2026 : « Fabrication de l'arsenal, pipeline 3D et cosmétiques de mêlée ».
 - La section 71 couvre notamment le pipeline de fabrication, la présélection de 34 armes et les apparences cosmétiques de mêlée.
 - Les apparences de mêlée sont des cosmétiques : ne pas les convertir en armes fonctionnelles supplémentaires ni créer de doublons d'armes.
-- Claude doit relire les sections 42 à 71 et les sections antérieures référencées par elles avant toute tâche concernée. Il doit aussi vérifier le numéro de la dernière section actuelle : 71 n'est pas une limite permanente si le cahier évolue.
+- Claude must inspect the current specification headings, search for the task's requirements, and read the complete relevant sections and their dependencies. Do not require a fixed section range such as 42–71 at every session start; broaden to the whole specification only for global audits, feature-novelty checks or cross-cutting work.
 - Aucune exigence approuvée ne peut être supprimée, rétrogradée ou considérée comme facultative sans décision explicite du propriétaire.
 - En cas de chevauchement, rattacher l'exigence au système propriétaire existant et conserver les références croisées. En cas de contradiction entre décisions approuvées, demander arbitrage plutôt que deviner.
 
@@ -72,43 +76,31 @@ Les éléments ci-dessous décrivent le relevé initial effectué sur `main` au 
 
 L'API GitHub permet d'inventorier les chemins et les blobs, mais pas d'inspecter la structure interne des assets binaires Unreal (`.uasset`, `.umap`). Cet audit n'a pas accès à la machine locale, à l'éditeur Unreal, aux sauvegardes, aux modifications non commitées, aux journaux locaux ni à une compilation empaquetée. Il ne peut donc pas certifier l'absence de doublons internes dans les Blueprints, de problèmes d'exécution ou de défauts de gameplay.
 
-## 4 bis. État GitHub vérifié le 23 novembre 2026 — avant fusion de la présente correction
+## 4 bis. Current GitHub audit — 24 November 2026
 
-Relevé effectué sur le dépôt distant. Il s'agit d'un instantané daté, et non d'une garantie que ces références resteront actuelles après une fusion ou un nouveau push.
+The following repository state was checked against GitHub after PR #13 was merged.
 
-- SHA de `main` : `c2c3f41f6702e9b904024c09f6a18bfbbcd9d2af`.
-- SHA de `jeu-unreal` : `c2c3f41f6702e9b904024c09f6a18bfbbcd9d2af`. Les deux branches de référence sont identiques à ce relevé.
-- Workflow **Validate RIXE repository** sur ce SHA : succès, [exécution 45196603347](https://github.com/zallyx62/fps-/actions/runs/45196603347).
-- Workflow **Keep jeu-unreal synchronized with main** sur ce SHA : succès, [exécution 45196603269](https://github.com/zallyx62/fps-/actions/runs/45196603269).
-- L'arborescence récursive de `main` a été relue sans troncature : **589 fichiers suivis** au relevé. Ce contrôle d'arborescence ne valide pas le contenu interne des assets binaires Unreal.
-- La branche de correction documentaire active `docs/update-current-github-audit` porte la présente pull request vers `main`. Elle ne doit pas être confondue avec les branches historiques listées ci-dessous.
-- Cinq autres branches documentaires historiques subsistent en plus de `main` et `jeu-unreal`. Les comparaisons ont été recalculées par rapport au `main` ci-dessus :
+- `main` and `jeu-unreal` both point to `19ced966cef665be47c66e5f3a78f0039846dcf2`.
+- The mirror workflow completed successfully after the merge: [run 45288243001](https://github.com/zallyx62/fps-/actions/runs/45288243001). The repository validation workflow also completed successfully: [run 45288243208](https://github.com/zallyx62/fps-/actions/runs/45288243208).
+- The validation job ran the Python dependency installation and `Tools/validate_project.py`, including project JSON, Python syntax, weapon metadata, generated geometry and OBJ smoke checks. It did **not** compile Unreal, load Blueprints or package a Windows build.
+- No pull request is currently open. PR #13, which refactored `CLAUDE.md`, is merged.
+- The recursive tree contains 589 tracked files and is not truncated. Exact duplicate Git blobs: none. Binary Unreal assets cannot be inspected internally through this tree audit.
+- The current branch listing contains nine historical `docs/*` branches in addition to `main` and `jeu-unreal`. Their commits unique to each branch affect documentation only; they are not current working branches. Do not reuse, merge or delete them without inspecting the unique commits. PR #13's source branch is also retained after its content was squash-merged.
 
-| Branche | SHA observé | Écart par rapport à `main` | Fichiers modifiés dans les commits propres à la branche | Traitement |
-|---|---|---|---|---|
-| `docs/clarify-claude-resume-workflow` | `a29400bf9ca5b44217559e8f4fbad045038527b9` | 1 commit en avance, 5 en retard | `CLAUDE.md` | Divergente ; auditer son contenu avant toute réutilisation |
-| `docs/correct-current-audit-refs` | `9a7e4d4cdfa763cc52c53a4868930dc4185fd016` | 1 commit en avance, 1 en retard | `SUIVI_PHASES_RIXE.md` | Divergente ; auditer son contenu avant toute réutilisation |
-| `docs/fix-code-commit-reference` | `4938bd8cfb19cac1c8ac4a4d139a9821cf90a9f1` | 1 commit en avance, 3 en retard | `SUIVI_PHASES_RIXE.md` | Divergente ; auditer son contenu avant toute réutilisation |
-| `docs/record-github-audit-2026-11-23` | `62a5d7cc04d8678282cec2f37b9d85e8d539a5f2` | 1 commit en avance, 4 en retard | `SUIVI_PHASES_RIXE.md` | Divergente ; auditer son contenu avant toute réutilisation |
-| `docs/finalize-claude-handoff-2026-11-23` | `4d214d34ff9da350b572462b333679648009ddcd` | 3 commits en avance, 2 en retard | `CLAUDE.md`, `README.md`, `SUIVI_PHASES_RIXE.md` | Divergente ; auditer son contenu avant toute réutilisation |
+| Historical branch | Head SHA | Ahead of `main` | Behind `main` | Current handling |
+|---|---|---:|---:|---|
+| `docs/clarify-claude-resume-workflow` | `a29400bf9ca5b44217559e8f4fbad045038527b9` | 1 | 9 | Divergent; inspect before reuse |
+| `docs/correct-current-audit-refs` | `9a7e4d4cdfa763cc52c53a4868930dc4185fd016` | 1 | 5 | Divergent; inspect before reuse |
+| `docs/english-first-working-policy` | `c13b0ce30b142853c99a423990ad429f57587c1e` | 1 | 3 | Divergent; inspect before reuse |
+| `docs/finalize-claude-handoff-2026-11-23` | `4d214d34ff9da350b572462b333679648009ddcd` | 3 | 6 | Divergent; inspect before reuse |
+| `docs/fix-code-commit-reference` | `4938bd8cfb19cac1c8ac4a4d139a9821cf90a9f1` | 1 | 7 | Divergent; inspect before reuse |
+| `docs/record-github-audit-2026-11-23` | `62a5d7cc04d8678282cec2f37b9d85e8d539a5f2` | 1 | 8 | Divergent; inspect before reuse |
+| `docs/refactor-claude-md-2026-11-24` | `806f49c143a1b9bbaab1f9020fed397309533f51` | 1 | 1 | PR #13 merged; branch pointer remains |
+| `docs/token-context-efficiency` | `52469d35f0517317131524aa300f849ae1b7dff6` | 1 | 2 | Divergent; inspect before reuse |
+| `docs/update-current-github-audit` | `7635354620fbdf8c4293e506cdb4d26fd7649b80` | 3 | 4 | Divergent; inspect before reuse |
 
-Ces écarts décrivent uniquement l'historique Git. Ils ne prouvent ni que les commits propres sont inutiles, ni que leurs changements sont intégrés à `main`. Aucun de ces cinq historiques n'a été fusionné ou supprimé. Ne pas les fusionner, les supprimer ou les forcer sans inspection du diff et décision explicite. Revérifier leurs SHA et leurs écarts avant toute opération ultérieure.
-
-## 5. Branches documentaires historiques à ne pas réutiliser
-
-Les cinq branches suivantes ont été vérifiées le 23 novembre 2026 et divergent de `main`. Leurs écarts exacts sont indiqués par rapport au SHA courant ; leur contenu doit être inspecté séparément avant toute réutilisation :
-
-| Branche | Traitement documentaire | Consigne |
-|---|---|---|
-| `docs/clarify-claude-resume-workflow` | Divergente : 1 commit en avance, 5 en retard ; vérifier son contenu avant toute réutilisation | Ne pas checkout, fusionner ou réutiliser sans audit |
-| `docs/correct-current-audit-refs` | Divergente : 1 commit en avance, 1 en retard ; contient une ancienne correction du suivi | Ne pas checkout, fusionner ou réutiliser sans audit |
-| `docs/fix-code-commit-reference` | Divergente : 1 commit en avance, 3 en retard ; ancienne référence de commit | Ne pas checkout, fusionner ou réutiliser sans audit |
-| `docs/record-github-audit-2026-11-23` | Divergente : 1 commit en avance, 4 en retard ; ancien relevé d'audit | Ne pas checkout, fusionner ou réutiliser sans audit |
-| `docs/finalize-claude-handoff-2026-11-23` | Divergente : 3 commits en avance, 2 en retard ; ancienne passation Claude | Ne pas checkout, fusionner ou réutiliser sans audit |
-
-Ces branches sont **divergentes et non autoritaires** tant qu'un audit de leur contenu n'a pas établi si elles contiennent encore un travail utile. La branche de référence reste `main`, et `jeu-unreal` reste sa branche miroir. Ne pas supprimer ni forcer une branche sans vérifier son SHA et son contenu ; si leur suppression est souhaitée, effectuer cette opération séparément après confirmation qu'aucun travail utile n'y subsiste.
-
-## 6. Registre de preuve obligatoire
+The GitHub branch listing reports `protected=false` for `main` and `jeu-unreal`, and the rulesets query returned no rulesets. Branch-protection details could not be inspected with the connected integration. Server-side protection is therefore **not verified** and must not be claimed.
+## 5. Registre de preuve obligatoire
 
 Pour chaque tentative de validation, ajouter une entrée datée avec :
 
@@ -121,7 +113,7 @@ Pour chaque tentative de validation, ajouter une entrée datée avec :
 - Régressions, limites, blocages et action corrective.
 - Décision : critère franchi ou non franchi, avec responsable et date.
 
-## 7. Mise à jour du suivi
+## 6. Mise à jour du suivi
 
 Claude doit mettre à jour ce fichier dans le même lot de travail lorsqu'une validation réelle, une modification du dépôt ou un changement de statut intervient.
 
