@@ -140,7 +140,7 @@ Ne pas forcer une qualité graphique unique pour tous les PC. Le projet doit avo
 
 Les bots doivent être gérés par l'autorité serveur, identifiés comme bots, avec statistiques séparées et règles propres à chaque playlist. Ils ne doivent pas disparaître automatiquement au premier joueur humain si le mode prévoit du remplissage. Les préférences humains uniquement / bots autorisés et les règles classées sont celles du cahier des charges.
 
-L'objectif 10 contre 10 est une cible conditionnelle, pas une capacité acquise. Valider d'abord 2, 4, 8, puis augmenter progressivement en mesurant CPU, bande passante, réplication, mémoire et qualité de jeu. Ne pas annoncer 20 joueurs tant que les tests réels ne le démontrent pas.
+L'objectif 10 contre 10 est une cible conditionnelle, pas une capacité acquise. Valider d'abord 2 joueurs, puis 10, puis jusqu'à 20 (10 contre 10), en augmentant progressivement et en mesurant CPU, bande passante, réplication, mémoire et qualité de jeu. Ne pas annoncer 20 joueurs tant que les tests réels ne le démontrent pas.
 
 Les cartes, apparitions, anti-camping, événements tactiques, armes et capacités doivent être testés ensemble. Le serveur choisit les apparitions ; éviter spawn-kill, positions dominantes et avantages cachés.
 
@@ -225,6 +225,7 @@ Une tâche n'est terminée que si :
 **Principe final :** un FPS plus petit, stable, réactif et réellement jouable vaut mieux qu'une longue liste de fonctionnalités non testées.
 
 ## Décisions récentes à intégrer au travail
+- Lire aussi les sections 43 à 70 du cahier des charges avant toute tâche concernée (direction artistique, modes de jeu, outils, tournois, services) : elles réutilisent les systèmes uniques de la section 5 ci-dessus et ne créent aucun système parallèle.
 - Appliquer la section 42 du cahier des charges : progression durable sans récompenses définitivement manquées, fiche de mode obligatoire pour tous les joueurs dans tous les modes, et favoris/préférences de playlists.
 - La fiche de mode doit rester courte et contextuelle : objectif, condition de victoire et règles particulières réellement actives. Elle ne doit pas ralentir l'entrée en partie ni devenir une fenêtre de confirmation.
 - Ne jamais placer un joueur dans une playlist qu'il a explicitement exclue. Ne pas promettre de délai de matchmaking sans mesure réelle.
