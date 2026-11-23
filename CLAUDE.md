@@ -239,11 +239,15 @@ Une tâche n'est terminée que si :
 
 **Principe final :** un FPS plus petit, stable, réactif et réellement jouable vaut mieux qu'une longue liste de fonctionnalités non testées.
 
-## Décisions récentes à intégrer au travail
-- Lire aussi les sections 43 à 70 du cahier des charges avant toute tâche concernée (direction artistique, modes de jeu, outils, tournois, services) : elles réutilisent les systèmes uniques de la section 5 ci-dessus et ne créent aucun système parallèle.
-- Appliquer la section 42 du cahier des charges : progression durable sans récompenses définitivement manquées, fiche de mode obligatoire pour tous les joueurs dans tous les modes, et favoris/préférences de playlists.
-- La fiche de mode doit rester courte et contextuelle : objectif, condition de victoire et règles particulières réellement actives. Elle ne doit pas ralentir l'entrée en partie ni devenir une fenêtre de confirmation.
-- Ne jamais placer un joueur dans une playlist qu'il a explicitement exclue. Ne pas promettre de délai de matchmaking sans mesure réelle.
-- La progression ne doit pas imposer de connexion quotidienne ni d'achat pour récupérer une récompense annoncée gratuite.
-- Avant toute modification de configuration ou de code, rechercher les secrets déjà publiés. Ne jamais committer de jeton, mot de passe, clé privée ou identifiant secret. Utiliser les mécanismes locaux sécurisés et des valeurs d'exemple non fonctionnelles dans le dépôt.
-- Un secret qui a déjà été publié doit être considéré compromis : le retirer du dépôt ne suffit pas ; demander sa révocation/rotation auprès du service concerné, vérifier l'historique Git et éviter de réintroduire sa valeur.
+## Vérification des exigences approuvées les plus récentes
+
+Cette consigne est volontairement dynamique : le numéro 71 correspond à la dernière section connue au 23 novembre 2026, mais il ne doit pas devenir une limite permanente.
+
+- À chaque reprise, identifier le numéro et le titre de la dernière section principale numérotée de `CAHIER_DES_CHARGES_RIXE.md`. Au moment de cette mise à jour, la dernière section est **71 — « Fabrication de l'arsenal, pipeline 3D et cosmétiques de mêlée »**, approuvée le 23 novembre 2026.
+- Lire les sections 42 à la dernière section principale actuelle, ainsi que toute section antérieure référencée par ces exigences. Les sections 43 à 71 sont donc à lire intégralement à la date de cette mise à jour ; si une section 72 ou ultérieure est ajoutée, elle devient automatiquement incluse.
+- Respecter toutes les exigences approuvées, y compris les détails, contraintes, critères de validation, dépendances, exclusions et références croisées. Ne pas appliquer uniquement les titres ou résumés.
+- La section 71 concerne notamment la fabrication des armes, le pipeline 3D, la présélection de 34 armes et les apparences cosmétiques de mêlée. Ne pas transformer ces apparences en nouvelles catégories d'armes fonctionnelles : respecter la séparation explicitement définie dans le cahier des charges.
+- Ne pas considérer qu'une exigence est facultative parce qu'elle figure dans une section récente, qu'elle n'est pas encore implémentée ou qu'elle semble redondante. En cas de chevauchement, appliquer le système propriétaire et les règles anti-duplication du cahier sans supprimer une exigence approuvée.
+- Avant chaque modification, citer dans le plan de travail les sections concernées et leurs dépendances. Après modification, vérifier que l'implémentation et la documentation ne contredisent aucune autre section liée.
+- Le cahier des charges approuvé prévaut sur toute note historique, ancien résumé de conversation, commentaire de commit, prototype ou branche documentaire divergente. Une contradiction réelle entre exigences approuvées doit être signalée au propriétaire au lieu d'être arbitrée par supposition.
+
