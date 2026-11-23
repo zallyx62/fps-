@@ -12,8 +12,9 @@ Ce fichier est le registre des preuves et de l'avancement réellement démontré
 |---|---|
 | Branche de référence | `main` |
 | Branche miroir | `jeu-unreal` |
-| SHA de référence avant le présent nettoyage documentaire | `e378e1485691c523a7b2a769ab77a808ebd9ec14` |
-| Égalité des branches avant ce nettoyage | `main` et `jeu-unreal` pointaient toutes deux sur `e378e148` |
+| SHA actuel de `main` après consolidation documentaire du 23 novembre 2026 | `f8f56c41acb3297d2bbe062c5eb9e5c6c41258a9` |
+| SHA de `main` avant la consolidation documentaire finale | `e378e1485691c523a7b2a769ab77a808ebd9ec14` |
+| Égalité actuelle des branches de référence | `main` et `jeu-unreal` pointent toutes deux sur `f8f56c41acb3297d2bbe062c5eb9e5c6c41258a9` (vérifié le 23 novembre 2026) |
 | Dernière section principale du cahier au 23 novembre 2026 | **71 — Fabrication de l'arsenal, pipeline 3D et cosmétiques de mêlée** |
 | Dernière modification du cahier avant ce nettoyage | `d6e2505b46ad9acf5e6f7e6dd019cc3e626f79f4` — ajout de la section 71 ; modification documentaire du cahier, pas preuve d'implémentation |
 | Dernier commit identifié touchant configuration/outillage du dépôt | `e8a40f4895e22212ce1298672a1db396f6dfcf60` — configuration, validation et documentation, 20 novembre 2026 |
@@ -50,16 +51,16 @@ Le cahier des charges est la source de vérité pour les fonctionnalités, déci
 | 6 — Qualité, performances et préparation alpha | Non-régression, performances multi-configurations, licences, build Shipping et retour arrière | **Non vérifiée** | Aucune build Shipping/alpha ni campagne de validation complète référencée | Préparer la campagne de validation après les phases précédentes |
 | 7 — Extensions | Chaque extension possède critères, tests, preuves et retour arrière sans régression du socle | **Non vérifiée** | Aucune extension n'est validée par ce registre | N'ouvrir que les extensions dont les dépendances sont franchies |
 
-## 4. Audit GitHub reproductible — 23 novembre 2026
+## 4. Audit GitHub reproductible — relevé initial du 23 novembre 2026
 
-Audit en lecture seule de la branche `main` avant le présent nettoyage :
+Les éléments ci-dessous décrivent le relevé initial effectué sur `main` au SHA `e378e1485691c523a7b2a769ab77a808ebd9ec14`. Ils restent un historique utile, mais ne doivent pas être interprétés comme l'état courant après les commits documentaires suivants :
 
 - Arborescence récursive complète : **589 fichiers suivis** ; résultat non tronqué.
 - Répartition observée : 536 fichiers `.uasset`, 3 fichiers `.umap`, et les fichiers de configuration, scripts, documentation et prototype web.
 - Comparaison des identifiants de blobs Git : **aucun groupe de fichiers au contenu strictement identique détecté**. Cela ne prouve pas l'absence de doublons fonctionnels dans les Blueprints ou les systèmes Unreal.
 - Numérotation des titres de sections principales du cahier : aucun numéro principal dupliqué détecté.
 - Les titres de sous-sections génériques tels que « Priorités et critères communs », « Validation » ou « Statut » se répètent dans des sections différentes : ce sont des gabarits locaux, pas à eux seuls des doublons fonctionnels.
-- Les deux branches de référence étaient identiques : `main` = `jeu-unreal` = `e378e1485691c523a7b2a769ab77a808ebd9ec14`.
+- À la date de ce relevé initial, les deux branches de référence étaient identiques : `main` = `jeu-unreal` = `e378e1485691c523a7b2a769ab77a808ebd9ec14`.
 - Workflow [Validate RIXE repository](https://github.com/zallyx62/fps-/actions/runs/45173785657) sur ce SHA : terminé avec succès. Il vérifie la structure du projet, les métadonnées/géométries générées, la syntaxe Python et un test de génération OBJ. Il ne compile pas Unreal, ne charge pas les Blueprints et ne produit pas de build Windows.
 - Workflow [Keep jeu-unreal synchronized with main](https://github.com/zallyx62/fps-/actions/runs/45173785667) sur ce SHA : terminé avec succès.
 - `README.md`, `UNREAL.md`, `fps.uproject` et `Config/DefaultEngine.ini` concordent sur la carte et le mode de jeu de démarrage documentés : `Variant_Shooter/Lvl_ArenaShooter` et `BP_ShooterGameMode`.
@@ -71,6 +72,26 @@ Audit en lecture seule de la branche `main` avant le présent nettoyage :
 
 L'API GitHub permet d'inventorier les chemins et les blobs, mais pas d'inspecter la structure interne des assets binaires Unreal (`.uasset`, `.umap`). Cet audit n'a pas accès à la machine locale, à l'éditeur Unreal, aux sauvegardes, aux modifications non commitées, aux journaux locaux ni à une compilation empaquetée. Il ne peut donc pas certifier l'absence de doublons internes dans les Blueprints, de problèmes d'exécution ou de défauts de gameplay.
 
+## 4 bis. Actualisation de l'état GitHub après consolidation — 23 novembre 2026
+
+Vérification effectuée sur la révision courante de main :
+
+- SHA de main : `f8f56c41acb3297d2bbe062c5eb9e5c6c41258a9`.
+- SHA de jeu-unreal : `f8f56c41acb3297d2bbe062c5eb9e5c6c41258a9` ; les deux branches sont identiques.
+- Le workflow de validation du dépôt sur ce SHA s'est terminé avec succès : [exécution 45175210522](https://github.com/zallyx62/fps-/actions/runs/45175210522).
+- Le workflow de synchronisation du miroir sur ce SHA s'est terminé avec succès : [exécution 45175210603](https://github.com/zallyx62/fps-/actions/runs/45175210603).
+- L'arborescence récursive reste complète et non tronquée : 589 fichiers suivis au relevé.
+- Quatre branches documentaires historiques subsistent en plus de main et jeu-unreal. Elles divergent toutes de main et ne doivent pas être fusionnées automatiquement :
+
+| Branche | SHA observé | Écart par rapport à main | Traitement |
+|---|---|---|---|
+| `docs/clarify-claude-resume-workflow` | `a29400bf9ca5b44217559e8f4fbad045038527b9` | 4 commits en avance, 1 en retard | Historique obsolète ; ne pas fusionner |
+| `docs/fix-code-commit-reference` | `4938bd8cfb19cac1c8ac4a4d139a9821cf90a9f1` | 2 commits en avance, 1 en retard | Historique obsolète ; ne pas fusionner |
+| `docs/record-github-audit-2026-11-23` | `62a5d7cc04d8678282cec2f37b9d85e8d539a5f2` | 3 commits en avance, 1 en retard | Historique obsolète ; ne pas fusionner |
+| `docs/finalize-claude-handoff-2026-11-23` | `4d214d34ff9da350b572462b333679648009ddcd` | 1 commit en avance, 3 en retard | Historique obsolète ; ne pas fusionner |
+
+Les branches historiques ne sont pas supprimées par cette correction : leur suppression nécessite une décision séparée et une vérification de leur utilité. La liste ci-dessus est un état daté, à revérifier avant toute opération Git.
+
 ## 5. Branches documentaires historiques à ne pas réutiliser
 
 Les branches suivantes existaient lors de la revue et divergent de `main`. Leur contenu est ancien ou a été remplacé par les informations consolidées dans la branche principale :
@@ -80,6 +101,7 @@ Les branches suivantes existaient lors de la revue et divergent de `main`. Leur 
 | `docs/clarify-claude-resume-workflow` | Procédure de reprise désormais présente dans `CLAUDE.md` sur `main` | Ne pas checkout, fusionner ou réutiliser |
 | `docs/fix-code-commit-reference` | Ancienne correction de référence de commit, dépassée par le suivi actuel | Ne pas checkout, fusionner ou réutiliser |
 | `docs/record-github-audit-2026-11-23` | Ancien relevé d'audit, consolidé et corrigé dans ce fichier | Ne pas checkout, fusionner ou réutiliser |
+| `docs/finalize-claude-handoff-2026-11-23` | Ancienne consolidation de la passation Claude, reprise dans `main` | Ne pas checkout, fusionner ou réutiliser |
 
 Ces branches sont **obsolètes et non autoritaires**. La branche de référence reste `main`, et `jeu-unreal` reste sa branche miroir. Ne pas supprimer ni forcer une branche sans vérifier son SHA et son contenu ; si leur suppression est souhaitée, effectuer cette opération séparément après confirmation qu'aucun travail utile n'y subsiste.
 
