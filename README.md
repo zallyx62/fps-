@@ -10,13 +10,12 @@ Voir [UNREAL.md](UNREAL.md) pour le détail des modifications faites dans Unreal
 
 À chaque nouvelle session, Claude doit commencer par lire [CLAUDE.md](CLAUDE.md), puis suivre sa procédure obligatoire de reprise. Le cahier des charges [CAHIER_DES_CHARGES_RIXE.md](CAHIER_DES_CHARGES_RIXE.md) est la référence fonctionnelle unique ; [SUIVI_PHASES_RIXE.md](SUIVI_PHASES_RIXE.md) indique uniquement les phases et preuves réellement vérifiées. Ne pas reprendre une ancienne branche documentaire ni se fier à un ancien résumé de conversation.
 
-
 Le dépôt accueille le projet Unreal du jeu. Le projet part du modèle « First Person / Arena Shooter »
 fourni avec le moteur, puis est adapté : arène, règles de match par équipes, bots, interface, réglages.
 
 ## Validation automatique du dépôt
 
-Le workflow GitHub Actions vérifie la syntaxe des scripts Python, la structure JSON du projet Unreal et les métadonnées des armes. Il exécute également un test de génération géométrique des modèles d'armes. **Ce contrôle statique ne compile pas le projet Unreal, ne charge pas les Blueprints et ne remplace pas les tests dans l'éditeur ni les builds Windows.**
+Le workflow GitHub Actions vérifie la configuration JSON du projet, les références des assets de démarrage, la syntaxe Python, les métadonnées des armes et les sorties des générateurs OBJ et PNG. **Ces contrôles statiques ne lancent pas Unreal Engine, ne compilent pas les Blueprints ou les shaders, ne testent pas le réseau et ne remplacent pas une build Windows.**
 
 ## Ouvrir le projet
 
