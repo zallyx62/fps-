@@ -268,3 +268,20 @@ Apply it immediately and consistently throughout every RIXE session.
 This policy must never create additional development work, change project priorities, delay existing milestones or modify the approved development roadmap.
 
 It is a working convention, not a new RIXE requirement.
+
+## 17. Token and Context Efficiency
+
+Optimize token and context usage without compromising reasoning quality, technical accuracy, implementation quality, testing or verification.
+
+- Read only the files and documentation relevant to the current task; expand the inspection scope when dependencies or risks require it.
+- Avoid rereading information already available in the current context unless a fresh check is necessary to verify the current repository state.
+- Do not load or summarize the entire repository when targeted inspection is sufficient.
+- Avoid repeating project requirements, previous explanations or unchanged information.
+- Keep progress updates and final reports concise, factual and focused on decisions, results, evidence, limitations and next steps.
+- Use subagents only when independent parallel work provides a meaningful benefit; avoid delegation overhead for simple or tightly coupled tasks.
+- Avoid unnecessary tool calls, redundant searches and repeated verification of facts that remain valid; always recheck information that may have changed or is safety-critical.
+- Preserve the investigation, reasoning, implementation, tests and validation required by the task's complexity and risk.
+- Never skip relevant files, dependencies, edge cases, tests, security checks or verification merely to reduce token consumption.
+- Do not trade correctness, completeness, maintainability or reliability for shorter prompts or reports.
+
+The objective is maximum engineering quality per token, not minimum token consumption at any cost. This is a working-efficiency convention, not a new project objective, feature, phase, milestone, deliverable or task. It must not change approved priorities or the development roadmap.
