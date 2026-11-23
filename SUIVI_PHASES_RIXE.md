@@ -1,129 +1,102 @@
 # RIXE — Suivi vérifiable des phases
 
-**Last verified update: 24 November 2026**  
+**Dernière mise à jour :** 24 novembre 2026  
 **Dépôt :** `zallyx62/fps-`  
-**Référence fonctionnelle :** `CAHIER_DES_CHARGES_RIXE.md`, version approuvée la plus récente.
+**Référence fonctionnelle :** dernière version approuvée de `CAHIER_DES_CHARGES_RIXE.md`.
 
-Ce fichier est le registre des preuves et de l'avancement réellement démontré. Il ne remplace ni le cahier des charges, ni les instructions de développement de `CLAUDE.md`, ni le journal du prototype `UNREAL.md`.
+Ce document enregistre l'avancement réellement démontré et les preuves associées. Il ne remplace ni le cahier des charges, ni les consignes de travail de `CLAUDE.md`, ni le journal d'implémentation Unreal, ni le registre spécialisé des licences.
 
-## 1. Repository state at audit baseline — 24 November 2026
+## 1. État de référence GitHub — audit du 24 novembre 2026
 
-| Item | Verified state |
+L'état ci-dessous a été relevé directement sur GitHub avant cette PR de maintenance, au commit `df3fcfbe77de0f8790194d9f387d5bb36835b51a`.
+
+| Élément | État vérifié |
 |---|---|
-| Canonical branch | `main` |
-| Mirror branch | `jeu-unreal` |
-| `main` SHA before this audit PR | `19ced966cef665be47c66e5f3a78f0039846dcf2` |
-| `jeu-unreal` SHA before this audit PR | `19ced966cef665be47c66e5f3a78f0039846dcf2` — identical to `main` |
-| Latest main commit | `19ced966` — documentation-only refactor of `CLAUDE.md` |
-| Latest non-documentation project/configuration/tooling commit | `e8a40f4895e22212ce1298672a1db396f6dfcf60` (20 November 2026); the 45 commits after it change documentation and add the mirror workflow only |
-| Gameplay code commit validated with a reproducible protocol | **None recorded** |
-| Verified Windows packaged build | **None recorded** |
-| Verified public release | **None recorded** |
-| Open pull requests | **None**; PR #13 is merged |
-| Latest repository validation | Success — [workflow run 45288243208](https://github.com/zallyx62/fps-/actions/runs/45288243208) |
-| Latest mirror synchronization | Success — [workflow run 45288243001](https://github.com/zallyx62/fps-/actions/runs/45288243001) |
+| Branche de référence | `main` |
+| Branche miroir | `jeu-unreal` |
+| SHA de référence des deux branches | `df3fcfbe77de0f8790194d9f387d5bb36835b51a` |
+| PR ouvertes | 0 à l'ouverture de cet audit |
+| Fichiers suivis | 588 |
+| Entrées de l'arborescence récursive | 943, dossiers compris |
+| Assets Unreal | 536 `.uasset` et 3 `.umap` |
+| Fichiers sous `Content/` | 541 |
+| Somme des tailles des fichiers suivis | 165 778 865 octets ; ce n'est ni la taille du clone ni celle de tout l'historique Git |
+| Blobs Git strictement identiques | Aucun doublon détecté |
+| Validation du dépôt | Réussie — [exécution 45289174444](https://github.com/zallyx62/fps-/actions/runs/45289174444) |
+| Synchronisation du miroir | Réussie — [exécution 45289174446](https://github.com/zallyx62/fps-/actions/runs/45289174446) |
 
-The full recursive Git tree was retrieved without truncation at the audit-baseline main commit: **589 tracked files**, including 536 `.uasset` files and 3 `.umap` files. No identical Git blob SHA was shared by two tracked paths. This checks exact file duplication only; it does not detect functional duplication inside Unreal assets.
+L'arborescence récursive a été récupérée intégralement, sans troncature. La comparaison des blobs ne détecte que les fichiers strictement identiques ; elle ne révèle pas les doublons fonctionnels à l'intérieur des Blueprints ou des assets Unreal.
 
-GitHub reports `protected=false` for both `main` and `jeu-unreal`; the repository rulesets endpoint returned an empty list. The branch-protection details endpoint could not be read by the connected integration. Therefore, do not describe `main` as server-side protected. It remains the canonical branch by project policy.
+### Branches historiques
 
-The latest project/configuration/tooling commit is not proof of a gameplay implementation or a tested game build. Keep all gameplay phases unverified until the evidence required by the specification is recorded.
-## 2. Cahier des charges — autorité et périmètre actuel
+À la date de référence, le dépôt comptait 12 branches : `main`, `jeu-unreal` et dix anciennes branches `docs/*`. La comparaison de leurs arbres avec `main` montre uniquement des différences documentaires et l'ancien fichier `Tools/.gitignore`, déjà supprimé de `main`. Aucune de ces branches ne contient de changement unique de gameplay, de configuration Unreal ou d'asset. Leurs pull requests associées sont fusionnées.
 
-Le cahier des charges est la source de vérité pour les fonctionnalités, décisions produit, contraintes et priorités.
+Ces dix branches sont donc des références de travail obsolètes. Leurs pointeurs distants n'ont pas été supprimés pendant cet audit.
 
-- Le document contient **71 sections principales** à la date de cette revue.
-- La section 71 est approuvée le 23 novembre 2026 : « Fabrication de l'arsenal, pipeline 3D et cosmétiques de mêlée ».
-- La section 71 couvre notamment le pipeline de fabrication, la présélection de 34 armes et les apparences cosmétiques de mêlée.
-- Les apparences de mêlée sont des cosmétiques : ne pas les convertir en armes fonctionnelles supplémentaires ni créer de doublons d'armes.
-- Claude must inspect the current specification headings, search for the task's requirements, and read the complete relevant sections and their dependencies. Do not require a fixed section range such as 42–71 at every session start; broaden to the whole specification only for global audits, feature-novelty checks or cross-cutting work.
-- Aucune exigence approuvée ne peut être supprimée, rétrogradée ou considérée comme facultative sans décision explicite du propriétaire.
-- En cas de chevauchement, rattacher l'exigence au système propriétaire existant et conserver les références croisées. En cas de contradiction entre décisions approuvées, demander arbitrage plutôt que deviner.
+La règle du cahier des charges reste inchangée : `main` est la branche canonique et `jeu-unreal` est un miroir, pas une branche de développement indépendante.
+
+### Protection GitHub
+
+GitHub renvoie `protected=false` pour les deux branches et aucun ruleset n'est présent dans la réponse de l'API. L'intégration ne permet pas de lire le point de terminaison détaillé de protection. La protection côté serveur n'est donc pas confirmée : ne jamais présenter ces branches comme protégées.
+
+## 2. Autorité du cahier des charges
+
+Le cahier des charges contient 71 sections principales numérotées à la date de cet audit. La section 71 est le dernier ajout approuvé connu à cette date.
+
+- Le cahier des charges reste l'unique autorité pour les fonctionnalités approuvées, exclusions, décisions, priorités, dépendances et critères d'acceptation.
+- Aucune exigence approuvée ne peut être supprimée, rétrogradée ou rendue facultative sans décision explicite du propriétaire.
+- Avant une tâche, rechercher les exigences concernées puis lire intégralement les sections pertinentes, leurs dépendances et leurs critères d'acceptation. Ne pas charger systématiquement une plage fixe de sections à chaque nouvelle session.
+- Pour un audit global, une vérification d'originalité ou un travail transversal, étendre l'analyse à l'ensemble du cahier des charges et aux registres de décisions applicables.
+- En cas de chevauchement, rattacher le travail au système propriétaire existant et conserver les références croisées. En cas de contradiction entre décisions approuvées, demander un arbitrage plutôt que deviner.
 
 ## 3. État des phases
 
-**Aucune phase n'est actuellement déclarée validée.** Les notes historiques de tests dans l'éditeur et les contrôles GitHub Actions ne remplacent pas les preuves exigées ci-dessous.
+**Aucune phase du projet n'est actuellement déclarée validée.** Les anciens essais dans l'éditeur et les contrôles statiques GitHub ne remplacent pas les preuves exigées par le cahier des charges.
 
-| Phase | Critère de passage à démontrer | Statut | Preuve actuellement enregistrée | Prochaine action |
-|---|---|---|---|---|
-| 0 — Sécurisation et état des lieux | Sauvegarde, audit des risques, état reproductible du dépôt et blocage principal identifié | **Non vérifiée** | Audit documentaire GitHub réalisé ; pas d'audit complet de la machine locale ni de sauvegarde vérifiée | Vérifier l'environnement local, les sauvegardes, secrets, plugins, licences et état de travail |
-| 1 — Première boucle FPS Windows jouable | Build Windows exécutable et partie complète reproductible sur une carte pilote | **Non vérifiée** | Notes historiques d'essais dans l'éditeur ; aucune build empaquetée référencée | Produire et tester une build Windows, enregistrer l'artefact et le protocole |
-| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | `UNREAL.md` décrit des essais PIE historiques ; critères complets non démontrés sur le commit courant | Rejouer les tests sur le commit exact, plusieurs clients et réseaux distincts |
-| 3 — EOS et parties privées | Identité, invitations, lobby privé, lancement, retour et reconnexion testés de bout en bout | **Non vérifiée** | Prototype documenté avec `OnlineSubsystem Null` et connexion IP directe ; aucun parcours EOS validé | Implémenter puis tester le parcours EOS privé selon le cahier |
-| 4 — Matchmaking public et contenu de lancement | File publique, lobby, groupes, départs/reconnexion, cartes et modes d'alpha validés | **Non vérifiée** | Aucun rapport de validation de matchmaking public ou de toutes les cartes/modes | Après les prérequis, valider matchmaking, continuité et contenu de lancement |
-| 5 — Données durables et services communautaires étendus | Progression/statistiques persistantes cohérentes, protégées et restaurables | **Non vérifiée** | Aucune preuve de phase enregistrée | Développer après validation des événements de match et dépendances |
-| 6 — Qualité, performances et préparation alpha | Non-régression, performances multi-configurations, licences, build Shipping et retour arrière | **Non vérifiée** | Aucune build Shipping/alpha ni campagne de validation complète référencée | Préparer la campagne de validation après les phases précédentes |
-| 7 — Extensions | Chaque extension possède critères, tests, preuves et retour arrière sans régression du socle | **Non vérifiée** | Aucune extension n'est validée par ce registre | N'ouvrir que les extensions dont les dépendances sont franchies |
+| Phase | Critère à démontrer | Statut | Preuve ou blocage actuellement enregistré |
+|---|---|---|---|
+| 0 — Sécurisation et état des lieux | Sauvegardes vérifiées, audit de l'environnement, état reproductible et blocages identifiés | **Non vérifiée** | Audit GitHub uniquement ; machine locale, sauvegardes, secrets et environnement éditeur non inspectés |
+| 1 — Première boucle FPS Windows jouable | Build Windows empaquetée et partie complète reproductible sur une carte pilote | **Non vérifiée** | Aucune build Windows empaquetée ni aucun artefact de téléchargement vérifié |
+| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Notes PIE historiques uniquement ; aucun rapport de test du commit courant répondant aux critères complets |
+| 3 — EOS et parties privées | Identité, invitations, lobby privé, lancement, retour et reconnexion testés de bout en bout | **Non vérifiée** | Prototype documenté avec OnlineSubsystem Null et connexion IP directe ; aucun parcours EOS validé |
+| 4 — Matchmaking public et contenu de lancement | File publique, lobby, groupes, départs/reconnexion, cartes et modes validés | **Non vérifiée** | Aucun rapport de validation du matchmaking public ou de l'ensemble du contenu de lancement |
+| 5 — Données durables et services communautaires | Progression/statistiques cohérentes, protégées et restaurables | **Non vérifiée** | Aucune preuve de phase enregistrée |
+| 6 — Qualité, performances et préparation alpha | Non-régression, performances multi-configurations, conformité, build Shipping et retour arrière | **Non vérifiée** | Aucune build Shipping/alpha ni campagne complète de validation référencée |
+| 7 — Extensions | Critères, tests, preuves et retour arrière pour chaque extension sans régression du socle | **Non vérifiée** | Aucune extension validée par ce registre |
 
-## 4. Audit GitHub reproductible — relevé initial du 23 novembre 2026
+L'ordre et les dépendances des phases restent ceux de la section 12 du cahier des charges. La première build Windows reste la priorité définie dans sa section 24. Cet audit n'ajoute aucune fonctionnalité, phase, priorité, étape ou livrable.
 
-Les éléments ci-dessous décrivent le relevé initial effectué sur `main` au SHA `e378e1485691c523a7b2a769ab77a808ebd9ec14`. Ils restent un historique utile, mais ne doivent pas être interprétés comme l'état courant après les commits documentaires suivants :
+## 4. Portée des contrôles automatisés
 
-- Arborescence récursive complète : **589 fichiers suivis** ; résultat non tronqué.
-- Répartition observée : 536 fichiers `.uasset`, 3 fichiers `.umap`, et les fichiers de configuration, scripts, documentation et prototype web.
-- Comparaison des identifiants de blobs Git : **aucun groupe de fichiers au contenu strictement identique détecté**. Cela ne prouve pas l'absence de doublons fonctionnels dans les Blueprints ou les systèmes Unreal.
-- Numérotation des titres de sections principales du cahier : aucun numéro principal dupliqué détecté.
-- Les titres de sous-sections génériques tels que « Priorités et critères communs », « Validation » ou « Statut » se répètent dans des sections différentes : ce sont des gabarits locaux, pas à eux seuls des doublons fonctionnels.
-- À la date de ce relevé initial, les deux branches de référence étaient identiques : `main` = `jeu-unreal` = `e378e1485691c523a7b2a769ab77a808ebd9ec14`.
-- Workflow [Validate RIXE repository](https://github.com/zallyx62/fps-/actions/runs/45173785657) sur ce SHA : terminé avec succès. Il vérifie la structure du projet, les métadonnées/géométries générées, la syntaxe Python et un test de génération OBJ. Il ne compile pas Unreal, ne charge pas les Blueprints et ne produit pas de build Windows.
-- Workflow [Keep jeu-unreal synchronized with main](https://github.com/zallyx62/fps-/actions/runs/45173785667) sur ce SHA : terminé avec succès.
-- `README.md`, `UNREAL.md`, `fps.uproject` et `Config/DefaultEngine.ini` concordent sur la carte et le mode de jeu de démarrage documentés : `Variant_Shooter/Lvl_ArenaShooter` et `BP_ShooterGameMode`.
-- Le prototype multijoueur documenté reste fondé sur `OnlineSubsystem Null` et la connexion IP directe. EOS et le matchmaking public restent des objectifs non validés.
-- `UNREAL.md` signale les écarts du prototype : apparitions, bots, score, profils graphiques, autorité serveur et anti-triche. Ne pas les présenter comme résolus sans preuves nouvelles.
-- `LICENCE_DISTRIBUTION.md` maintient le blocage de distribution publique tant que la compatibilité GPL/Epic, la provenance des assets et les licences des plugins/dépendances ne sont pas établies.
+Le workflow GitHub Actions exécute `Tools/validate_project.py`. Le périmètre exact des contrôles est défini dans ce script et doit rester aligné avec les outils effectivement présents dans le dépôt.
 
-### Limites explicites de cet audit
+Un résultat vert signifie uniquement que les vérifications statiques et les tests de génération exécutés ont réussi. Il ne prouve pas que le projet a été ouvert dans Unreal Engine, que les Blueprints ou shaders compilent, que le réseau fonctionne, ni qu'une build Windows est jouable.
 
-L'API GitHub permet d'inventorier les chemins et les blobs, mais pas d'inspecter la structure interne des assets binaires Unreal (`.uasset`, `.umap`). Cet audit n'a pas accès à la machine locale, à l'éditeur Unreal, aux sauvegardes, aux modifications non commitées, aux journaux locaux ni à une compilation empaquetée. Il ne peut donc pas certifier l'absence de doublons internes dans les Blueprints, de problèmes d'exécution ou de défauts de gameplay.
+Une exécution GitHub Actions réussie ne suffit jamais à déclarer une phase validée.
 
-## 4 bis. GitHub audit baseline — 24 November 2026
+## 5. Preuves obligatoires pour chaque tentative de validation
 
-The following repository state was checked against GitHub after PR #13 was merged and before this audit PR was opened.
+Pour chaque critère de phase testé, enregistrer :
 
-- `main` and `jeu-unreal` both point to `19ced966cef665be47c66e5f3a78f0039846dcf2`.
-- The mirror workflow completed successfully after the merge: [run 45288243001](https://github.com/zallyx62/fps-/actions/runs/45288243001). The repository validation workflow also completed successfully: [run 45288243208](https://github.com/zallyx62/fps-/actions/runs/45288243208).
-- The validation job ran the Python dependency installation and `Tools/validate_project.py`, including project JSON, Python syntax, weapon metadata, generated geometry and OBJ smoke checks. It did **not** compile Unreal, load Blueprints or package a Windows build.
-- No pull request is currently open. PR #13, which refactored `CLAUDE.md`, is merged.
-- The recursive tree contains 589 tracked files and is not truncated. Exact duplicate Git blobs: none. Binary Unreal assets cannot be inspected internally through this tree audit.
-- Only one agent instruction file exists in the tracked tree: root `CLAUDE.md`; no `AGENTS.md` or `.claude/` instructions were found.
-- This audit PR removes `Tools/.gitignore`: its only two patterns are already covered recursively by the root `.gitignore`. No Unreal assets, gameplay code or project configuration are changed.
-- At audit start, nine historical `docs/*` branches existed in addition to `main` and `jeu-unreal`. Their commits unique to each branch affect documentation only; they are not current working branches. The active branch carrying this audit is intentionally excluded from the historical-branch table below. Do not reuse, merge or delete any stale branch without inspecting its unique commits. PR #13's source branch is also retained after its content was squash-merged.
+- La phase et le critère d'acceptation exacts.
+- La branche et le SHA du code du jeu réellement testé, séparément de tout commit documentaire.
+- La version d'Unreal, la configuration (Development/Shipping), la plateforme et le matériel pertinent.
+- La build ou l'artefact exact et son emplacement ou lien vérifiable, si produit.
+- La procédure reproductible, le nombre de joueurs/clients, la topologie réseau et les conditions du test.
+- Le résultat observé : réussi, échoué, non exécuté ou non vérifié ; joindre les journaux et artefacts utiles.
+- Les régressions, limites, blocages et actions correctives.
+- La décision explicite de franchissement ou non du critère, avec responsable et date.
 
-| Branch at audit baseline | Head SHA | Ahead of `main` | Behind `main` | Handling |
-|---|---|---:|---:|---|
-| `docs/clarify-claude-resume-workflow` | `a29400bf9ca5b44217559e8f4fbad045038527b9` | 1 | 9 | Divergent; inspect before reuse |
-| `docs/correct-current-audit-refs` | `9a7e4d4cdfa763cc52c53a4868930dc4185fd016` | 1 | 5 | Divergent; inspect before reuse |
-| `docs/english-first-working-policy` | `c13b0ce30b142853c99a423990ad429f57587c1e` | 1 | 3 | Divergent; inspect before reuse |
-| `docs/finalize-claude-handoff-2026-11-23` | `4d214d34ff9da350b572462b333679648009ddcd` | 3 | 6 | Divergent; inspect before reuse |
-| `docs/fix-code-commit-reference` | `4938bd8cfb19cac1c8ac4a4d139a9821cf90a9f1` | 1 | 7 | Divergent; inspect before reuse |
-| `docs/record-github-audit-2026-11-23` | `62a5d7cc04d8678282cec2f37b9d85e8d539a5f2` | 1 | 8 | Divergent; inspect before reuse |
-| `docs/refactor-claude-md-2026-11-24` | `806f49c143a1b9bbaab1f9020fed397309533f51` | 1 | 1 | PR #13 merged; branch pointer remains |
-| `docs/token-context-efficiency` | `52469d35f0517317131524aa300f849ae1b7dff6` | 1 | 2 | Divergent; inspect before reuse |
-| `docs/update-current-github-audit` | `7635354620fbdf8c4293e506cdb4d26fd7649b80` | 3 | 4 | Divergent; inspect before reuse |
+Ne jamais transformer un commit documentaire, un contrôle Python, une synchronisation Git ou un test PIE isolé en preuve de build Windows, de fonctionnement sur Internet ou de franchissement de phase.
 
-The GitHub branch listing reports `protected=false` for `main` and `jeu-unreal`, and the rulesets query returned no rulesets. Branch-protection details could not be inspected with the connected integration. Server-side protection is therefore **not verified** and must not be claimed.
-## 5. Registre de preuve obligatoire
+## 6. Mise à jour du suivi et prochaine action vérifiable
 
-Pour chaque tentative de validation, ajouter une entrée datée avec :
+Mettre à jour ce registre dans le même lot de travail lorsqu'un test réel, une modification du dépôt ou un changement de statut intervient.
 
-- Phase et critère exact évalué.
-- Branche et SHA du commit du code testé (pas seulement le commit documentaire).
-- Version d'Unreal, configuration (Development/Shipping), plateforme et matériel pertinent.
-- Build/artefact exact et emplacement ou lien vérifiable, si produit.
-- Procédure de test, nombre de joueurs/clients, réseau utilisé et conditions.
-- Résultat observé : réussi/échoué/non exécuté, logs et captures utiles.
-- Régressions, limites, blocages et action corrective.
-- Décision : critère franchi ou non franchi, avec responsable et date.
-
-## 6. Mise à jour du suivi
-
-Claude doit mettre à jour ce fichier dans le même lot de travail lorsqu'une validation réelle, une modification du dépôt ou un changement de statut intervient.
-
-- Distinguer systématiquement le SHA documentaire du SHA du code réellement testé.
-- Vérifier à nouveau les branches et les workflows ; ne pas recopier un ancien état comme s'il était actuel.
-- Ne jamais convertir un commit documentaire, un contrôle Python, une synchronisation Git ou un test PIE isolé en preuve de build Windows, de test Internet ou de franchissement de phase.
+- Récupérer à nouveau les têtes des branches et les résultats des workflows ; ne jamais présenter un ancien relevé comme l'état courant.
+- Distinguer le SHA documentaire du SHA exact du code testé.
 - Conserver le statut **Non vérifiée** tant que toutes les preuves du critère ne sont pas disponibles.
-- Si aucun test n'a été exécuté, l'écrire explicitement.
-- Cette règle n'implique aucune surveillance automatique permanente entre les sessions.
+- Indiquer explicitement les contrôles non exécutés et leur raison.
+- Ne pas laisser entendre qu'une surveillance automatique continue entre les sessions est en place.
 
-**Prochaine action prioritaire :** sur la machine de développement, vérifier l'état local et les sauvegardes, ouvrir le projet avec Unreal Engine 5.8, contrôler les plugins et les journaux, reproduire le démarrage, puis produire une première build Windows de test. Consigner les résultats sur le SHA exact du code avant de modifier le statut des phases.
+**Prochaine action projet :** vérifier l'espace de travail local et les sauvegardes, ouvrir le projet dans Unreal Engine 5.8, inspecter les plugins et les journaux de l'éditeur, reproduire le démarrage, puis produire et tester une build Windows de développement. Enregistrer les résultats sur le SHA exact du code avant de modifier le statut d'une phase.
