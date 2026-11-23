@@ -1,0 +1,56 @@
+name: Keep jeu-unreal synchronized with main
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-jeu-unreal-with-main
+  cancel-in-progress: false
+
+jobs:
+  fast-forward-mirror:
+    name: Fast-forward mirror branch safely
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Synchronize jeu-unreal
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git fetch origin main jeu-unreal
+          MAIN_SHA="$(git rev-parse refs/remotes/origin/main)"
+          MIRROR_SHA="$(git rev-parse refs/remotes/origin/jeu-unreal)"
+
+          if [[ "$MAIN_SHA" == "$MIRROR_SHA" ]]; then
+            echo "jeu-unreal is already synchronized with main ($MAIN_SHA)."
+            exit 0
+          fi
+
+          if ! git merge-base --is-ancestor "$MIRROR_SHA" "$MAIN_SHA"; then
+            echo "::error::jeu-unreal has commits or history not contained in main. No ref was changed; resolve the divergence manually."
+            exit 1
+          fi
+
+          git push origin "$MAIN_SHA:refs/heads/jeu-unreal"
+
+          git fetch origin main jeu-unreal
+          FINAL_MAIN="$(git rev-parse refs/remotes/origin/main)"
+          FINAL_MIRROR="$(git rev-parse refs/remotes/origin/jeu-unreal)"
+
+          if [[ "$FINAL_MAIN" != "$FINAL_MIRROR" ]]; then
+            echo "::error::The branches changed during synchronization. Run this workflow again after checking the branch heads."
+            exit 1
+          fi
+
+          echo "jeu-unreal is now synchronized with main ($FINAL_MAIN)."
