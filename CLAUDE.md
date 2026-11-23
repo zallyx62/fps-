@@ -1,11 +1,26 @@
 # RIXE — Instructions de développement pour Claude
 
-**Référence fonctionnelle unique :** `CAHIER_DES_CHARGES_RIXE.md` (version la plus récente de la branche de travail).  
+**Référence fonctionnelle unique :** `CAHIER_DES_CHARGES_RIXE.md`, dans sa version approuvée la plus récente.  
 **Moteur :** Unreal Engine 5.8. **Projet :** principalement Blueprint.  
-**Budget autorisé :** 0 €. **Branche par défaut GitHub :** `main` (branche de référence et de développement tant qu'aucune branche de tâche n'est explicitement ouverte). `jeu-unreal` est une branche miroir strictement synchronisée avec `main` : une GitHub Action la met à jour automatiquement après chaque push sur `main` et peut être lancée manuellement. Ne jamais développer directement sur `jeu-unreal`, ne jamais forcer son historique ; si elle diverge ou contient des commits propres, arrêter la synchronisation et demander un arbitrage. Toute tâche distincte part de `main` dans une branche dédiée. Après chaque push, vérifier le résultat de l'action et l'égalité des SHA des deux branches.  
+**Budget autorisé :** 0 €. **Branche de référence :** `main`. `main` est la branche de référence, pas une branche de travail : ne jamais y développer directement. Pour chaque tâche ou lot cohérent, créer une branche dédiée depuis le dernier `main` vérifié, y effectuer les modifications et ouvrir une pull request vers `main`. Ne jamais réutiliser une branche de tâche ancienne sans vérifier son point de départ et son contenu. `jeu-unreal` est une branche miroir strictement synchronisée avec `main` : une GitHub Action la met à jour automatiquement après chaque push/merge sur `main` et peut être lancée manuellement. Ne jamais développer directement sur `jeu-unreal`, ne jamais forcer son historique ; si elle diverge ou contient des commits propres, arrêter la synchronisation et demander un arbitrage. Après chaque fusion dans `main`, vérifier le résultat de l'action et l'égalité des SHA des deux branches. 
 **Objectif :** construire un FPS multijoueur réellement jouable, stable, accessible avec des amis à distance et maintenable.
 
 ---
+
+## 0. Procédure obligatoire de reprise après interruption
+
+À chaque nouvelle session, notamment après plusieurs jours sans intervention, ne pas reprendre à partir du souvenir, d'un ancien résumé ou du dernier message de conversation. Reconstituer l'état du dépôt avant toute modification.
+
+1. Lire ce fichier, puis la version courante de `CAHIER_DES_CHARGES_RIXE.md`, `SUIVI_PHASES_RIXE.md`, `UNREAL.md` et les documents explicitement référencés par la tâche.
+2. Vérifier le dépôt distant : branche courante, SHA de `main`, branches de travail, état de `jeu-unreal`, dernières pull requests/commits et éventuelles actions GitHub en échec. Ne pas supposer que les références ou rapports de la session précédente sont encore à jour.
+3. Vérifier l'état local avant toute opération : modifications non commitées, fichiers non suivis, sauvegardes, version d'Unreal, état de compilation et disponibilité du projet. Ne jamais écraser ni nettoyer des changements locaux non compris.
+4. Comparer les changements récents du dépôt avec le cahier des charges et le suivi. Repérer les décisions nouvellement approuvées, les tâches commencées mais inachevées, les conflits documentaires et les preuves devenues obsolètes.
+5. Présenter un bref état de reprise : phase active, dernier commit de code réellement testé, changements depuis cette validation, blocage principal et prochaine action vérifiable.
+6. Avant toute écriture, créer une branche dédiée depuis le `main` distant à jour. Si une branche existante contient déjà le travail pertinent, l'inspecter et la réutiliser uniquement après vérification explicite de son historique et de son contenu.
+7. Ne modifier ni le cahier des charges ni l'état d'avancement pour faire disparaître une incertitude. En cas de décision produit ambiguë ou de divergence non arbitrable, s'arrêter et demander confirmation.
+8. À la fin, consigner les preuves et limites, ouvrir une pull request vers `main`, puis vérifier la fusion et la synchronisation de `jeu-unreal` uniquement si la pull request est effectivement fusionnée.
+
+Aucune modification de code ou de documentation ne doit précéder ces vérifications de reprise, sauf demande explicite de l'utilisateur visant précisément une correction documentaire isolée.
 
 ## 1. Règle de cohérence documentaire
 
