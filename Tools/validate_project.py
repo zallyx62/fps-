@@ -26,7 +26,11 @@ def load_json(path: Path):
     try:
         return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
-        raise SystemExit(f"FAILED: invalid JSON ({path.relative_to(ROOT)}): {exc}") from exc
+        try:
+            label = path.relative_to(ROOT)
+        except ValueError:
+            label = path
+        raise SystemExit(f"FAILED: invalid JSON ({label}): {exc}") from exc
 
 
 def run_generator(script: Path, output_dir: Path, *, timeout: int = 180) -> subprocess.CompletedProcess[str]:
