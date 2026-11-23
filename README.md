@@ -6,6 +6,11 @@ FPS d'arène par équipes, en cours de construction sous **Unreal Engine 5.8** (
 
 Voir [UNREAL.md](UNREAL.md) pour le détail des modifications faites dans Unreal.
 
+## Reprendre le projet avec Claude
+
+À chaque nouvelle session, Claude doit commencer par lire [CLAUDE.md](CLAUDE.md), puis suivre sa procédure obligatoire de reprise. Le cahier des charges [CAHIER_DES_CHARGES_RIXE.md](CAHIER_DES_CHARGES_RIXE.md) est la référence fonctionnelle unique ; [SUIVI_PHASES_RIXE.md](SUIVI_PHASES_RIXE.md) indique uniquement les phases et preuves réellement vérifiées. Ne pas reprendre une ancienne branche documentaire ni se fier à un ancien résumé de conversation.
+
+
 Le dépôt accueille le projet Unreal du jeu. Le projet part du modèle « First Person / Arena Shooter »
 fourni avec le moteur, puis est adapté : arène, règles de match par équipes, bots, interface, réglages.
 
