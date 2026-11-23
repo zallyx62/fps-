@@ -11,7 +11,7 @@ Ce fichier consigne l'état démontré des jalons. Il ne remplace pas la feuille
 |---|---|
 | Branche par défaut GitHub | `main` |
 | Branche miroir | `jeu-unreal` |
-| Dernier commit observé sur `main` lors de la revue | `c966a5bd5f1cb9f4d28eafb9aa12bd36a197114d` (fusion documentaire de la procédure de reprise) |
+| Dernier commit de code observé sur `main` lors de la revue | `d6e2505b46ad9acf5e6f7e6dd019cc3e626f79f4` (les commits ultérieurs mentionnés dans ce suivi sont documentaires) |
 | Release GitHub publique observée | Aucune release publiée au moment du contrôle |
 | Build Windows distribuable vérifiée dans ce suivi | Aucune preuve enregistrée |
 
