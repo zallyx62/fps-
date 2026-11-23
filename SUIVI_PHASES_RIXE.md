@@ -12,9 +12,9 @@ Ce fichier est le registre des preuves et de l'avancement réellement démontré
 |---|---|
 | Branche de référence | `main` |
 | Branche miroir | `jeu-unreal` |
-| SHA actuel de `main` après consolidation documentaire du 23 novembre 2026 | `f8f56c41acb3297d2bbe062c5eb9e5c6c41258a9` |
-| SHA de `main` avant la consolidation documentaire finale | `e378e1485691c523a7b2a769ab77a808ebd9ec14` |
-| État vérifié après le dernier commit contrôlé | `main` et `jeu-unreal` pointent toutes deux sur `c2c3f41f6702e9b904024c09f6a18bfbbcd9d2af` (vérifié le 23 novembre 2026) |
+| SHA de `main` au relevé GitHub du 23 novembre 2026, avant fusion de cette correction | `c2c3f41f6702e9b904024c09f6a18bfbbcd9d2af` |
+| SHA de `main` avant la consolidation documentaire du 23 novembre 2026 | `e378e1485691c523a7b2a769ab77a808ebd9ec14` |
+| État des branches de référence au relevé | `main` et `jeu-unreal` pointent toutes deux sur `c2c3f41f6702e9b904024c09f6a18bfbbcd9d2af` (vérifié le 23 novembre 2026, avant fusion de cette correction) |
 | Dernière section principale du cahier au 23 novembre 2026 | **71 — Fabrication de l'arsenal, pipeline 3D et cosmétiques de mêlée** |
 | Dernière modification du cahier avant ce nettoyage | `d6e2505b46ad9acf5e6f7e6dd019cc3e626f79f4` — ajout de la section 71 ; modification documentaire du cahier, pas preuve d'implémentation |
 | Dernier commit identifié touchant configuration/outillage du dépôt | `e8a40f4895e22212ce1298672a1db396f6dfcf60` — configuration, validation et documentation, 20 novembre 2026 |
@@ -22,7 +22,7 @@ Ce fichier est le registre des preuves et de l'avancement réellement démontré
 | Build Windows empaquetée vérifiée | **Aucune preuve enregistrée** |
 | Release publique vérifiée | **Aucune** |
 
-Les commits documentaires postérieurs à `d6e2505` ne doivent jamais être présentés comme des commits de code testé. Après le présent nettoyage, mettre à jour les SHA documentaires et les références de branches sans modifier rétroactivement l'identité du dernier commit de code réellement testé.
+Les commits documentaires postérieurs à `d6e2505` ne doivent jamais être présentés comme des commits de code testé. Les SHA et états de branches de ce fichier sont des relevés datés : les revérifier après toute fusion ou nouvelle opération Git, sans modifier rétroactivement l'identité du dernier commit de code réellement testé.
 
 ## 2. Cahier des charges — autorité et périmètre actuel
 
@@ -72,26 +72,27 @@ Les éléments ci-dessous décrivent le relevé initial effectué sur `main` au 
 
 L'API GitHub permet d'inventorier les chemins et les blobs, mais pas d'inspecter la structure interne des assets binaires Unreal (`.uasset`, `.umap`). Cet audit n'a pas accès à la machine locale, à l'éditeur Unreal, aux sauvegardes, aux modifications non commitées, aux journaux locaux ni à une compilation empaquetée. Il ne peut donc pas certifier l'absence de doublons internes dans les Blueprints, de problèmes d'exécution ou de défauts de gameplay.
 
-## 4 bis. Actualisation de l'état GitHub après consolidation — 23 novembre 2026
+## 4 bis. État GitHub vérifié le 23 novembre 2026 — avant fusion de la présente correction
 
-Vérification effectuée sur la révision courante de main :
+Relevé effectué sur le dépôt distant. Il s'agit d'un instantané daté, et non d'une garantie que ces références resteront actuelles après une fusion ou un nouveau push.
 
-- SHA actuel de `main` : `c2c3f41f6702e9b904024c09f6a18bfbbcd9d2af`.
-- SHA actuel de `jeu-unreal` : `c2c3f41f6702e9b904024c09f6a18bfbbcd9d2af` ; les deux branches sont identiques au moment de cette vérification.
-- Le workflow de validation du dépôt sur ce SHA s'est terminé avec succès : [exécution 45196603347](https://github.com/zallyx62/fps-/actions/runs/45196603347).
-- Le workflow de synchronisation du miroir sur ce SHA s'est terminé avec succès : [exécution 45196603269](https://github.com/zallyx62/fps-/actions/runs/45196603269).
-- L'arborescence récursive vérifiée reste complète et non tronquée : 589 fichiers suivis au relevé précédent ; le dernier commit contrôlé est documentaire.
-- Cinq branches documentaires historiques subsistent en plus de `main` et `jeu-unreal`. Elles divergent toutes de `main` et ne doivent pas être fusionnées automatiquement. Les écarts ci-dessous ont été recalculés par comparaison avec le SHA courant de `main` :
+- SHA de `main` : `c2c3f41f6702e9b904024c09f6a18bfbbcd9d2af`.
+- SHA de `jeu-unreal` : `c2c3f41f6702e9b904024c09f6a18bfbbcd9d2af`. Les deux branches de référence sont identiques à ce relevé.
+- Workflow **Validate RIXE repository** sur ce SHA : succès, [exécution 45196603347](https://github.com/zallyx62/fps-/actions/runs/45196603347).
+- Workflow **Keep jeu-unreal synchronized with main** sur ce SHA : succès, [exécution 45196603269](https://github.com/zallyx62/fps-/actions/runs/45196603269).
+- L'arborescence récursive de `main` a été relue sans troncature : **589 fichiers suivis** au relevé. Ce contrôle d'arborescence ne valide pas le contenu interne des assets binaires Unreal.
+- La branche de correction documentaire active `docs/update-current-github-audit` porte la présente pull request vers `main`. Elle ne doit pas être confondue avec les branches historiques listées ci-dessous.
+- Cinq autres branches documentaires historiques subsistent en plus de `main` et `jeu-unreal`. Les comparaisons ont été recalculées par rapport au `main` ci-dessus :
 
-| Branche | SHA observé | Écart par rapport à main | Traitement |
-|---|---|---|---|
-| `docs/clarify-claude-resume-workflow` | `a29400bf9ca5b44217559e8f4fbad045038527b9` | 1 commit en avance, 5 en retard | Historique divergent ; ne pas fusionner automatiquement |
-| `docs/correct-current-audit-refs` | `9a7e4d4cdfa763cc52c53a4868930dc4185fd016` | 1 commit en avance, 1 en retard | Historique divergent ; ne pas fusionner automatiquement |
-| `docs/fix-code-commit-reference` | `4938bd8cfb19cac1c8ac4a4d139a9821cf90a9f1` | 1 commit en avance, 3 en retard | Historique divergent ; ne pas fusionner automatiquement |
-| `docs/record-github-audit-2026-11-23` | `62a5d7cc04d8678282cec2f37b9d85e8d539a5f2` | 1 commit en avance, 4 en retard | Historique divergent ; ne pas fusionner automatiquement |
-| `docs/finalize-claude-handoff-2026-11-23` | `4d214d34ff9da350b572462b333679648009ddcd` | 3 commits en avance, 2 en retard | Historique divergent ; ne pas fusionner automatiquement |
+| Branche | SHA observé | Écart par rapport à `main` | Fichiers modifiés dans les commits propres à la branche | Traitement |
+|---|---|---|---|---|
+| `docs/clarify-claude-resume-workflow` | `a29400bf9ca5b44217559e8f4fbad045038527b9` | 1 commit en avance, 5 en retard | `CLAUDE.md` | Divergente ; auditer son contenu avant toute réutilisation |
+| `docs/correct-current-audit-refs` | `9a7e4d4cdfa763cc52c53a4868930dc4185fd016` | 1 commit en avance, 1 en retard | `SUIVI_PHASES_RIXE.md` | Divergente ; auditer son contenu avant toute réutilisation |
+| `docs/fix-code-commit-reference` | `4938bd8cfb19cac1c8ac4a4d139a9821cf90a9f1` | 1 commit en avance, 3 en retard | `SUIVI_PHASES_RIXE.md` | Divergente ; auditer son contenu avant toute réutilisation |
+| `docs/record-github-audit-2026-11-23` | `62a5d7cc04d8678282cec2f37b9d85e8d539a5f2` | 1 commit en avance, 4 en retard | `SUIVI_PHASES_RIXE.md` | Divergente ; auditer son contenu avant toute réutilisation |
+| `docs/finalize-claude-handoff-2026-11-23` | `4d214d34ff9da350b572462b333679648009ddcd` | 3 commits en avance, 2 en retard | `CLAUDE.md`, `README.md`, `SUIVI_PHASES_RIXE.md` | Divergente ; auditer son contenu avant toute réutilisation |
 
-Les cinq branches historiques ne sont pas supprimées par cette correction : leur suppression nécessite une décision séparée et une vérification de leur utilité. Les références et écarts ci-dessus décrivent l'état observé le 23 novembre 2026 et doivent être revérifiés avant toute opération Git.
+Ces écarts décrivent uniquement l'historique Git. Ils ne prouvent ni que les commits propres sont inutiles, ni que leurs changements sont intégrés à `main`. Aucun de ces cinq historiques n'a été fusionné ou supprimé. Ne pas les fusionner, les supprimer ou les forcer sans inspection du diff et décision explicite. Revérifier leurs SHA et leurs écarts avant toute opération ultérieure.
 
 ## 5. Branches documentaires historiques à ne pas réutiliser
 
