@@ -100,3 +100,16 @@ Mettre à jour ce registre dans le même lot de travail lorsqu'un test réel, un
 - Ne pas laisser entendre qu'une surveillance automatique continue entre les sessions est en place.
 
 **Prochaine action projet :** vérifier l'espace de travail local et les sauvegardes, ouvrir le projet dans Unreal Engine 5.8, inspecter les plugins et les journaux de l'éditeur, reproduire le démarrage, puis produire et tester une build Windows de développement. Enregistrer les résultats sur le SHA exact du code avant de modifier le statut d'une phase.
+
+
+## 7. Correctif technique ciblé — 24 novembre 2026
+
+**Pull request :** [#23 — restauration de la visibilité des armes après la visée](https://github.com/zallyx62/fps-/pull/23)
+
+- **Fichier corrigé :** `Tools/dsl/scope_apply.dsl`. À la désactivation de la lunette, les meshes d'armes en vue subjective sont maintenant réaffichés, comme le mesh du personnage. Ils restent masqués uniquement pendant l'affichage de la lunette.
+- **Validation renforcée :** `Tools/validate_project.py` vérifie désormais l'équilibre des parenthèses et la fermeture des chaînes de caractères dans les scripts de `Tools/dsl/`, puis contrôle la règle de visibilité des armes pour prévenir cette régression.
+- **Commit du correctif DSL :** `3df8b0ddc8707556821c96780e42b5527e10db0e`.
+- **Commit contenant les nouveaux contrôles :** `fa9cacf82941c80f4516fd4cd1b5635a9ace3a83`.
+- **CI :** validation GitHub Actions n° 81 réussie — [exécution 45294161509](https://github.com/zallyx62/fps-/actions/runs/45294161509). Les contrôles statiques et tests de génération ont réussi.
+
+**Limite de preuve :** aucun chargement du projet dans Unreal, aucune compilation de Blueprint, aucun test de la visée en jeu et aucune build Windows n'ont été effectués dans cette opération. Le contrôle DSL vérifie la structure et la règle ciblée ; il ne remplace pas le compilateur ni l'exécution Unreal. Les phases 0 à 7 restent donc **Non vérifiées** et aucun critère de phase n'est déclaré franchi.

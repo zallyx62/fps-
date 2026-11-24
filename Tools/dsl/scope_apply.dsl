@@ -3,7 +3,7 @@
     (Variables|Default|SetRixeScopeOn Show)
     (Rendering|SetVisibility (Variables|Default|GetFirstPersonMesh) (not Show) true)
     (for wp (Variables|Default|GetOwnedWeapons)
-      (Rendering|SetVisibility (Class|BPShooterWeaponBase|GetFPWeapon wp) false false))
+      (Rendering|SetVisibility (Class|BPShooterWeaponBase|GetFPWeapon wp) (not Show) false))
     (Utilities|IsValid (Variables|Default|GetRixeScopeUI)
       (:"Is Valid"
         (if Show
