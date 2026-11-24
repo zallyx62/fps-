@@ -250,3 +250,34 @@ Scope: audit section 6 item 3. Stacked on sections 9–10 (branch `phase2/m4-aut
 
 - Direct hits on `BP_RixeTarget` never reach `RixeApplyHit`, because `ProcessHit` only continues for `Character` (audit S5).
 - Bots spawned by `BP_ShooterNPCSpawner` instead of the bot director never receive a team.
+
+## 12. Phase 2 — audit item M8 (team ↔ colour ↔ PlayerStart tag): refuted, no code change (24 November 2026)
+
+**Owner decision (24 Nov 2026):** team 0 = RED, team 1 = BLUE, for tint, PlayerStart tags and score labels.
+
+### Verification (editor `main` + stacked branches, no asset modified)
+
+Node-level reading through the editor MCP (`get_node_infos`), plus the engine source:
+
+- **Engine rule:** in `K2Node_Select.cpp` (UE 5.8, `Engine/Source/Editor/BlueprintGraph/Private`), a bool-indexed Select has "Option 0" = False and "Option 1" = True.
+- **Humans:**
+  - `BP_ShooterGameMode.ChoosePlayerStart` uses a byte-indexed Select with `Option 0 = "RED"` and `Option 1 = "BLUE"`, so team 0 maps to RED.
+  - `BP_ShooterPlayerController` respawn uses the same Select, again team 0 → RED.
+- **Bots:** `BP_RixeBotDirector.SpawnBot` uses a bool Select. Its index is `Team == 0`, with False → "BLUE" and True → "RED", so team 0 maps to RED.
+- **Tint:** `SelectVector(red, blue, bPickA = (Team == 0))` for players and bots, so team 0 is red.
+- **Score and victory:**
+  - `TeamScores[X]` counts deaths of team X, so `RedScore = TeamScores[1]` is team 0's points.
+  - "VICTOIRE DE L'EQUIPE ROUGE" (`WinningTeam = 1`) fires when team 1's deaths reach the limit, which is a team 0 win.
+- **Why the audit was wrong:** the audit read the DSL export, which prints Select options in an order that does not match the pins. This is the same kind of export artefact as H2.
+
+### Runtime check (PIE, listen server + 1 client, ~18:50–18:58 UTC)
+
+- **PlayerStart positions in the level:** RED at y ≈ −1050 to −1450, BLUE at y ≈ +1348 to +1506.
+- **Humans at spawn:** the team-0 human was at y = −1350 / −1450 (RED); the team-1 human was at y = +1348 / +1506 (BLUE).
+- **Freshly spawned bots:** a team-1 bot was at (−606, 1603), next to a BLUE start; a team-0 bot was at (−717, −1413), on the RED side. Older bots had already moved and were not used as evidence.
+- **Process note:** during the check a literal swap in `SpawnBot` was tried, found wrong against the engine source, and reverted before any save. `git status` shows no asset change.
+
+### Status
+
+- M8: **refuted, no change needed**.
+- Still open: audit M9 (team assignment by PlayerArray parity) and NPCs from `BP_ShooterNPCSpawner` with no team.
