@@ -182,3 +182,117 @@ Map `Lvl_ArenaShooter`, mode `BP_ShooterGameMode`, single local player plus bots
 **Next verifiable action:** fix H1 (alive/match-state guard on `ServerRixeAction`, stop firing on death), then test it with a listen server and one client in PIE and on a packaged build.
 
 **Owner decisions needed before the related fixes:** suicide and team-kill scoring (S3), sprint/fire exclusivity, ADS time, bot respawn delay, and whether C++ CharacterMovement work is acceptable (S7).
+## 10. Phase 2 — audit fix H1: server-side guard on `ServerRixeAction` (24 November 2026)
+
+Scope: specification section 12 (Phase 2, step 2, server authority) and audit `AUDIT_PHASE2_COMBAT_AUTHORITY.md` finding H1 (PR #25, merged into `main` as `fb55909`). Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `5d7b18e`, branch `phase2/h1-server-action-guard`, base `main` `6825461`)
+
+- `BP_ShooterPlayerController`: new pure-logic function `RixeCanAct(Action) -> bool`. Chat (Action 3) is always allowed; every other action requires a controlled `BP_ShooterCharacter` that is not dead (`IsDead`, i.e. `Current HP <= 0`) and a match that is not over (`BP_RixeGameState.WinningTeam == 0`; if the GameState cast fails the action is allowed, as before).
+- `ServerRixeAction` (Run on Server) now branches on `RixeCanAct` before the existing action chain; a rejected action does nothing. No other graph was changed.
+- Not in this change (remaining H1 items from audit section 6): clearing `bFiringRep` / `StopFiring` in the authority Die path, and `StopFiring` in both Die graphs on every machine (also S2).
+
+### Tests
+
+1. **PIE, listen server + 1 remote client** (editor, same machine, 24 Nov 2026 ~17:35–17:45 UTC; Play settings changed in memory only and restored): the client connected (`Join succeeded`); bots played several matches to victory with automatic restart while the client was connected.
+   - **Verified:** a live client holding fire reached the server through `ServerRixeAction` (server-side `bFiringRep = true` on the client's pawn, `RemoteRole = AutonomousProxy`).
+   - **Not verified:** that the server rejects fire from a dead client or after victory. The editor tooling could not set `Current HP` or `WinningTeam` on PIE actors, and the client's pawn was destroyed/recreated around deaths and match restarts before a read could be taken. One attempt during a victory read `bFiringRep = false`, but the GameState had already been reset, so it is not evidence.
+   - Log: 4 `Blueprint Runtime Error` lines in `BP_ShooterCharacter` `Update Health UI` (`OnRep_Current HP` and EventGraph) accessing the remote client's destroyed `BP_ShooterPlayerController` during the first match restart. Not in a graph touched by this change; recorded as a new finding for a later fix.
+2. **Packaged Development Win64 build of `5d7b18e`** (`RunUAT BuildCookRun`, same parameters as section 8; cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:\RIXE_Builds\dev-5d7b18e`, log `D:\RIXE_Builds\build-dev-5d7b18e.log`). As in section 8, the build uses the local working tree, including local `Config/*.ini` changes that are not committed.
+3. **Smoke run of that build** (17:47–17:52 UTC, single local player plus bots, log copied to `D:\RIXE_Builds\evidence-5d7b18e\smoke-5d7b18e-fps.log`): 3 victories (17:49:13 blue, 17:50:29 red, 17:51:44), each followed about 6 s later by `ProcessServerTravel`. Hands-on (computer use): holding fire empties the ammo bar and `R` refills it. The game was closed with a normal close and the log ends with `LogExit: Exiting.`. No Blueprint runtime error, no ensure, no crash.
+
+### Limits
+
+- Single machine. No separate-machine, LAN or Internet test.
+- The rejection paths of the guard (dead player, match over) are not demonstrated at runtime; they need a manual two-player test or a test hook.
+- No download link exists; the build is not distributed (specification section 25).
+
+### Other observation
+
+- `origin/jeu-unreal` (`d0c3b23`) does not match `origin/main` (`6825461`) at the time of this test; the mirror is out of date.
+
+## 11. Phase 2 — audit fix H1 remainder and S2: stop firing on death (24 November 2026)
+
+Scope: audit section 6 item 2 (H1 core, Die part) and S2. Stacked on section 10 (branch `phase2/h1-stop-fire-on-death`, based on `phase2/h1-server-action-guard`). Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `b3ccb4e`)
+
+- `BP_ShooterCharacter` `Die`: on authority, after `Set w/ Notify bDeadRep = true`, also `Set w/ Notify bFiringRep = false` (proxies run `RepStopFire`). Then, on every machine, `IsValid(CurrentWeapon)` → `StopFiring`, before the existing death sequence.
+- `BP_ShooterNPC` `Die`: calls the existing `StopShooting` first (on authority it clears `bShootingRep`; on every machine it stops the weapon).
+- Review: a Blueprint DSL export after saving, compared with the pre-change export, shows only these additions.
+
+### Tests
+
+1. **PIE, listen server + 1 remote client** (same machine, ~18:00–18:03 UTC): the client's fire reaches the server, deaths and respawns happen, and a match ends in victory followed by `ServerTravel`. No `Blueprint Runtime Error` or `Accessed None` in that run.
+   - **Not verified:** a dead pawn stops firing at the exact moment of death. Fire could not be held through a natural death, because the magazine empties and the weapon stops by itself. The 5 s window after death was not observed.
+2. **Packaged Development Win64 build of `b3ccb4e`**: cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:\RIXE_Builds\dev-b3ccb4e`.
+3. **Unattended smoke run** (18:06–18:14 UTC, single local player plus bots, log `D:\RIXE_Builds\evidence-b3ccb4e\smoke-b3ccb4e-fps.log`): 6 victories, each followed about 6 s later by `ProcessServerTravel`. Normal close, `LogExit: Exiting.`. No Blueprint runtime error, no ensure, no crash.
+   - **Not run:** hands-on fire/reload check on this build (computer-use access to the game window was declined). Section 10 covers that check for `5d7b18e`.
+
+### Limits
+
+Single machine only. No second client on another machine. Not verified that proxies show no shots after a death.
+
+## 12. Phase 2 — audit fix M4 + L6: friendly fire from the authoritative team (24 November 2026)
+
+Scope: audit section 6 item 3. Stacked on sections 10–11 (branch `phase2/m4-authoritative-friendly-fire`). Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `bdce5e2`)
+
+- `BP_ShooterProjectileBase`:
+  - New `RixeTeamOf(Actor) -> (Team, Known)`: reads `Team Byte` from `BP_ShooterCharacter` or `BP_ShooterNPC`; `Known = false` otherwise.
+  - `BeginPlay` caches the instigator's team in `RixeInstTeam` / `RixeInstTeamKnown`.
+  - New `RixeFriendlyAuth` replaces `RixeFriendly` in `ProcessHit`. A hit is friendly when the shooter's cached team equals the victim's authoritative team, the victim is not the shooter and the victim is alive. An unknown shooter team counts as friendly (L6).
+  - The old `RixeFriendly`, which compared the possibly stale `RixeTeamRep`, is removed. It had no other caller.
+- `BP_ShooterCharacter` `EventSetTeam`: also calls `RixeSetHP(SafeDivide(Current HP, Max HP), Team Byte)`, so `RixeTeamRep` is correct as soon as the team is assigned.
+- Review: the DSL export after saving shows only these changes. An independent 3-lens static review of the before/after exports (gameplay semantics, networking/timing, regressions) found no defect.
+
+### Tests
+
+1. **PIE, listen server + 1 remote client** (same machine, ~18:25–18:28 UTC):
+   - Right after spawn, the server read the client's team-1 pawn as `Team Byte = 1` and `RixeTeamRep = 1`. Before this fix `RixeTeamRep` could stay 0 for up to about 1 s.
+   - Enemy damage applies (the host pawn was at 70 HP), and a victory was followed by `ServerTravel`.
+   - No `Blueprint Runtime Error` and no `Accessed None`.
+2. **Packaged Development Win64 build of `bdce5e2`**: cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, output `D:\RIXE_Builds\dev-bdce5e2`.
+3. **Unattended smoke run** (18:31–18:34 UTC, log `D:\RIXE_Builds\evidence-bdce5e2\smoke-bdce5e2-fps.log`): 2 victories, each followed by `ProcessServerTravel`, then a normal close with `LogExit: Exiting.`. No Blueprint runtime error.
+
+### Not verified / limits
+
+- The audit's targeted tests were not run as described: a newly respawned enemy client hit within 1 s, and a teammate shot that must not apply. They need two human players.
+- Single machine only.
+
+### Pre-existing issues noted by the review (not changed)
+
+- Direct hits on `BP_RixeTarget` never reach `RixeApplyHit`, because `ProcessHit` only continues for `Character` (audit S5).
+- Bots spawned by `BP_ShooterNPCSpawner` instead of the bot director never receive a team.
+
+## 13. Phase 2 — audit item M8 (team ↔ colour ↔ PlayerStart tag): refuted, no code change (24 November 2026)
+
+**Owner decision (24 Nov 2026):** team 0 = RED, team 1 = BLUE, for tint, PlayerStart tags and score labels.
+
+### Verification (editor `main` + stacked branches, no asset modified)
+
+Node-level reading through the editor MCP (`get_node_infos`), plus the engine source:
+
+- **Engine rule:** in `K2Node_Select.cpp` (UE 5.8, `Engine/Source/Editor/BlueprintGraph/Private`), a bool-indexed Select has "Option 0" = False and "Option 1" = True.
+- **Humans:**
+  - `BP_ShooterGameMode.ChoosePlayerStart` uses a byte-indexed Select with `Option 0 = "RED"` and `Option 1 = "BLUE"`, so team 0 maps to RED.
+  - `BP_ShooterPlayerController` respawn uses the same Select, again team 0 → RED.
+- **Bots:** `BP_RixeBotDirector.SpawnBot` uses a bool Select. Its index is `Team == 0`, with False → "BLUE" and True → "RED", so team 0 maps to RED.
+- **Tint:** `SelectVector(red, blue, bPickA = (Team == 0))` for players and bots, so team 0 is red.
+- **Score and victory:**
+  - `TeamScores[X]` counts deaths of team X, so `RedScore = TeamScores[1]` is team 0's points.
+  - "VICTOIRE DE L'EQUIPE ROUGE" (`WinningTeam = 1`) fires when team 1's deaths reach the limit, which is a team 0 win.
+- **Why the audit was wrong:** the audit read the DSL export, which prints Select options in an order that does not match the pins. This is the same kind of export artefact as H2.
+
+### Runtime check (PIE, listen server + 1 client, ~18:43–18:48 UTC)
+
+- **PlayerStart positions in the level:** RED at y ≈ −1050 to −1450, BLUE at y ≈ +1348 to +1506.
+- **Humans at spawn:** the team-0 human was at y = −1350 / −1450 (RED); the team-1 human was at y = +1348 / +1506 (BLUE).
+- **Freshly spawned bots:** a team-1 bot was at (−606, 1603), next to a BLUE start; a team-0 bot was at (−717, −1413), on the RED side. Older bots had already moved and were not used as evidence.
+- **Process note:** during the check a literal swap in `SpawnBot` was tried, found wrong against the engine source, and reverted before any save. `git status` shows no asset change.
+
+### Status
+
+- M8: **refuted, no change needed**.
+- Still open: audit M9 (team assignment by PlayerArray parity) and NPCs from `BP_ShooterNPCSpawner` with no team.
