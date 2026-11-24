@@ -51,12 +51,12 @@ Le cahier des charges contient 71 sections principales numérotées à la date d
 
 ## 3. État des phases
 
-**Aucune phase du projet n'est actuellement déclarée validée.** Les anciens essais dans l'éditeur et les contrôles statiques GitHub ne remplacent pas les preuves exigées par le cahier des charges.
+**Phases 0 and 1 were accepted by the owner on 24 November 2026; no other phase is declared validated.** Les anciens essais dans l'éditeur et les contrôles statiques GitHub ne remplacent pas les preuves exigées par le cahier des charges.
 
 | Phase | Critère à démontrer | Statut | Preuve ou blocage actuellement enregistré |
 |---|---|---|---|
-| 0 — Sécurisation et état des lieux | Sauvegardes vérifiées, audit de l'environnement, état reproductible et blocages identifiés | **Non vérifiée** | Evidence recorded in section 8 (verified backup, environment audit, secret scan); awaiting owner acceptance |
-| 1 — Première boucle FPS Windows jouable | Build Windows empaquetée et partie complète reproductible sur une carte pilote | **Non vérifiée** | Packaged Development build `aeaf808` tested locally with bots (section 8); not distributed, no network test; awaiting owner acceptance |
+| 0 — Sécurisation et état des lieux | Sauvegardes vérifiées, audit de l'environnement, état reproductible et blocages identifiés | **Validée** (owner acceptance, 24 Nov 2026) | Evidence recorded in section 8 (verified backup, environment audit, secret scan) |
+| 1 — Première boucle FPS Windows jouable | Build Windows empaquetée et partie complète reproductible sur une carte pilote | **Validée** (owner acceptance, 24 Nov 2026) | Packaged Development build `aeaf808` tested locally with bots (section 8); not distributed, no network test (network tests belong to Phase 2) |
 | 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Notes PIE historiques uniquement ; aucun rapport de test du commit courant répondant aux critères complets |
 | 3 — EOS et parties privées | Identité, invitations, lobby privé, lancement, retour et reconnexion testés de bout en bout | **Non vérifiée** | Prototype documenté avec OnlineSubsystem Null et connexion IP directe ; aucun parcours EOS validé |
 | 4 — Matchmaking public et contenu de lancement | File publique, lobby, groupes, départs/reconnexion, cartes et modes validés | **Non vérifiée** | Aucun rapport de validation du matchmaking public ou de l'ensemble du contenu de lancement |
@@ -165,7 +165,7 @@ Map `Lvl_ArenaShooter`, mode `BP_ShooterGameMode`, single local player plus bots
 - Single machine, single local player and bots only. **This is not a network, multi-machine or Internet test.**
 - No test from a clean machine, no Shipping build, and no verified download link.
 - The score is the prototype elimination counter, not the final contribution score of specification section 3.
-- **Decision on passing phases 0 and 1:** pending owner acceptance. Until then both stay **Non vérifiée**.
+- **Decision on passing phases 0 and 1:** accepted by the owner in chat on 24 November 2026, on the basis of this evidence and its limits. Both are now **Validée**.
 
 ## 9. Phase 2 — combat server-authority audit (24 November 2026)
 
@@ -296,3 +296,40 @@ Node-level reading through the editor MCP (`get_node_infos`), plus the engine so
 
 - M8: **refuted, no change needed**.
 - Still open: audit M9 (team assignment by PlayerArray parity) and NPCs from `BP_ShooterNPCSpawner` with no team.
+
+## 14. Phase 2 — audit fix M1: action 9 (loadout) cannot refill used weapons (24–25 November 2026)
+
+Scope: audit section 6 item 5 (M1). Branch `phase2/m1-loadout-once-per-life`, based on `main` @ `f482fcd`. Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `29780b3`; earlier iterations `bcbb37b` v1 and `fc26862` v2 are superseded)
+
+All in `BP_ShooterPlayerController`; server-side state only, no new replicated variable:
+
+- **Per-life weapon-use gate.** New bool `RixeWeaponsUsed`. `RixeNoteWeaponUse(Action)` runs in `ServerRixeAction` right after `RixeCanAct` and sets it for actions 1 (fire), 2 (swap) and 6 (reload). `RixeApplyLoadoutTo` clears it, so every new pawn (`EventOnPossess`) and every loadout rebuild starts unused. Outside `Lvl_RixeRange`, action 9 rebuilds the weapons only while the flag is false.
+- **Normalized loadout.** `RixeNormalizeLoadout(Text, Fallback)` rebuilds the string from exactly 6 integer fields, clamped like `RixeBuildLoadout` / `RixeEquip` (primary 0–5, secondary 6–7, attachments 0–63, skins 0–6). A string without exactly 6 fields keeps the previous value. The no-op check compares the pawn's loadout with the effective string (empty → default `0,6,0,0,0,0`).
+- **Action 9 always stored.** `RixeCanAct` now exempts action 9 (like chat), so a choice made while dead or after the round is kept for the next spawn. Applying still requires alive and round undecided: `RixeTryApplyLoadout` calls `RixeCanAct(0)`.
+- **Cooldown without lost clicks.** Re-applies are at most one per second; a change blocked by the cooldown arms a non-looping `RixeLoadoutRetry` timer, which re-runs `RixeTryApplyLoadout` with the latest stored string. The existing 10 s spawn window in `RixeServerAction2` is unchanged.
+
+### Review
+
+- v1 (2-lens workflow): 3 defects (refill once per life after shooting; dropped first sync on the range; first-life sync consumed the slot). Fixed in v2.
+- v2 (two independent adversarial workflows, 2 and 3 lenses, each finding re-checked by refuters): confirmed **fire → swap (action 2) → resend action 9** still refilled and reset refire (medium/high); raw-string no-op bypass; 1 s cooldown dropping quick Arsenal clicks; action 9 lost while dead. All fixed in v3.
+- v3 (3-lens workflow, 2 refuters per finding): no medium or high finding. Two low findings fixed before commit (retry no longer re-checks the 10 s age; attachment and skin fields clamped). Remaining nits are listed under limits.
+
+### Tests
+
+1. **PIE, listen server + 1 remote client** (editor, same machine, 24 Nov 2026 22:40–22:52 UTC; play settings changed in memory and restored):
+   - At spawn, server-side controllers: host `RixeLoadoutSrv = "0,7,2,0,0,0"`, `RixeLoadoutLastTime ≈ 0.33`; remote client `"0,7,2,0,0,0"`, `≈ 2.07`; `RixeWeaponsUsed = false`. Both pawns have `RixeLoadout = "0,7,2,0,0,0"` on the server and on the client.
+   - After a victory and `ProcessServerTravel` (22:47:29) and the client's `Join succeeded`: new controllers again applied the loadout (`LastTime ≈ 0.33` and `≈ 2.68`), same pawn values on both sides.
+   - No `Blueprint Runtime Error`, `Accessed None` or script error in the editor log for these runs.
+   - **Investigation note:** the empty `RixeLoadoutSrv` reported in the previous handover was read from the client world's copy of the controller (`UEDPIE_1`). These variables are server-only and not replicated, so they are always empty there. The server copy was correct; no defect.
+2. **Packaged Development Win64 build of `29780b3`** (`RunUAT BuildCookRun`, same parameters as section 8): cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:\RIXE_Builds\dev-29780b3`, log `D:\RIXE_Builds\build-dev-29780b3.log`. As before, the build uses the local working tree including uncommitted local `Config/*.ini` changes.
+3. **Unattended smoke run** (23:01–23:04 UTC, single local player plus bots, log `D:\RIXE_Builds\evidence-29780b3\smoke-29780b3-fps.log`): 2 victories (23:02:35 red, 23:03:46 blue), each followed about 6 s later by `ProcessServerTravel`. The game was closed with a normal window close and the log ends with `LogExit: Exiting.`. No Blueprint runtime error, no `Accessed None`, no ensure, no crash.
+
+### Not verified / limits
+
+- The exploit sequences (fire → swap → resend 9, equivalent strings, rapid Arsenal clicks on the range, a choice made while dead) were checked statically by the reviews only. No modified client was used, and the editor tooling cannot send RPCs, so they are **not verified at runtime**.
+- If a player fires, swaps or reloads before the client's first action 9 reaches the server (about 0.3 s for the host, about 2 s for a remote client in PIE), that first life keeps the default loadout; the choice applies from the next spawn.
+- The possession rebuild does not start the 1 s cooldown, so a spawn can rebuild weapons twice within 1 s (nit, no refill: weapons are unused).
+- `Lvl_RixeRange` still allows one rebuild per second with no weapon-use check, as the audit allows for the solo range.
+- Single machine only; not a network or Internet test.
