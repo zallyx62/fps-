@@ -166,3 +166,32 @@ Map `Lvl_ArenaShooter`, mode `BP_ShooterGameMode`, single local player plus bots
 - No test from a clean machine, no Shipping build, and no verified download link.
 - The score is the prototype elimination counter, not the final contribution score of specification section 3.
 - **Decision on passing phases 0 and 1:** pending owner acceptance. Until then both stay **Non vérifiée**.
+
+## 9. Phase 2 — audit fix H1: server-side guard on `ServerRixeAction` (24 November 2026)
+
+Scope: specification section 12 (Phase 2, step 2, server authority) and audit `AUDIT_PHASE2_COMBAT_AUTHORITY.md` finding H1 (branch `phase2/combat-authority-audit`, PR #25, not merged). Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `5d7b18e`, branch `phase2/h1-server-action-guard`, base `main` `6825461`)
+
+- `BP_ShooterPlayerController`: new pure-logic function `RixeCanAct(Action) -> bool`. Chat (Action 3) is always allowed; every other action requires a controlled `BP_ShooterCharacter` that is not dead (`IsDead`, i.e. `Current HP <= 0`) and a match that is not over (`BP_RixeGameState.WinningTeam == 0`; if the GameState cast fails the action is allowed, as before).
+- `ServerRixeAction` (Run on Server) now branches on `RixeCanAct` before the existing action chain; a rejected action does nothing. No other graph was changed.
+- Not in this change (remaining H1 items from audit section 6): clearing `bFiringRep` / `StopFiring` in the authority Die path, and `StopFiring` in both Die graphs on every machine (also S2).
+
+### Tests
+
+1. **PIE, listen server + 1 remote client** (editor, same machine, 24 Nov 2026 ~17:35–17:45 UTC; Play settings changed in memory only and restored): the client connected (`Join succeeded`); bots played several matches to victory with automatic restart while the client was connected.
+   - **Verified:** a live client holding fire reached the server through `ServerRixeAction` (server-side `bFiringRep = true` on the client's pawn, `RemoteRole = AutonomousProxy`).
+   - **Not verified:** that the server rejects fire from a dead client or after victory. The editor tooling could not set `Current HP` or `WinningTeam` on PIE actors, and the client's pawn was destroyed/recreated around deaths and match restarts before a read could be taken. One attempt during a victory read `bFiringRep = false`, but the GameState had already been reset, so it is not evidence.
+   - Log: 4 `Blueprint Runtime Error` lines in `BP_ShooterCharacter` `Update Health UI` (`OnRep_Current HP` and EventGraph) accessing the remote client's destroyed `BP_ShooterPlayerController` during the first match restart. Not in a graph touched by this change; recorded as a new finding for a later fix.
+2. **Packaged Development Win64 build of `5d7b18e`** (`RunUAT BuildCookRun`, same parameters as section 8; cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:\RIXE_Builds\dev-5d7b18e`, log `D:\RIXE_Builds\build-dev-5d7b18e.log`). As in section 8, the build uses the local working tree, including local `Config/*.ini` changes that are not committed.
+3. **Smoke run of that build** (17:47–17:52 UTC, single local player plus bots, log copied to `D:\RIXE_Builds\evidence-5d7b18e\smoke-5d7b18e-fps.log`): 3 victories (17:49:13 blue, 17:50:29 red, 17:51:44), each followed about 6 s later by `ProcessServerTravel`. Hands-on (computer use): holding fire empties the ammo bar and `R` refills it. The game was closed with a normal close and the log ends with `LogExit: Exiting.`. No Blueprint runtime error, no ensure, no crash.
+
+### Limits
+
+- Single machine. No separate-machine, LAN or Internet test.
+- The rejection paths of the guard (dead player, match over) are not demonstrated at runtime; they need a manual two-player test or a test hook.
+- No download link exists; the build is not distributed (specification section 25).
+
+### Other observation
+
+- `origin/jeu-unreal` (`d0c3b23`) does not match `origin/main` (`6825461`) at the time of this test; the mirror is out of date.
