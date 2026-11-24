@@ -167,9 +167,24 @@ Map `Lvl_ArenaShooter`, mode `BP_ShooterGameMode`, single local player plus bots
 - The score is the prototype elimination counter, not the final contribution score of specification section 3.
 - **Decision on passing phases 0 and 1:** pending owner acceptance. Until then both stay **Non vérifiée**.
 
-## 9. Phase 2 — audit fix H1: server-side guard on `ServerRixeAction` (24 November 2026)
+## 9. Phase 2 — combat server-authority audit (24 November 2026)
 
-Scope: specification section 12 (Phase 2, step 2, server authority) and audit `AUDIT_PHASE2_COMBAT_AUTHORITY.md` finding H1 (branch `phase2/combat-authority-audit`, PR #25, not merged). Phase 2 stays **Non vérifiée**.
+**Phase 2 criterion addressed:** step 2 of specification section 12.2 (verify and strengthen server authority on sensitive actions; fix desyncs, double events, abusable RPCs and replication inconsistencies), against specification section 5.
+
+- **Code state audited:** `main` @ `6825461` (Blueprints unchanged since `aeaf808`).
+- **Method:** the graphs of 31 combat-related Blueprints were exported as text through the editor MCP. The text was then read statically by six independent auditors (fire/ammo, damage, death/score, client RPCs, movement, teams/bots), and each finding was challenged by two verifiers.
+- **Report:** `AUDIT_PHASE2_COMBAT_AUTHORITY.md`. It contains 57 verified raw findings, deduplicated into 37 entries (1 high after the H2 correction, 9 medium, 8 split medium/low, 18 low), plus 5 refuted items and the list of paths that are already correctly server-authoritative.
+- **Post-audit correction:** finding H2 ("Blue victory never restarts") is **refuted by runtime evidence**. The packaged `aeaf808` logs show a restart after Blue victories; the export prints a node shared by two branches only once.
+- **Main remaining risk (H1):** the single client RPC `ServerRixeAction` accepts fire/reload/swap/loadout actions without checking that the pawn is alive or that the match is running, and without rate limits.
+
+**Limits:** static reading only. Nothing in this audit was executed, so every finding is **not verified at runtime** until it is reproduced in a multi-client test. RPC flags (Run on Server, Reliable) are not visible in the export. Phase 2 stays **Non vérifiée**.
+
+**Next verifiable action:** fix H1 (alive/match-state guard on `ServerRixeAction`, stop firing on death), then test it with a listen server and one client in PIE and on a packaged build.
+
+**Owner decisions needed before the related fixes:** suicide and team-kill scoring (S3), sprint/fire exclusivity, ADS time, bot respawn delay, and whether C++ CharacterMovement work is acceptable (S7).
+## 10. Phase 2 — audit fix H1: server-side guard on `ServerRixeAction` (24 November 2026)
+
+Scope: specification section 12 (Phase 2, step 2, server authority) and audit `AUDIT_PHASE2_COMBAT_AUTHORITY.md` finding H1 (PR #25, merged into `main` as `fb55909`). Phase 2 stays **Non vérifiée**.
 
 ### Change (code commit `5d7b18e`, branch `phase2/h1-server-action-guard`, base `main` `6825461`)
 
@@ -196,9 +211,9 @@ Scope: specification section 12 (Phase 2, step 2, server authority) and audit `A
 
 - `origin/jeu-unreal` (`d0c3b23`) does not match `origin/main` (`6825461`) at the time of this test; the mirror is out of date.
 
-## 10. Phase 2 — audit fix H1 remainder and S2: stop firing on death (24 November 2026)
+## 11. Phase 2 — audit fix H1 remainder and S2: stop firing on death (24 November 2026)
 
-Scope: audit section 6 item 2 (H1 core, Die part) and S2. Stacked on section 9 (branch `phase2/h1-stop-fire-on-death`, based on `phase2/h1-server-action-guard`). Phase 2 stays **Non vérifiée**.
+Scope: audit section 6 item 2 (H1 core, Die part) and S2. Stacked on section 10 (branch `phase2/h1-stop-fire-on-death`, based on `phase2/h1-server-action-guard`). Phase 2 stays **Non vérifiée**.
 
 ### Change (code commit `b3ccb4e`)
 
@@ -212,15 +227,15 @@ Scope: audit section 6 item 2 (H1 core, Die part) and S2. Stacked on section 9 (
    - **Not verified:** a dead pawn stops firing at the exact moment of death. Fire could not be held through a natural death, because the magazine empties and the weapon stops by itself. The 5 s window after death was not observed.
 2. **Packaged Development Win64 build of `b3ccb4e`**: cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:\RIXE_Builds\dev-b3ccb4e`.
 3. **Unattended smoke run** (18:06–18:14 UTC, single local player plus bots, log `D:\RIXE_Builds\evidence-b3ccb4e\smoke-b3ccb4e-fps.log`): 6 victories, each followed about 6 s later by `ProcessServerTravel`. Normal close, `LogExit: Exiting.`. No Blueprint runtime error, no ensure, no crash.
-   - **Not run:** hands-on fire/reload check on this build (computer-use access to the game window was declined). Section 9 covers that check for `5d7b18e`.
+   - **Not run:** hands-on fire/reload check on this build (computer-use access to the game window was declined). Section 10 covers that check for `5d7b18e`.
 
 ### Limits
 
 Single machine only. No second client on another machine. Not verified that proxies show no shots after a death.
 
-## 11. Phase 2 — audit fix M4 + L6: friendly fire from the authoritative team (24 November 2026)
+## 12. Phase 2 — audit fix M4 + L6: friendly fire from the authoritative team (24 November 2026)
 
-Scope: audit section 6 item 3. Stacked on sections 9–10 (branch `phase2/m4-authoritative-friendly-fire`). Phase 2 stays **Non vérifiée**.
+Scope: audit section 6 item 3. Stacked on sections 10–11 (branch `phase2/m4-authoritative-friendly-fire`). Phase 2 stays **Non vérifiée**.
 
 ### Change (code commit `bdce5e2`)
 
@@ -251,7 +266,7 @@ Scope: audit section 6 item 3. Stacked on sections 9–10 (branch `phase2/m4-aut
 - Direct hits on `BP_RixeTarget` never reach `RixeApplyHit`, because `ProcessHit` only continues for `Character` (audit S5).
 - Bots spawned by `BP_ShooterNPCSpawner` instead of the bot director never receive a team.
 
-## 12. Phase 2 — audit item M8 (team ↔ colour ↔ PlayerStart tag): refuted, no code change (24 November 2026)
+## 13. Phase 2 — audit item M8 (team ↔ colour ↔ PlayerStart tag): refuted, no code change (24 November 2026)
 
 **Owner decision (24 Nov 2026):** team 0 = RED, team 1 = BLUE, for tint, PlayerStart tags and score labels.
 
@@ -270,7 +285,7 @@ Node-level reading through the editor MCP (`get_node_infos`), plus the engine so
   - "VICTOIRE DE L'EQUIPE ROUGE" (`WinningTeam = 1`) fires when team 1's deaths reach the limit, which is a team 0 win.
 - **Why the audit was wrong:** the audit read the DSL export, which prints Select options in an order that does not match the pins. This is the same kind of export artefact as H2.
 
-### Runtime check (PIE, listen server + 1 client, ~18:50–18:58 UTC)
+### Runtime check (PIE, listen server + 1 client, ~18:43–18:48 UTC)
 
 - **PlayerStart positions in the level:** RED at y ≈ −1050 to −1450, BLUE at y ≈ +1348 to +1506.
 - **Humans at spawn:** the team-0 human was at y = −1350 / −1450 (RED); the team-1 human was at y = +1348 / +1506 (BLUE).
