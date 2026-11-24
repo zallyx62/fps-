@@ -117,6 +117,7 @@ def validate_dsl_sources() -> None:
         "scope_apply.dsl must restore first-person weapon visibility when scope mode is disabled",
     )
 
+
 def main() -> None:
     project = load_json(ROOT / "fps.uproject")
     require(project.get("EngineAssociation") == "5.8", "fps.uproject must target Unreal Engine 5.8")
