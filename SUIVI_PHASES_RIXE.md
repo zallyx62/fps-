@@ -173,7 +173,7 @@ Map `Lvl_ArenaShooter`, mode `BP_ShooterGameMode`, single local player plus bots
 
 - **Code state audited:** `main` @ `6825461` (Blueprints unchanged since `aeaf808`).
 - **Method:** the graphs of 31 combat-related Blueprints were exported as text through the editor MCP. The text was then read statically by six independent auditors (fire/ammo, damage, death/score, client RPCs, movement, teams/bots), and each finding was challenged by two verifiers.
-- **Report:** `AUDIT_PHASE2_COMBAT_AUTHORITY.md`. After deduplication it contains 56 confirmed findings (1 high, 9 medium, 8 split medium/low, about 18 low), plus 5 refuted items and the list of paths that are already correctly server-authoritative.
+- **Report:** `AUDIT_PHASE2_COMBAT_AUTHORITY.md`. It contains 57 verified raw findings, deduplicated into 37 entries (1 high after the H2 correction, 9 medium, 8 split medium/low, 18 low), plus 5 refuted items and the list of paths that are already correctly server-authoritative.
 - **Post-audit correction:** finding H2 ("Blue victory never restarts") is **refuted by runtime evidence**. The packaged `aeaf808` logs show a restart after Blue victories; the export prints a node shared by two branches only once.
 - **Main remaining risk (H1):** the single client RPC `ServerRixeAction` accepts fire/reload/swap/loadout actions without checking that the pawn is alive or that the match is running, and without rate limits.
 
