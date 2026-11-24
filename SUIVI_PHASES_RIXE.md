@@ -217,3 +217,36 @@ Scope: audit section 6 item 2 (H1 core, Die part) and S2. Stacked on section 9 (
 ### Limits
 
 Single machine only. No second client on another machine. Not verified that proxies show no shots after a death.
+
+## 11. Phase 2 — audit fix M4 + L6: friendly fire from the authoritative team (24 November 2026)
+
+Scope: audit section 6 item 3. Stacked on sections 9–10 (branch `phase2/m4-authoritative-friendly-fire`). Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `bdce5e2`)
+
+- `BP_ShooterProjectileBase`:
+  - New `RixeTeamOf(Actor) -> (Team, Known)`: reads `Team Byte` from `BP_ShooterCharacter` or `BP_ShooterNPC`; `Known = false` otherwise.
+  - `BeginPlay` caches the instigator's team in `RixeInstTeam` / `RixeInstTeamKnown`.
+  - New `RixeFriendlyAuth` replaces `RixeFriendly` in `ProcessHit`. A hit is friendly when the shooter's cached team equals the victim's authoritative team, the victim is not the shooter and the victim is alive. An unknown shooter team counts as friendly (L6).
+  - The old `RixeFriendly`, which compared the possibly stale `RixeTeamRep`, is removed. It had no other caller.
+- `BP_ShooterCharacter` `EventSetTeam`: also calls `RixeSetHP(SafeDivide(Current HP, Max HP), Team Byte)`, so `RixeTeamRep` is correct as soon as the team is assigned.
+- Review: the DSL export after saving shows only these changes. An independent 3-lens static review of the before/after exports (gameplay semantics, networking/timing, regressions) found no defect.
+
+### Tests
+
+1. **PIE, listen server + 1 remote client** (same machine, ~18:25–18:28 UTC):
+   - Right after spawn, the server read the client's team-1 pawn as `Team Byte = 1` and `RixeTeamRep = 1`. Before this fix `RixeTeamRep` could stay 0 for up to about 1 s.
+   - Enemy damage applies (the host pawn was at 70 HP), and a victory was followed by `ServerTravel`.
+   - No `Blueprint Runtime Error` and no `Accessed None`.
+2. **Packaged Development Win64 build of `bdce5e2`**: cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, output `D:\RIXE_Builds\dev-bdce5e2`.
+3. **Unattended smoke run** (18:31–18:34 UTC, log `D:\RIXE_Builds\evidence-bdce5e2\smoke-bdce5e2-fps.log`): 2 victories, each followed by `ProcessServerTravel`, then a normal close with `LogExit: Exiting.`. No Blueprint runtime error.
+
+### Not verified / limits
+
+- The audit's targeted tests were not run as described: a newly respawned enemy client hit within 1 s, and a teammate shot that must not apply. They need two human players.
+- Single machine only.
+
+### Pre-existing issues noted by the review (not changed)
+
+- Direct hits on `BP_RixeTarget` never reach `RixeApplyHit`, because `ProcessHit` only continues for `Character` (audit S5).
+- Bots spawned by `BP_ShooterNPCSpawner` instead of the bot director never receive a team.
