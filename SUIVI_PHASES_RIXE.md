@@ -166,3 +166,19 @@ Map `Lvl_ArenaShooter`, mode `BP_ShooterGameMode`, single local player plus bots
 - No test from a clean machine, no Shipping build, and no verified download link.
 - The score is the prototype elimination counter, not the final contribution score of specification section 3.
 - **Decision on passing phases 0 and 1:** pending owner acceptance. Until then both stay **Non vérifiée**.
+
+## 9. Phase 2 — combat server-authority audit (24 November 2026)
+
+**Phase 2 criterion addressed:** step 2 of specification section 12.2 (verify and strengthen server authority on sensitive actions; fix desyncs, double events, abusable RPCs and replication inconsistencies), against specification section 5.
+
+- **Code state audited:** `main` @ `6825461` (Blueprints unchanged since `aeaf808`).
+- **Method:** the graphs of 31 combat-related Blueprints were exported as text through the editor MCP. The text was then read statically by six independent auditors (fire/ammo, damage, death/score, client RPCs, movement, teams/bots), and each finding was challenged by two verifiers.
+- **Report:** `AUDIT_PHASE2_COMBAT_AUTHORITY.md`. It contains 57 verified raw findings, deduplicated into 37 entries (1 high after the H2 correction, 9 medium, 8 split medium/low, 18 low), plus 5 refuted items and the list of paths that are already correctly server-authoritative.
+- **Post-audit correction:** finding H2 ("Blue victory never restarts") is **refuted by runtime evidence**. The packaged `aeaf808` logs show a restart after Blue victories; the export prints a node shared by two branches only once.
+- **Main remaining risk (H1):** the single client RPC `ServerRixeAction` accepts fire/reload/swap/loadout actions without checking that the pawn is alive or that the match is running, and without rate limits.
+
+**Limits:** static reading only. Nothing in this audit was executed, so every finding is **not verified at runtime** until it is reproduced in a multi-client test. RPC flags (Run on Server, Reliable) are not visible in the export. Phase 2 stays **Non vérifiée**.
+
+**Next verifiable action:** fix H1 (alive/match-state guard on `ServerRixeAction`, stop firing on death), then test it with a listen server and one client in PIE and on a packaged build.
+
+**Owner decisions needed before the related fixes:** suicide and team-kill scoring (S3), sprint/fire exclusivity, ADS time, bot respawn delay, and whether C++ CharacterMovement work is acceptable (S7).
