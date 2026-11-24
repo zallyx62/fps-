@@ -47,6 +47,76 @@ def run_generator(script: Path, output_dir: Path, *, timeout: int = 180) -> subp
         raise SystemExit(f"FAILED: {script.name} exceeded its {timeout}s timeout") from exc
 
 
+
+def validate_dsl_sources() -> None:
+    """Check balanced delimiters in DSL files and guard the scope-visibility regression."""
+    dsl_dir = TOOLS / "dsl"
+    dsl_files = sorted(
+        path for path in dsl_dir.iterdir()
+        if path.is_file() and path.suffix in {".txt", ".dsl"}
+    )
+    require(dsl_files, "no DSL source files found in Tools/dsl/")
+
+    sources: dict[Path, str] = {}
+    for path in dsl_files:
+        try:
+            source = path.read_text(encoding="utf-8")
+        except OSError as exc:
+            raise SystemExit(f"FAILED: cannot read DSL source ({path.relative_to(ROOT)}): {exc}") from exc
+
+        openings: list[tuple[int, int]] = []
+        in_string = False
+        escaped = False
+        line = 1
+        column = 0
+
+        for char in source:
+            if char == "\n":
+                line += 1
+                column = 0
+                continue
+            column += 1
+
+            if in_string:
+                if escaped:
+                    escaped = False
+                elif char == "\\":
+                    escaped = True
+                elif char == '"':
+                    in_string = False
+                continue
+
+            if char == '"':
+                in_string = True
+            elif char == "(":
+                openings.append((line, column))
+            elif char == ")":
+                if not openings:
+                    raise SystemExit(
+                        f"FAILED: unmatched ')' in {path.relative_to(ROOT)} at {line}:{column}"
+                    )
+                openings.pop()
+
+        label = path.relative_to(ROOT)
+        require(not in_string, f"unterminated string in DSL source ({label})")
+        if openings:
+            open_line, open_column = openings[-1]
+            raise SystemExit(
+                f"FAILED: unmatched '(' in {label}, opened at {open_line}:{open_column}"
+            )
+        sources[path] = source
+
+    scope_path = dsl_dir / "scope_apply.dsl"
+    scope_source = sources.get(scope_path)
+    require(scope_source is not None, "missing Tools/dsl/scope_apply.dsl")
+    expected_weapon_visibility = (
+        "(Rendering|SetVisibility (Class|BPShooterWeaponBase|GetFPWeapon wp) (not Show) false)"
+    )
+    require(
+        expected_weapon_visibility in scope_source,
+        "scope_apply.dsl must restore first-person weapon visibility when scope mode is disabled",
+    )
+
 def main() -> None:
     project = load_json(ROOT / "fps.uproject")
     require(project.get("EngineAssociation") == "5.8", "fps.uproject must target Unreal Engine 5.8")
@@ -104,6 +174,8 @@ def main() -> None:
             ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
         except (OSError, SyntaxError) as exc:
             raise SystemExit(f"FAILED: invalid Python syntax ({path.relative_to(ROOT)}): {exc}") from exc
+
+    validate_dsl_sources()
 
     import rixe_weapons
 
