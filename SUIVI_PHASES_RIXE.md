@@ -270,7 +270,7 @@ Node-level reading through the editor MCP (`get_node_infos`), plus the engine so
   - "VICTOIRE DE L'EQUIPE ROUGE" (`WinningTeam = 1`) fires when team 1's deaths reach the limit, which is a team 0 win.
 - **Why the audit was wrong:** the audit read the DSL export, which prints Select options in an order that does not match the pins. This is the same kind of export artefact as H2.
 
-### Runtime check (PIE, listen server + 1 client, ~18:50–18:58 UTC)
+### Runtime check (PIE, listen server + 1 client, ~18:43–18:48 UTC)
 
 - **PlayerStart positions in the level:** RED at y ≈ −1050 to −1450, BLUE at y ≈ +1348 to +1506.
 - **Humans at spawn:** the team-0 human was at y = −1350 / −1450 (RED); the team-1 human was at y = +1348 / +1506 (BLUE).
