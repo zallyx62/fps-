@@ -55,8 +55,8 @@ Le cahier des charges contient 71 sections principales numérotées à la date d
 
 | Phase | Critère à démontrer | Statut | Preuve ou blocage actuellement enregistré |
 |---|---|---|---|
-| 0 — Sécurisation et état des lieux | Sauvegardes vérifiées, audit de l'environnement, état reproductible et blocages identifiés | **Non vérifiée** | Audit GitHub uniquement ; machine locale, sauvegardes, secrets et environnement éditeur non inspectés |
-| 1 — Première boucle FPS Windows jouable | Build Windows empaquetée et partie complète reproductible sur une carte pilote | **Non vérifiée** | Aucune build Windows empaquetée ni aucun artefact de téléchargement vérifié |
+| 0 — Sécurisation et état des lieux | Sauvegardes vérifiées, audit de l'environnement, état reproductible et blocages identifiés | **Non vérifiée** | Evidence recorded in section 8 (verified backup, environment audit, secret scan); awaiting owner acceptance |
+| 1 — Première boucle FPS Windows jouable | Build Windows empaquetée et partie complète reproductible sur une carte pilote | **Non vérifiée** | Packaged Development build `aeaf808` tested locally with bots (section 8); not distributed, no network test; awaiting owner acceptance |
 | 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Notes PIE historiques uniquement ; aucun rapport de test du commit courant répondant aux critères complets |
 | 3 — EOS et parties privées | Identité, invitations, lobby privé, lancement, retour et reconnexion testés de bout en bout | **Non vérifiée** | Prototype documenté avec OnlineSubsystem Null et connexion IP directe ; aucun parcours EOS validé |
 | 4 — Matchmaking public et contenu de lancement | File publique, lobby, groupes, départs/reconnexion, cartes et modes validés | **Non vérifiée** | Aucun rapport de validation du matchmaking public ou de l'ensemble du contenu de lancement |
@@ -113,3 +113,56 @@ Mettre à jour ce registre dans le même lot de travail lorsqu'un test réel, un
 - **CI :** validation GitHub Actions n° 81 réussie — [exécution 45294161509](https://github.com/zallyx62/fps-/actions/runs/45294161509). Les contrôles statiques et tests de génération ont réussi.
 
 **Limite de preuve :** aucun chargement du projet dans Unreal, aucune compilation de Blueprint, aucun test de la visée en jeu et aucune build Windows n'ont été effectués dans cette opération. Le contrôle DSL vérifie la structure et la règle ciblée ; il ne remplace pas le compilateur ni l'exécution Unreal. Les phases 0 à 7 restent donc **Non vérifiées** et aucun critère de phase n'est déclaré franchi.
+
+## 8. Phase 0–1 evidence — Windows Development build (24 November 2026)
+
+**Branch:** `phase1/windows-dev-build` (based on `main` @ `d0c3b23`). **Status of phases 0 and 1: still _Non vérifiée_** until the owner explicitly accepts this evidence.
+
+### Phase 0 — backup and environment
+
+- Backup `D:\RIXE_Backups\fps58-20261124-082425.tar` (982 entries, read back and verified). The local folder `D:\fps 5.8` matched `main` @ `d0c3b23` (content and config identical; only CRLF noise, `git diff -w` empty).
+- Environment: Unreal Engine 5.8 (`D:\UE_5.8`), Visual Studio 2022, Windows 10 Enterprise 19045, 4 cores / 16 GB RAM, NVIDIA GTX 1070 (driver 582.28). `GameplayStateTree` forces a code build of the game target.
+- Secret scan of tracked files: no secret found. Untracked `RixeSource/` (OBJ/PNG sources) is left out of Git.
+
+### Code commits (game code, separate from this documentation commit)
+
+| Commit | Change |
+|---|---|
+| `006a31c3c7ea7828d3793a278ac4acc3aad21a3d` | Asset Manager rule for `GameFeatureData` (unblocks the cook); MCP plugins (`ModelContextProtocol`, `MCPClientToolset`, `AllToolsets`) restricted to the Editor target, so the game no longer ships the MCP runtime / HTTP server |
+| `04355ca095651a8c48769a276224feffef8ad4f7` | `GameFeatureData` rule marked editor-only (removes a handled ensure at game startup) |
+| `34eeea3335fc95905c3c90ad08b696e924e6c4f6` | Broken asset references removed (`BP_WobbleTarget` material override, stale `SM_DoorFrame_Edge` path); `BP_RixeMatchRules` not spatially loaded |
+| `aeaf8088656f08e4a2f9c26826c4cc457c6230b1` | `ScoreLimit` override on the arena instance (75) reset to the class default **20**, per owner decision of 24 Nov 2026 |
+
+### Builds (RunUAT BuildCookRun, Win64, Development, cook + stage + pak + archive)
+
+| Code commit | Result | Output (local only, not distributed) |
+|---|---|---|
+| `d0c3b23` | **Failed** (ExitCode 25, missing `GameFeatureData` rule) | — |
+| `006a31c` | Successful, cook 0 errors / 0 warnings | `D:\RIXE_Builds\dev-006a31c` |
+| `04355ca` | Successful | `D:\RIXE_Builds\dev-04355ca` |
+| `34eeea3` | Successful, cook 0 errors / 0 warnings | `D:\RIXE_Builds\dev-34eeea3` |
+| `aeaf808` | **Successful**, cook 0 errors / 0 warnings, ~965 MB | `D:\RIXE_Builds\dev-aeaf808` |
+
+No MCP module appears in the staging manifests of `aeaf808`. **No download link exists**: the build is not published, because the licence audit (specification section 25) blocks any distribution.
+
+### Tests
+
+Map `Lvl_ArenaShooter`, mode `BP_ShooterGameMode`, single local player plus bots on both teams. Launch: `fps.exe -windowed -ResX=1280 -ResY=720 -log`.
+
+1. **Packaged `aeaf808`, unattended run** (24 Nov 2026, 09:01–09:09 UTC; log and screenshots in `D:\RIXE_Builds\evidence-aeaf808`): 6 victories in about 7 minutes ("VICTOIRE DE L'EQUIPE ROUGE/BLEUE" at 09:03:11, 09:04:17, 09:05:21, 09:06:27, 09:07:38 and 09:08:44), each followed about 6 s later by `ProcessServerTravel` to the arena. Screenshots show the victory banner with **ROUGE 20** (09:07:39, 09:08:45) and a reset score after the restart (09:08:00). The game was closed with a normal window close and the log ends with `LogExit: Exiting.`. No missing package, no ensure, no Blueprint script error and no crash.
+2. **Hands-on play on packaged `04355ca`** (computer use, approved by the owner): movement, mouse look, shooting (ammo bar decreases), reload (R), damage taken, death and respawn, and the team score increasing in the HUD. Victory was not reached in that run because the limit was still 75. Victory at the limit was then confirmed on `aeaf808` (test 1).
+3. Earlier supporting runs: unattended run on packaged `006a31c` (two victories and restarts) and a PIE run (victory and ServerTravel).
+
+### Known non-blocking issues (recorded, not fixed)
+
+- 24 `LogRHI: Error: Failed to create compute pipeline` (D3D12 SM6) at startup on the GTX 1070; the game keeps running normally.
+- Debug StateTree text ("Attacking in Place", "No LoS", …) is drawn above bots in Development builds.
+- After each restart: `LogCrowdFollowing: Unable to find RecastNavMesh`, `OSS: Cannot create session 'GameSession': session already exists`, and `SpawnActor failed because we are in the process of tearing down the world`.
+- `NPC stuck` messages on `BP_WobbleTarget`.
+
+### Limits of this evidence
+
+- Single machine, single local player and bots only. **This is not a network, multi-machine or Internet test.**
+- No test from a clean machine, no Shipping build, and no verified download link.
+- The score is the prototype elimination counter, not the final contribution score of specification section 3.
+- **Decision on passing phases 0 and 1:** pending owner acceptance. Until then both stay **Non vérifiée**.

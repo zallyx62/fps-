@@ -12,6 +12,8 @@ Projet de base : modèle « First Person », variante « Arena Shooter » (Bluep
 - La configuration déclare D3D11/SM5 ainsi que des cibles Linux et Mac en SM6. Leur présence dans le fichier ne prouve ni la compilation ni le fonctionnement de ces plateformes ; Windows reste la cible initiale.
 - **Nettoyage effectué le 19 novembre 2026** : les doublons stricts de `DefaultGraphicsRHI=DefaultGraphicsRHI_DX12` et de `r.DefaultFeature.AutoExposure.ExtendDefaultLuminanceRange` ont été retirés de `Config/DefaultEngine.ini` sur les deux branches. Aucune valeur graphique différente n'a été arbitrée ; vérifier le comportement effectif dans Unreal avant toute autre modification.
 - `fps.uproject` active `GameplayStateTree`, `ModelContextProtocol`, `MCPClientToolset` et `AllToolsets`, en plus de `ModelingToolsEditorMode` limité à l'éditeur. Vérifier les dépendances, licences, modules Editor/Runtime et le comportement lors du packaging Shipping ; ne pas retirer les outils MCP utilisés pour le développement sans vérifier leur portée.
+  - **Update 24 Nov 2026 (commit `006a31c`):** `ModelContextProtocol`, `MCPClientToolset` and `AllToolsets` are now restricted with `"TargetAllowList": ["Editor"]`. Before this change the game target enabled the MCP runtime module, which embeds an HTTP server that can be started from the console. After the change, `fps.target` and the staging manifests of the packaged Development builds no longer contain any MCP module. The editor MCP workflow is unchanged. Shipping packaging is still not tested.
+  - **Update 24 Nov 2026 (commits `006a31c`, `04355ca`):** `Config/DefaultGame.ini` declares an Asset Manager rule for `GameFeatureData` with `bIsEditorOnly=True`; without it the cook failed (ExitCode 25), and a runtime rule caused a handled ensure at game startup.
 
 
 ## Fait dans l'éditeur
@@ -29,6 +31,7 @@ Projet de base : modèle « First Person », variante « Arena Shooter » (Bluep
 - **Règles de match** (`Content/Rixe/Blueprints/BP_RixeMatchRules`, placé dans l'arène) :
   la première équipe à `ScoreLimit` (20 par défaut, modifiable sur l'acteur) gagne,
   la victoire s'affiche puis la partie redémarre après 6 secondes.
+  - **Update 24 Nov 2026 (commit `aeaf808`):** the placed instance in `Lvl_ArenaShooter` had overridden `ScoreLimit` to 75. Owner decision (24 Nov 2026): keep the base value. The override was reset, so the arena now uses the class default of **20**. The actor is also no longer spatially loaded (`bIsSpatiallyLoaded=false`, commit `34eeea3`), so match rules are always present in World Partition.
 - **Réglages enregistrés** (`Content/Rixe/Blueprints`) :
   - `BP_RixeGameInstance` (instance de jeu du projet) garde la sensibilité, le champ de vision,
     le volume général et l'inversion de l'axe vertical ; il les charge au démarrage et les enregistre
