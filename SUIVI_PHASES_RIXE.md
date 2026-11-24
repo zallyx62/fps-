@@ -195,3 +195,25 @@ Scope: specification section 12 (Phase 2, step 2, server authority) and audit `A
 ### Other observation
 
 - `origin/jeu-unreal` (`d0c3b23`) does not match `origin/main` (`6825461`) at the time of this test; the mirror is out of date.
+
+## 10. Phase 2 — audit fix H1 remainder and S2: stop firing on death (24 November 2026)
+
+Scope: audit section 6 item 2 (H1 core, Die part) and S2. Stacked on section 9 (branch `phase2/h1-stop-fire-on-death`, based on `phase2/h1-server-action-guard`). Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `b3ccb4e`)
+
+- `BP_ShooterCharacter` `Die`: on authority, after `Set w/ Notify bDeadRep = true`, also `Set w/ Notify bFiringRep = false` (proxies run `RepStopFire`). Then, on every machine, `IsValid(CurrentWeapon)` → `StopFiring`, before the existing death sequence.
+- `BP_ShooterNPC` `Die`: calls the existing `StopShooting` first (on authority it clears `bShootingRep`; on every machine it stops the weapon).
+- Review: a Blueprint DSL export after saving, compared with the pre-change export, shows only these additions.
+
+### Tests
+
+1. **PIE, listen server + 1 remote client** (same machine, ~18:00–18:03 UTC): the client's fire reaches the server, deaths and respawns happen, and a match ends in victory followed by `ServerTravel`. No `Blueprint Runtime Error` or `Accessed None` in that run.
+   - **Not verified:** a dead pawn stops firing at the exact moment of death. Fire could not be held through a natural death, because the magazine empties and the weapon stops by itself. The 5 s window after death was not observed.
+2. **Packaged Development Win64 build of `b3ccb4e`**: cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:\RIXE_Builds\dev-b3ccb4e`.
+3. **Unattended smoke run** (18:06–18:14 UTC, single local player plus bots, log `D:\RIXE_Builds\evidence-b3ccb4e\smoke-b3ccb4e-fps.log`): 6 victories, each followed about 6 s later by `ProcessServerTravel`. Normal close, `LogExit: Exiting.`. No Blueprint runtime error, no ensure, no crash.
+   - **Not run:** hands-on fire/reload check on this build (computer-use access to the game window was declined). Section 9 covers that check for `5d7b18e`.
+
+### Limits
+
+Single machine only. No second client on another machine. Not verified that proxies show no shots after a death.
