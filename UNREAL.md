@@ -65,7 +65,9 @@ Modèle réseau actuel : **serveur d'écoute** (un joueur héberge, les autres l
   (RPC « exécuté sur le serveur », fiable) : 0 = stop firing, 1 = fire, 2 = swap weapon, 3 = chat message,
   4 / 5 = sprint on / off, 6 = reload, 7 / 8 = aim (ADS) on / off, 9 = loadout. Server guard `RixeCanAct`
   (SUIVI section 10): every action except 3 and 9 is refused when the controlled pawn is missing or dead,
-  or when `WinningTeam` is not 0 (match over).
+  or when `WinningTeam` is not 0 (match over). Before that guard, `RixeServerGate` runs `RixeValidateAction`
+  (SUIVI section 17): action must be 0..9, text at most 256 characters, token bucket of 30 refilled at 30/s per
+  controller; refused calls are counted in `RixeActDropped` and logged on the 1st and every 100th drop.
 - **Variables répliquées** :
   - `BP_ShooterCharacter` : `bFiringRep`, `SwapCountRep`, `bDeadRep`, `Current HP` (avec notification),
     `Team Byte` ; les copies des autres joueurs tirent, changent d'arme et meurent grâce aux fonctions `OnRep_` ;

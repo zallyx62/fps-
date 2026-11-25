@@ -61,7 +61,7 @@ Le cahier des charges contient 71 sections principales numérotées à la date d
 |---|---|---|---|
 | 0 — Sécurisation et état des lieux | Sauvegardes vérifiées, audit de l'environnement, état reproductible et blocages identifiés | **Validée** (owner acceptance, 24 Nov 2026) | Evidence recorded in section 8 (verified backup, environment audit, secret scan) |
 | 1 — Première boucle FPS Windows jouable | Build Windows empaquetée et partie complète reproductible sur une carte pilote | **Validée** (owner acceptance, 24 Nov 2026) | Packaged Development build `aeaf808` tested locally with bots (section 8); not distributed, no network test (network tests belong to Phase 2) |
-| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2 and M5 + L8 tested in single-machine PIE (listen server + 1 client) and packaged smoke runs (sections 10–16); M8 refuted (section 13); no multi-machine, LAN or Internet test yet |
+| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2, M5 + L8 and S1 tested in single-machine PIE (listen server + 1 client) and packaged smoke runs (sections 10–17); M8 refuted (section 13); no multi-machine, LAN or Internet test yet |
 | 3 — EOS et parties privées | Identité, invitations, lobby privé, lancement, retour et reconnexion testés de bout en bout | **Non vérifiée** | Prototype documenté avec OnlineSubsystem Null et connexion IP directe ; aucun parcours EOS validé |
 | 4 — Matchmaking public et contenu de lancement | File publique, lobby, groupes, départs/reconnexion, cartes et modes validés | **Non vérifiée** | Aucun rapport de validation du matchmaking public ou de l'ensemble du contenu de lancement |
 | 5 — Données durables et services communautaires | Progression/statistiques cohérentes, protégées et restaurables | **Non vérifiée** | Aucune preuve de phase enregistrée |
@@ -103,7 +103,7 @@ Mettre à jour ce registre dans le même lot de travail lorsqu'un test réel, un
 - Indiquer explicitement les contrôles non exécutés et leur raison.
 - Ne pas laisser entendre qu'une surveillance automatique continue entre les sessions est en place.
 
-**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: PR #32 (audit M5 + L8) is merged; the next item is audit section 6 item 8 (S1 + L13). The earlier next action of this section (first Windows Development build) was completed in section 8.
+**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: S1 is done (section 17); the next item is audit section 6 item 9 (M3), plus the owner decisions that unblock L13, S3 and S6. The earlier next action of this section (first Windows Development build) was completed in section 8.
 
 
 ## 7. Correctif technique ciblé — 24 novembre 2026
@@ -392,3 +392,44 @@ Scope: audit section 6 item 7 (M5 + L8). Branch `phase2/m5-match-phase`, based o
 - Remote client respawn and HUD display of the frozen state were not checked visually.
 - No packaged build of this commit; single machine only, not a network or Internet test.
 - The other locally modified assets and `Config/*.ini` / `fps.uproject` changes listed in section 15 remain uncommitted and are not part of this change.
+
+## 17. Phase 2 — audit fix S1: server-side validation of `ServerRixeAction` (25 November 2026)
+
+Scope: audit section 6 item 8 (S1). L13 (sprint rules) is **not** in this change: it needs the owner decisions listed in audit section 6 (sprint/fire exclusivity, forward-only sprint). Branch `phase2/s1-action-validation`, based on `phase2/m5-match-phase` @ `4f509b1`, then merged with `main` @ `3676b90`. Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `af521de`; only `BP_ShooterPlayerController`)
+
+- **Single gate for the RPC.** `ServerRixeAction` now calls `RixeServerGate(Action, Text)` instead of `RixeCanAct(Action)`. The gate runs `RixeValidateAction` first and, only if it passes, the existing `RixeCanAct` state guard (alive pawn, `WinningTeam == 0`, H1). `RixeCanAct` itself is unchanged because `RixeTryApplyLoadout` reuses it as a state check; putting the validator there would have consumed rate-limit tokens on internal calls.
+- **`RixeValidateAction`** (server side, per controller):
+  - whitelist: `Action` must be 0..9;
+  - payload: `Text` longer than 256 characters is refused (chat is still cut to 100 and loadout to 40 by the existing code; other actions never read `Text`);
+  - rate limit: token bucket of 30, refilled at 30 tokens per second (`RixeActTokens`, `RixeActTokenTime`); the bucket starts full (class default 30) so the first actions after spawn (loadout) are never dropped;
+  - every refused call increments `RixeActDropped`; the first drop and every 100th drop are written to the log (`RIXE S1 dropped action=<n> total=<n>`), so a flood cannot flood the log.
+- **Per-action cooldowns from the audit's "smallest fix":** action 9 already has the 1 s cooldown and once-per-life rule (M1); action 6 is already refused while reloading or with a full magazine (M2). A server cooldown on action 2 (swap) is **left to M3**: swap is still replicated as a toggle counter, so dropping one swap on the server would desynchronize the client permanently.
+- `RixeActionSig` is an event dispatcher signature, not a function, so it was left unchanged; the validator is the new function `RixeValidateAction`.
+- **Defects found and fixed before commit** (PIE):
+  - the refill was computed from pure nodes that the Blueprint VM re-evaluated after `RixeActTokenTime` was updated, so the elapsed time was always 0 and every action was dropped; values are now captured from the Set nodes' outputs;
+  - with an empty initial bucket the host's first action (loadout, t ≈ 0) was dropped; fixed by the class default of 30.
+
+### Tests
+
+1. Blueprint compiles and saves without error; the four graphs (`ServerRixeAction`, `RixeServerGate`, `RixeValidateAction`, `RixeCanAct`) were read back through the editor MCP and match the intent.
+2. **PIE, listen server + 1 remote client + bots** (editor, same machine, 25 Nov 2026 09:35–09:38 UTC). Python `call_method` runs an event locally instead of sending an RPC, so the flood was run on the **server copy** of the remote client's controller, which executes exactly the body of a received RPC. Values read on that server copy:
+   - 4 normal actions (4, 5, 7, 8): accepted, tokens 30 → 26, `dropped = 0`;
+   - 25 invalid codes (99, -1, 10): all refused, `dropped = 25`, tokens unchanged; log `RIXE S1 dropped action=99 total=1`;
+   - 10 oversized texts (300 characters, actions 3 and 9): all refused, `dropped = 35`;
+   - 60 calls in one frame (action 5): 30 accepted, 30 refused, `dropped = 65`, tokens 0;
+   - 2 s later, 4 normal actions: accepted (tokens refilled), `dropped` unchanged.
+3. **Real network path** (same session): 30 right-click aim toggles in the client window (about 60 RPCs over several seconds) reached the server through the gate (`RixeActTokenTime` 0.82 → 53.98) with `dropped = 0`, so normal fast play is not throttled. At start, no drop was logged for the host or the client.
+4. No `Blueprint Runtime Error`, `Accessed None` or script error in the editor log for these runs.
+5. **Packaged Development Win64 build of `af521de`:** `RunUAT BuildCookRun`, same parameters as section 8; cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:RIXE_Buildsdev-af521de`, log `D:RIXE_Buildsuild-dev-af521de.log`. The build uses the local working tree; its `Config/*.ini` / `fps.uproject` differences are line endings only.
+6. **Unattended smoke run of that build** (25 Nov 2026 09:53–09:56 UTC, single local player plus bots, log `D:RIXE_Buildsevidence-af521desmoke-af521de-fps.log`): 2 victories, each followed by `ProcessServerTravel` (09:55:00, 09:56:08); 0 `RIXE S1 dropped` lines (normal play never throttled); no `Blueprint Runtime Error` or `Accessed None`; closed with a normal window close. The 24 startup `Failed to create pipeline state` D3D12 errors are identical in every earlier smoke log (`5d7b18e` to `29780b3`): pre-existing, not a regression.
+
+### Not verified / limits
+
+- A real client cannot send invalid codes or more than 30 actions per second without a modified client; the flood was verified on the server-side execution path, not through the network driver.
+- Single machine; no LAN, separate-machine or Internet test.
+- L13 and the swap cooldown (M3) are not addressed here.
+- The other locally modified assets and the untracked `RixeSource/` folder are not part of this change.
+
+**Next verifiable action:** audit section 6 item 9 (M3: replicated absolute weapon index plus a server swap cooldown), or the owner decisions that unblock L13, S3 and S6.
