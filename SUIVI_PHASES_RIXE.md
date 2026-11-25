@@ -61,7 +61,7 @@ Le cahier des charges contient 71 sections principales numérotées à la date d
 |---|---|---|---|
 | 0 — Sécurisation et état des lieux | Sauvegardes vérifiées, audit de l'environnement, état reproductible et blocages identifiés | **Validée** (owner acceptance, 24 Nov 2026) | Evidence recorded in section 8 (verified backup, environment audit, secret scan) |
 | 1 — Première boucle FPS Windows jouable | Build Windows empaquetée et partie complète reproductible sur une carte pilote | **Validée** (owner acceptance, 24 Nov 2026) | Packaged Development build `aeaf808` tested locally with bots (section 8); not distributed, no network test (network tests belong to Phase 2) |
-| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2, M5 + L8, S1, M3 and S6 tested in single-machine PIE (listen server + 1 client) and packaged smoke runs (sections 10–19); M8 refuted (section 13); no multi-machine, LAN or Internet test yet |
+| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2, M5 + L8, S1, M3, S6 and M9 + L15 tested in single-machine PIE (listen server + 1 to 3 clients) and packaged smoke runs (sections 10–20); M8 refuted (section 13); no multi-machine, LAN or Internet test yet |
 | 3 — EOS et parties privées | Identité, invitations, lobby privé, lancement, retour et reconnexion testés de bout en bout | **Non vérifiée** | Prototype documenté avec OnlineSubsystem Null et connexion IP directe ; aucun parcours EOS validé |
 | 4 — Matchmaking public et contenu de lancement | File publique, lobby, groupes, départs/reconnexion, cartes et modes validés | **Non vérifiée** | Aucun rapport de validation du matchmaking public ou de l'ensemble du contenu de lancement |
 | 5 — Données durables et services communautaires | Progression/statistiques cohérentes, protégées et restaurables | **Non vérifiée** | Aucune preuve de phase enregistrée |
@@ -103,7 +103,7 @@ Mettre à jour ce registre dans le même lot de travail lorsqu'un test réel, un
 - Indiquer explicitement les contrôles non exécutés et leur raison.
 - Ne pas laisser entendre qu'une surveillance automatique continue entre les sessions est en place.
 
-**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: S6 is done (section 19); the next item is audit section 6 item 11 (M9 + L15). On 25 November 2026 the owner asked that the four pending decisions (ADS time/quickscoping, suicide and team-kill scoring, sprint rules, bot respawn delay) follow XDefiant, Call of Duty and Apex Legends; the concrete values are being prepared. The earlier next action of this section (first Windows Development build) was completed in section 8.
+**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: M9 is done (section 20); the next item is audit section 6 item 12 (S4). The four pending owner decisions are settled by the decision record `DECISIONS_GAMEPLAY_2026-11-25.md` (owner direction: follow XDefiant, Call of Duty and Apex Legends). The earlier next action of this section (first Windows Development build) was completed in section 8.
 
 
 ## 7. Correctif technique ciblé — 24 novembre 2026
@@ -503,3 +503,38 @@ Scope: audit section 6 item 10. Branch `phase2/s6-ads-sprint-reset`, based on `m
 - Observation: during this smoke run, the window close button and a `WM_CLOSE` sent to the process did not quit the game; the in-game `QUITTER` button did. Recorded for a later check (earlier smoke runs closed with the window close button).
 
 **Next verifiable action:** audit section 6 item 11 (M9 + L15: assign teams once on login onto the smaller human team; `GetTeam` on the character returns its team).
+
+## 20. Phase 2 — audit fix M9 + L15: team assignment on login (25 November 2026)
+
+Scope: audit section 6 item 11. Branch `phase2/m9-team-assign`, based on `main` @ `9be0598`. Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `9aeeb98`; only `BP_ShooterGameMode` and `BP_ShooterCharacter`)
+
+- `BP_ShooterGameMode`: new function `RixeAssignTeam(Player)`. For a valid `BP_ShooterPlayerController` whose `bTeamAssigned` is false, it counts the other assigned player controllers per team, sets the team through `BPI_Teammate SetTeam` onto the smaller team (tie: RED, team 0), and sets `bTeamAssigned`. The previously unused `bTeamAssigned` controller variable is reused.
+- It is called from `OnPostLogin` (previously empty) and at the start of `ChoosePlayerStart`, as a fallback. The `PlayerArray` index parity rule and its orphaned pure nodes were removed from `ChoosePlayerStart`.
+- `bUseSeamlessTravel` is false on the GameMode, so each match restart re-creates the controllers and assigns teams again.
+- L15: `BP_ShooterCharacter` `GetTeam` (`BPI_Teammate`) now returns `Team Byte` instead of the constant 0.
+
+### Tests
+
+1. Both Blueprints compile with warnings as errors; `RixeAssignTeam`, `ChoosePlayerStart`, `OnPostLogin` and `GetTeam` were read back through the editor MCP.
+2. **PIE, listen server + 3 remote clients + bots** (editor, same machine, 25 Nov 2026 14:16–14:18 UTC; helper `Saved/rixe_m9_test.py`, not shipped; the server-side controller list is logged with team, `bTeamAssigned` and pawn team):
+   - start: 4 controllers, RED=2 BLUE=2, all assigned, each pawn's team matches its controller;
+   - one BLUE client disconnects: RED=2 BLUE=1;
+   - a RED client reconnects (`open 127.0.0.1:17777` in its world): with RED=1 BLUE=1 among the others it is assigned RED (tie rule);
+   - **target scenario:** the last BLUE client reconnects while RED=2 BLUE=0: it is assigned **BLUE** (`BP_ShooterPlayerController_C_5 team=1`). The previous parity rule would have given index 2 → RED (3 vs 0).
+3. **Packaged Development Win64 build of `9aeeb98`:** `RunUAT BuildCookRun`, same parameters as section 8; cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:\RIXE_Builds\dev-9aeeb98`, log `D:\RIXE_Builds\build-dev-9aeeb98.log`.
+4. **Smoke run of that build** (25 Nov 2026 14:21–14:25 UTC, single local player plus bots, log `D:\RIXE_Builds\evidence-9aeeb98\smoke-9aeeb98-fps.log`): 2 victories (blue, red), each followed by `ProcessServerTravel`; 0 `Blueprint Runtime Error`, `Accessed None` or `RIXE S1 dropped` lines; quit through the in-game `QUITTER` button, log ends with `LogExit: Exiting.`; the same 24 pre-existing D3D12 PSO errors.
+
+### New findings (pre-existing, not caused by this change; recorded for later fixes)
+
+- **Reconnect UI errors:** when a PIE client reconnects, `WBP_RixeHealthBar` (`Refresh`), `WBP_RixeHUD` (`Refresh HUD`) and `UI_ShooterBulletCounter` keep reading the client's previous `BP_ShooterCharacter` after it is destroyed (about 190 `Blueprint Runtime Error` lines, "pending kill or garbage"). The widgets need an `IsValid` guard or to unbind when their pawn is destroyed.
+- **Late join, bots:** on a joining client, `BP_ShooterNPC` `Start Firing` / `Stop Firing` read `Weapon` before it is replicated (`Accessed None`, about 14 lines). Needs an `IsValid` guard on the client path.
+- **Window close button:** in the packaged builds `829c1a4` and `9aeeb98`, the window close button does not quit the game (confirmed twice); the in-game `QUITTER` button does.
+
+### Not verified / limits
+
+- Single machine. Disconnect and reconnect were driven by console commands in the PIE client worlds, not by separate game instances or machines.
+- The team-switch case (a player changing team voluntarily) does not exist in the game yet and was not tested.
+
+**Next verifiable action:** audit section 6 item 12 (S4: respawn through a GameMode request with fallback, validity checks and retry). The owner direction for the four pending decisions is recorded in `DECISIONS_GAMEPLAY_2026-11-25.md` (PR #40); it unblocks L2 (server ADS time), L13 (sprint rules), S3 (suicide and team-kill scoring) and the bot respawn delay, which follow in the audit order.
