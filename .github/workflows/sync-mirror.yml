@@ -7,6 +7,9 @@ on:
 
 permissions:
   contents: write
+  # Needed to dispatch validate.yml on jeu-unreal: pushes made with GITHUB_TOKEN
+  # do not trigger push workflows, but workflow_dispatch events do.
+  actions: write
 
 concurrency:
   group: sync-jeu-unreal-with-main
@@ -24,6 +27,7 @@ jobs:
           persist-credentials: true
 
       - name: Synchronize jeu-unreal
+        id: sync
         shell: bash
         run: |
           set -euo pipefail
@@ -43,6 +47,7 @@ jobs:
           fi
 
           git push origin "$MAIN_SHA:refs/heads/jeu-unreal"
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
 
           git fetch origin main jeu-unreal
           FINAL_MAIN="$(git rev-parse refs/remotes/origin/main)"
@@ -54,3 +59,10 @@ jobs:
           fi
 
           echo "jeu-unreal is now synchronized with main ($FINAL_MAIN)."
+
+      - name: Run repository validation on the mirror
+        if: steps.sync.outputs.pushed == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run validate.yml --repo "$GITHUB_REPOSITORY" --ref jeu-unreal
