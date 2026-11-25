@@ -566,7 +566,7 @@ The weaknesses are in three areas:
 4. **Refuted, no change needed** (SUIVI section 13). ~~**M8:** a single GetSpawnTagForTeam helper; the owner confirms team 0 = RED or BLUE across tint, tags and score labels.~~
 5. **Done** (SUIVI section 14, code `29780b3`, PR #30). **M1:** Action 9 at most once per life, unchanged string is a no-op, cooldown on the range level.
 6. **Done** (SUIVI section 15, code `38f298e`, PR #31). **M2:** Action 6 calls the server weapon's RixeReload; remove the 1.6 s Delay block; cancel the reload on swap.
-7. **Implemented in PR #32** (SUIVI section 16, code `4f509b1`), awaiting merge. **M5 + L8:** replicated match phase; gate scoring and respawn; check victory synchronously.
+7. **Done** (SUIVI section 16, code `4f509b1`, PR #32). **M5 + L8:** replicated match phase; gate scoring and respawn; check victory synchronously.
 8. **S1 (+ L13):** action whitelist, per-action token bucket and cooldowns, Text only for actions 3 and 9, IsValid on the pawn; implement RixeActionSig.
 9. **M3:** replicated absolute weapon index plus a server swap cooldown.
 10. **S6 + L2:** reset ADS/sprint flags on possess and in Die; single ADS source. Server ADS timing waits for the owner's decision on aim time.
