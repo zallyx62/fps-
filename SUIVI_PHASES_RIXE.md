@@ -1,6 +1,6 @@
 # RIXE — Suivi vérifiable des phases
 
-**Dernière mise à jour :** 25 novembre 2026  
+**Dernière mise à jour :** 26 novembre 2026  
 **Dépôt :** `zallyx62/fps-`  
 **Référence fonctionnelle :** dernière version approuvée de `CAHIER_DES_CHARGES_RIXE.md`.
 
@@ -667,3 +667,75 @@ Helper `Saved/rixe_i14_test.py` (not shipped; modes `census`, `aim`, `fire`, `am
   - The editor crashed once ("pure virtual function call") when a package was reloaded while its Blueprint editor was open. The crash report was not sent. No saved work was lost.
 
 **Next verifiable action:** audit item 14b (authority-only replicated weapons), or item 15 (L14), as the owner prefers. The queued owner-decision items (L2, L13, respawn delay) are unchanged.
+
+## 24. Phase 2 — audit item 14b (M6 weapon part): authority-only replicated weapons, single ammo source (25–26 November 2026)
+
+Scope: audit section 6 item 14b (finding M6, weapon-actor part). Branch `phase2/item14b-replicated-weapons`, based on `main` @ `211b823`. Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `fed4266`; 14 Blueprint assets)
+
+- **Weapon classes replicate.** `BP_ShooterWeaponBase`, the 8 `BP_Rixe_*` weapons and the 3 template weapons (`BP_ShooterWeapon_Pistol/Rifle/GrenadeLauncher`, used by bots) now have `bReplicates` and `bNetUseOwnerRelevancy`, with `bReplicateMovement` off. Each subclass stored its own `false`, so every class default was set and read back. `RixeAttachBits` and `RixeSkin` are replicated, so a client's `RixeSetupVisual` builds the same attachments and skin.
+- **Only the server spawns weapons.**
+  - `BP_ShooterCharacter.RixeBuildLoadout` is gated by `HasAuthority`. It is still called from BeginPlay and from `OnRep_RixeLoadout`, but it does nothing on clients.
+  - `BP_ShooterNPC` BeginPlay spawns its weapon only on authority. The team tint still runs on every machine.
+- **Clients follow the server's weapon state.**
+  - `Owned Weapons` (player) and `Weapon` (bot) are RepNotify.
+  - `OnRep_Owned Weapons` calls the new `RixeSyncOwned` on clients. It binds every weapon to its holder with the new `BP_ShooterWeaponBase.RixeBindOwner(Holder)`, which attaches the FP/TP meshes and sets the pawn owner. It then deactivates the non-current weapons and applies `RixeWeaponIdxRep`. It skips that last step on the owning client while its swap prediction is valid. When a proxy's firing flag is already set, it restarts the proxy's fire.
+  - The holder is passed explicitly because a weapon's replicated `Owner` can still be unmapped when the pawn's OnRep runs. The first PIE run showed exactly this.
+  - `OnRep_Weapon` (bot) does the same for the bot's single weapon.
+  - `OnRep_RixeWeaponIdxRep` and `RixeWeaponReconcile` now check the index and the weapon's validity first.
+- **One ammo source.**
+  - `CurrentBullets` is written only on authority: the new `RixeConsumeAmmo` in `RixeFire`, the new `RixeInitAmmo` in `RixeSetupVisual`, and `RixeReloadDone`.
+  - Clients keep a non-replicated `RixePredBullets`. It is used only for the local auto-reload check (`RixeCheckAutoReload`) and the `RixeReload` guard (`RixeAmmoLocal`).
+  - `OnRep_CurrentBullets` resyncs that counter (refill raises it, otherwise min). It updates the HUD only when the owner is locally controlled and the weapon is its current weapon. The HUD therefore always shows the replicated server value.
+- **Guards.**
+  - Weapon BeginPlay binds `OnDestroyed` only on authority; the server's destroy replicates.
+  - `MakeNoise` in `Fire` is authority-only.
+  - `IsValid` guards sit before `StartFiring`/`StopFiring` in the character (input and `RepStartFire`/`RepStopFire` chains) and in the bot (`StartShooting`, `StopShooting`, semi-auto refire).
+- **Tooling.**
+  - Large graphs were edited by splicing nodes, because DSL exports of those graphs do not round-trip.
+  - New logic lives in small functions written through the DSL. Every DSL-written function was read back.
+  - All 14 Blueprints compile with warnings as errors.
+
+### Tests
+
+1. **PIE, listen server + 2 clients + bots** (editor, same machine, 25 Nov 2026 23:34–23:39 UTC). Helper `Saved/rixe_14b_test.py` (not shipped), copied to the evidence folder.
+   - **First run, before the guard fixes.** The census showed the expected counts, but on clients some remote pawns' and bots' weapons were unattached with no pawn owner. 5363 `Bind Event to On Destroyed`, 13 bot `Start Firing` and 11 `MakeNoise` "Accessed None" errors were logged. This led to the `RixeBindOwner(Holder)` change, the authority gates and the `IsValid` guards above.
+   - **Census after the fixes, at start and again after 3 server travels plus deaths and respawns.** Each world holds 23 weapons for 20 holders: 2 per player, 1 per bot. Nothing is ownerless.
+     - Every client copy is `ROLE_SIMULATED_PROXY`; server copies are `ROLE_AUTHORITY`.
+     - Every weapon is attached to its holder, with FP/TP meshes on `FirstPersonMesh/HandGrip_R` and `CharacterMesh0/HandGrip_R` and the right pawn owner.
+     - The inactive weapon is hidden on all machines. `CurrentWeapon` and `RixeWeaponIdxRep` match everywhere.
+   - **Remote client fire** (P605, 30 ticks): the server went 30 → 5. The owning client read 5 (predicted 5) and the other client read 5.
+   - **Auto-reload trace** (P611, 120 ticks, sampled every 8 ticks): server, owner and proxy read 23 → 18 → 13 → 6 → 0 together. The server reloaded (`R`), and the refill to 30 reached both clients. There was no divergence at any sample.
+   - **Host fire through the `IA_Shoot` chain** (`ServerRixeAction 1` + `Start Firing`, 24 ticks): 30 → 23 → 15 → 8 on the server and both clients.
+   - **Swap** (`ServerRixeAction 2` for P608): server and both clients showed `cur=Revolver idx=0`, with the AR hidden and the Revolver visible.
+   - **No `Blueprint Runtime Error`** from the start of the fixed PIE session to the end of the tests, including 3 `ProcessServerTravel`.
+2. **Packaged Development Win64 build of `fed4266`:** `RunUAT BuildCookRun`, same parameters as section 8. Cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL` (349 s), ~965 MB. Output `D:\RIXE_Builds\dev-fed4266`, log `D:\RIXE_Builds\build-dev-fed4266.log`.
+3. **Packaged host + client on one machine over loopback** (25 Nov 2026 23:48–23:54 UTC). The host was launched with `Lvl_ArenaShooter?listen`, the client with `127.0.0.1`. Logs and screenshots are in `D:\RIXE_Builds\evidence-fed4266`.
+   - The client joined (`Welcomed by server` / `Join succeeded`). Both windows showed the same score and their own weapon in hand.
+   - **A 1-s real mouse burst on the client** dropped its HUD ammo bar from full to about two thirds. That bar is driven by the replicated server value (screenshots `client-ammo-before/after.jpg`).
+   - A victory was shown on both sides.
+   - 0 `Blueprint Runtime Error`, `Accessed None`, `LogScript` warning or `RIXE S1 dropped` lines in either log, across both runs.
+   - The same 48 `LogRHI: Error` compute-pipeline lines as the `2339dec` smoke log.
+   - Run 2 ended through `QUITTER` on both sides (`LogExit: Exiting.`).
+
+### New finding (pre-existing, not caused by this change)
+
+- **A packaged listen host stops listening after a match restart.** In run 1 the host was started from the command line with `?listen`. Its `ProcessServerTravel` reloaded `Lvl_ArenaShooter` as `NetMode = Standalone` and closed the client connection. The client then loaded a standalone map with its own bots and scores.
+  - PIE does not show this, because PIE keeps the net mode across travel.
+  - Hosting through the in-game "Héberger" button was not tried.
+  - This affects every packaged online match at the first victory, so it needs its own item (audit L16 area: the restart is a fire-and-forget `servertravel`).
+
+### Not verified / limits
+
+- **Owner HUD ammo is one round trip late.** The owning client shows the server value. Local prediction is used only to gate the auto-reload.
+- **Pre-existing behaviour, not changed:**
+  - After a server auto-reload, holding the trigger does not resume fire until it is pressed again (`bFiringRep` is level-triggered; review finding).
+  - The touch/swap toggle path does not guard a None `CurrentWeapon` during the weapon resolve window.
+  - The pickup path `EventAddWeaponClass` is not authority-gated. No pickup is placed in the RIXE maps, so this is not exercised.
+- **The Action 9 loadout change was not observed:** the M1 rules defer it in the Arena map. The server-side rebuild path was exercised by every spawn, respawn and travel instead.
+- **No late-join test** while a match is in progress. Clients rejoin only at server travel in PIE.
+- **Single machine:** PIE and loopback only. No separate machines, no Internet latency, no dedicated server.
+- Python `call_method` drives the fire, swap and loadout tests on the server copies. Real input was used only for the packaged client burst.
+
+**Next verifiable action:** the packaged listen-host travel defect above (it breaks every online match at the first victory), then audit item 15 (L14), as the owner prefers. The queued owner-decision items (L2, L13, respawn delay) are unchanged.
