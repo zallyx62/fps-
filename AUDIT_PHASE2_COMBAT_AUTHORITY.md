@@ -12,10 +12,10 @@ This audit read the exported Blueprint DSL statically and checked it against spe
 
 The weaknesses are in three areas:
 - **The single client RPC `ServerRixeAction`** accepts actions with no check on whether the pawn is alive, whether the match is over, or how often actions arrive. Most of the high and medium findings come from this.
-- **Match flow.** A Blue win never restarts the match, and scoring continues after victory.
-- **Team and replication consistency.** Friendly fire is decided from a stale cosmetic team copy, PlayerStart tags are inverted between humans and bots, the weapon swap is a counter, and weapons are spawned on every machine.
+- **Match flow.** Scoring continues after victory. (The original "a Blue win never restarts the match" claim, H2, was refuted at runtime.)
+- **Team and replication consistency.** Friendly fire is decided from a stale cosmetic team copy, the weapon swap is a counter, and weapons are spawned on every machine. (The original "PlayerStart tags are inverted between humans and bots" claim, M8, was refuted at runtime; see SUIVI section 13.)
 
-**Counts after deduplication:** 2 high, 9 medium, 8 split medium/low, 18 low. 5 items were refuted.
+**Counts after deduplication and later runtime corrections:** 1 high (H2 refuted), 8 medium (M8 refuted), 8 split medium/low, 18 low. 5 items were refuted by the audit verifiers, plus H2 and M8 refuted afterwards at runtime. Fix progress is tracked in section 6.
 
 **How severities are shown.** When both verifiers agreed, their corrected severity is used. When they disagreed, the row says "split" with both ratings and is ranked by the higher one. Every RPC flag in this report is inferred: the export does not show Run on Server, Multicast or Reliable.
 
@@ -32,7 +32,7 @@ The weaknesses are in three areas:
 | M5 | Medium | Nothing freezes play after victory: score, deaths and respawns continue | BP_RixeMatchRules CheckScore; BP_ShooterGameMode EventIncrementTeamScore; Die; OnDestroyed_Event |
 | M6 | Medium | Weapons and projectiles spawned independently on every machine; loadout built twice per spawn | BP_ShooterCharacter BeginPlay/OnRep_RixeLoadout/RixeBuildLoadout; BP_ShooterNPC BeginPlay; BP_ShooterWeaponBase RixeFire |
 | M7 | Medium (pitch sub-point split low/medium) | The authoritative shot is re-simulated from server-side camera/muzzle components with independent spread (desync) | BP_ShooterCharacter Get Weapon Target Location; BP_ShooterWeaponBase RixeSpawnXf/RixeFire |
-| M8 | Medium | Humans and bots of the same team map to opposite PlayerStart tags | BP_ShooterGameMode ChoosePlayerStart; BP_ShooterPlayerController OnDestroyed_Event; BP_RixeBotDirector SpawnBot |
+| M8 | **Refuted at runtime** | ~~Humans and bots of the same team map to opposite PlayerStart tags~~ (see SUIVI section 13) | BP_ShooterGameMode ChoosePlayerStart; BP_ShooterPlayerController OnDestroyed_Event; BP_RixeBotDirector SpawnBot |
 | M9 | Medium | Team assignment by PlayerArray index parity inside ChoosePlayerStart, never rebalanced | BP_ShooterGameMode ChoosePlayerStart, EventOnPostLogin |
 | S1 | Split medium/low | ServerRixeAction has no action whitelist, no per-action rate limit, no allowed-state check, no payload limit | BP_ShooterPlayerController ServerRixeAction, RixeServerAction2, RixeActionSig |
 | S2 | Split medium/low | Death does not stop the weapon on simulated clients; dead NPCs may keep firing | BP_ShooterCharacter Die/OnRep_bDeadRep; BP_ShooterNPC Die; BP_ShooterAIController OnDeath |
@@ -268,7 +268,7 @@ The weaknesses are in three areas:
 - Shotgun at 10 m: compare pellet hits on client and server.
 - Packaged: 2 machines.
 
-### M8. Opposite PlayerStart tags for humans and bots
+### M8. Opposite PlayerStart tags for humans and bots: REFUTED at runtime (SUIVI section 13)
 
 **Evidence**
 - ChoosePlayerStart and OnDestroyed_Event use `(select _team_byte "BLUE" "RED")` (byte-indexed).
@@ -552,20 +552,21 @@ The weaknesses are in three areas:
 - **menu-state-not-server-known.** No spec rule forbids combat while a menu is open. The menu flag is a client claim, so a server copy would protect nothing.
 - **sprint-client-prediction-missing.** The export drops all Enhanced Input bodies. The absence of Action 4/5 senders is not evidence, and the server side is consistent.
 - **crouch-not-visible.** Same exporter gap. Engine Crouch uses MaxWalkSpeedCrouched, and no authority impact was shown.
+- **H2 and M8 (refuted after the audit).** H2: packaged-build logs show restarts after Blue victories (see H2). M8: runtime and engine-source checks show the team, colour and PlayerStart tag mappings agree (SUIVI section 13).
 - **npc-team-not-repnotify.** TeamByte is set in the spawn frame and ships in the initial bunch before client BeginPlay. No code changes a bot's team later. Cosmetic robustness only.
 
 ## 6. Proposed fix order (small, independent, each testable on its own)
 
 1. ~~**H2:** move the RestartMatch timer after the Red/Blue branch.~~ Not needed: refuted at runtime.
-2. **H1 (core):**
+2. **Done** (SUIVI sections 10–11, code `5d7b18e` / `b3ccb4e`, PRs #26/#27). **H1 (core):**
    - Guard in ServerRixeAction: pawn valid, not dead, match not over.
    - Die on authority clears bFiringRep and calls StopFiring.
    - StopFiring/StopShooting in both Die graphs on every machine (also covers S2).
-3. **M4 + L6:** RixeFriendly uses the authoritative TeamByte, cached on the projectile, and an unknown team counts as friendly. RixeSetHP is called from EventSetTeam.
-4. **M8:** a single GetSpawnTagForTeam helper; the owner confirms team 0 = RED or BLUE across tint, tags and score labels.
-5. **M1:** Action 9 at most once per life, unchanged string is a no-op, cooldown on the range level.
-6. **M2:** Action 6 calls the server weapon's RixeReload; remove the 1.6 s Delay block; cancel the reload on swap.
-7. **M5 + L8:** replicated match phase; gate scoring and respawn; check victory synchronously.
+3. **Done** (SUIVI section 12, code `bdce5e2`). **M4 + L6:** RixeFriendly uses the authoritative TeamByte, cached on the projectile, and an unknown team counts as friendly. RixeSetHP is called from EventSetTeam.
+4. **Refuted, no change needed** (SUIVI section 13). ~~**M8:** a single GetSpawnTagForTeam helper; the owner confirms team 0 = RED or BLUE across tint, tags and score labels.~~
+5. **Done** (SUIVI section 14, code `29780b3`, PR #30). **M1:** Action 9 at most once per life, unchanged string is a no-op, cooldown on the range level.
+6. **Done** (SUIVI section 15, code `38f298e`, PR #31). **M2:** Action 6 calls the server weapon's RixeReload; remove the 1.6 s Delay block; cancel the reload on swap.
+7. **Implemented in PR #32** (SUIVI section 16, code `4f509b1`), awaiting merge. **M5 + L8:** replicated match phase; gate scoring and respawn; check victory synchronously.
 8. **S1 (+ L13):** action whitelist, per-action token bucket and cooldowns, Text only for actions 3 and 9, IsValid on the pawn; implement RixeActionSig.
 9. **M3:** replicated absolute weapon index plus a server swap cooldown.
 10. **S6 + L2:** reset ADS/sprint flags on possess and in Die; single ADS source. Server ADS timing waits for the owner's decision on aim time.

@@ -62,7 +62,10 @@ Modèle réseau actuel : **serveur d'écoute** (un joueur héberge, les autres l
     Pour jouer hors réseau local : ouvrir le port 7777 sur la box de l'hôte, ou utiliser un réseau
     virtuel (ZeroTier, Radmin VPN) et saisir l'adresse donnée par ce logiciel.
 - **Actions des joueurs** : `ServerRixeAction(Action, Texte)` dans `BP_ShooterPlayerController`
-  (RPC « exécuté sur le serveur », fiable) : 0 = arrêter de tirer, 1 = tirer, 2 = changer d'arme, 3 = message.
+  (RPC « exécuté sur le serveur », fiable) : 0 = stop firing, 1 = fire, 2 = swap weapon, 3 = chat message,
+  4 / 5 = sprint on / off, 6 = reload, 7 / 8 = aim (ADS) on / off, 9 = loadout. Server guard `RixeCanAct`
+  (SUIVI section 10): every action except 3 and 9 is refused when the controlled pawn is missing or dead,
+  or when `WinningTeam` is not 0 (match over).
 - **Variables répliquées** :
   - `BP_ShooterCharacter` : `bFiringRep`, `SwapCountRep`, `bDeadRep`, `Current HP` (avec notification),
     `Team Byte` ; les copies des autres joueurs tirent, changent d'arme et meurent grâce aux fonctions `OnRep_` ;
@@ -84,9 +87,10 @@ Modèle réseau actuel : **serveur d'écoute** (un joueur héberge, les autres l
 - **Répartition et apparition actuelles du prototype** : `ChoosePlayerStart` (`BP_ShooterGameMode`) place chaque joueur dans une équipe selon son
   ordre d'arrivée (1er Rouge, 2e Bleu, 3e Rouge…) puis le fait apparaître sur un point d'apparition de son
   camp (`PlayerStart` marqués `RED` / `BLUE`), aussi après chaque mort. Il s'agit d'une sélection statique par camp, pas encore du système adaptatif décidé dans la section 3 du cahier des charges (évaluation des menaces, lignes de vue, répétition des points et validation serveur au moment du respawn). Cette règle devra être remplacée et testée avant validation du système d'apparition final.
-- **Bots — écart connu avec la cible produit** : l'implémentation documentée les utilise seulement en solo (entraînement contre l'équipe Bleue) et `OnPostLogin` les supprime dès qu'un deuxième joueur arrive. C'est un comportement actuel du prototype, **pas une règle finale**. Le cahier des charges, notamment sa section 28.1, prévoit des préférences explicites humains/bots, un remplissage transparent selon la playlist et des statistiques distinctes. Remplacer cette suppression automatique par les règles du mode concerné avant de considérer le matchmaking ou le remplissage des équipes comme terminé.
-- **Pas de tir ami** : `RixeFriendly` (`BP_ShooterProjectileBase`) annule les dégâts entre deux joueurs de la
-  même équipe (côté serveur).
+- **Bots — écart connu avec la cible produit** : bots are spawned and refilled on the server by `BP_RixeBotDirector` (timer-driven `DirectorTick`, gated on `WinningTeam == 0` since PR #32). PIE tests with a listen server and a remote client (SUIVI sections 10, 15 and 16) show bots staying in the match while human clients are connected; the earlier description (bots only in solo, removed by `OnPostLogin` when a second player joins) no longer matches what was observed. The exact fill rule has not been re-documented here. This is current prototype behaviour, **pas une règle finale**. Le cahier des charges, notamment sa section 28.1, prévoit des préférences explicites humains/bots, un remplissage transparent selon la playlist et des statistiques distinctes. Remplacer cette suppression automatique par les règles du mode concerné avant de considérer le matchmaking ou le remplissage des équipes comme terminé.
+- **Pas de tir ami** : `RixeFriendlyAuth` (`BP_ShooterProjectileBase`, server side) cancels damage between two
+  members of the same team. The shooter's team is cached on the projectile from the authoritative `Team Byte`, and an
+  unknown team counts as friendly. It replaced the old `RixeFriendly` in `bdce5e2` (SUIVI section 12).
 - **Couleurs** : les joueurs et les bots sont teints en rouge ou en bleu (`ApplyTeamColor`, paramètre
   « Paint Tint » du mannequin), mis à jour chez tout le monde grâce à `OnRep_Team Byte`.
 - **Interface** : « ÉQUIPE ROUGE » ou « ÉQUIPE BLEUE » sous le score, dans la couleur de l'équipe.
@@ -101,9 +105,11 @@ Modèle réseau actuel : **serveur d'écoute** (un joueur héberge, les autres l
   `BP_FirstPersonCharacter`, appelée à l'appui et au relâchement).
 - **Armes** : 1 = fusil (principale), 2 = pistolet (secondaire), molette = alterner ; Maj ne change plus d'arme.
   Sur un clavier AZERTY, Unreal lit la touche « 1 » comme « & » et « 2 » comme « é » : les deux sont reliées.
-- **Rechargement** : R envoie l'action 6 ; le serveur coupe le tir, attend 1,6 seconde, remplit le chargeur
-  (`Current Bullets` = `Mag Size`) et met l'interface à jour. Pendant ce temps, l'ordre de tirer est refusé
-  (`RixeReloading` dans `BP_ShooterPlayerController`). Le rechargement instantané du modèle, chargeur vide,
+- **Rechargement** : R sends action 6. The server clears `bFiringRep` and calls `RixeServerReload`, which calls
+  `RixeReload` on the server copy of the current weapon; the weapon's own `RixeReloadTime` applies (minimum 0.5 s),
+  and the reload is refused when already reloading or when the magazine is full. Swapping weapons cancels the reload
+  (`RixeCancelReload` on `DeactivateWeapon`). Fire is refused while reloading (`RixeSyncReloading`). The fixed 1.6 s
+  delay was removed in `38f298e` (SUIVI section 15). Le rechargement instantané du modèle, chargeur vide,
   reste en place.
 - **Munitions chez le client** : le serveur tire à la place du client, donc le compteur de balles du client
   ne bougeait pas. `Current Bullets` (`BP_ShooterWeaponBase`) est maintenant répliqué ; `OnRep_Current Bullets`
