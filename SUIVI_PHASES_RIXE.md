@@ -61,7 +61,7 @@ Le cahier des charges contient 71 sections principales numérotées à la date d
 |---|---|---|---|
 | 0 — Sécurisation et état des lieux | Sauvegardes vérifiées, audit de l'environnement, état reproductible et blocages identifiés | **Validée** (owner acceptance, 24 Nov 2026) | Evidence recorded in section 8 (verified backup, environment audit, secret scan) |
 | 1 — Première boucle FPS Windows jouable | Build Windows empaquetée et partie complète reproductible sur une carte pilote | **Validée** (owner acceptance, 24 Nov 2026) | Packaged Development build `aeaf808` tested locally with bots (section 8); not distributed, no network test (network tests belong to Phase 2) |
-| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2, M5 + L8, S1, M3, S6, M9 + L15 and S4 tested in single-machine PIE (listen server + 1 to 3 clients) and packaged smoke runs (sections 10–21); M8 refuted (section 13); no multi-machine, LAN or Internet test yet |
+| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2, M5 + L8, S1, M3, S6, M9 + L15, S4 and S3 tested in single-machine PIE (listen server + 1 to 3 clients) and packaged smoke runs (sections 10–22); M8 refuted (section 13); no multi-machine, LAN or Internet test yet |
 | 3 — EOS et parties privées | Identité, invitations, lobby privé, lancement, retour et reconnexion testés de bout en bout | **Non vérifiée** | Prototype documenté avec OnlineSubsystem Null et connexion IP directe ; aucun parcours EOS validé |
 | 4 — Matchmaking public et contenu de lancement | File publique, lobby, groupes, départs/reconnexion, cartes et modes validés | **Non vérifiée** | Aucun rapport de validation du matchmaking public ou de l'ensemble du contenu de lancement |
 | 5 — Données durables et services communautaires | Progression/statistiques cohérentes, protégées et restaurables | **Non vérifiée** | Aucune preuve de phase enregistrée |
@@ -103,7 +103,7 @@ Mettre à jour ce registre dans le même lot de travail lorsqu'un test réel, un
 - Indiquer explicitement les contrôles non exécutés et leur raison.
 - Ne pas laisser entendre qu'une surveillance automatique continue entre les sessions est en place.
 
-**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: S4 is done (section 21); the next item is audit section 6 item 13 (S3). The four pending owner decisions are settled by the decision record `DECISIONS_GAMEPLAY_2026-11-25.md` (owner direction: follow XDefiant, Call of Duty and Apex Legends). The earlier next action of this section (first Windows Development build) was completed in section 8.
+**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: S3 is done (section 22); the next item is audit section 6 item 14 (L1 + M6 + M7). The four pending owner decisions are settled by the decision record `DECISIONS_GAMEPLAY_2026-11-25.md` (owner direction: follow XDefiant, Call of Duty and Apex Legends). The earlier next action of this section (first Windows Development build) was completed in section 8.
 
 
 ## 7. Correctif technique ciblé — 24 novembre 2026
@@ -573,3 +573,40 @@ Scope: audit section 6 item 12. Branch `phase2/s4-respawn-request`, based on `ma
 - Single machine; disconnects were driven by the `disconnect` console command in the PIE client world.
 
 **Next verifiable action:** audit section 6 item 13 (S3: killer attribution and the suicide / team-kill scoring rules of `DECISIONS_GAMEPLAY_2026-11-25.md`).
+
+## 22. Phase 2 — audit fix S3: death credit after recent enemy damage (25 November 2026)
+
+Scope: audit section 6 item 13, with the scoring rule of `DECISIONS_GAMEPLAY_2026-11-25.md` section 2 (owner direction: follow XDefiant, Call of Duty and Apex Legends). Branch `phase2/s3-kill-credit`, based on `main` @ `ca41be9`. Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `a301c34`; only `BP_ShooterCharacter` and `BP_ShooterNPC`)
+
+- New `RixeNoteDamage(Causer)`, called first in `AnyDamage` on both Blueprints. If the causer is a `BP_ShooterProjectileBase` whose cached instigator team (`RixeInstTeam` with `RixeInstTeamKnown`, from the M4 fix) differs from the victim's `Team Byte`, the current game time is stored in the new `RixeLastEnemyTime`.
+- New `RixeScoreDeath` replaces the direct `IncrementTeamScore` call in `Die`. The point goes to the enemy team only if enemy damage was noted in the last 5 s. A suicide (own grenade), environment death or any death without recent enemy damage scores nothing.
+- The team that receives the point is unchanged: `IncrementTeamScore(victim team)`, where the GameMode adds the point to the other team.
+- **Not in this change, and recorded as limits:**
+  - per-player kill credit and K/D (no per-player stats exist yet; persistent stats are Phase 5);
+  - team-kill penalties (friendly fire is off in standard modes, specification 34.2);
+  - "quit with recent enemy damage" credit (needs a logout-time scoring hook);
+  - suicide respawn penalty (+1 s), which belongs to the respawn-delay item.
+
+### Tests
+
+1. Both Blueprints compile with warnings as errors; the two functions and the modified `AnyDamage` / `Die` chains were read back through the editor MCP.
+2. **PIE, listen server + 1 remote client + bots** (editor, same machine, 25 Nov 2026 14:50–14:55 UTC). The helper `Saved/rixe_s3_test.py` (not shipped) reads the GameMode `TeamScores` map and the GameState red/blue scores in the same frame as each action:
+   - `Python apply_damage` did not reach the pawn's `AnyDamage`, so the hooks were driven directly. `RixeNoteDamage` is called with a **real bot projectile caught in flight** by a tick callback, then `Die` is called (the server-side death that runs `RixeScoreDeath`).
+   - **friendly projectile** (instigator team = victim team): not noted (`RixeLastEnemyTime` stays 0);
+   - **enemy projectile then death in the same frame:** red 0 → 1 (+1 for the enemy team);
+   - **suicide on a fresh pawn** (no enemy damage): red 11 / blue 10 unchanged;
+   - **death about 8 s after enemy damage:** unchanged;
+   - normal bot-vs-bot kills kept scoring throughout (red 11 / blue 10 after about 40 s), and matches ended in victory;
+   - no `Blueprint Runtime Error` or `Accessed None` in the editor log between 14:49 and 14:59.
+3. **Packaged Development Win64 build of `a301c34`:** `RunUAT BuildCookRun`, same parameters as section 8; cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:\RIXE_Builds\dev-a301c34`, log `D:\RIXE_Builds\build-dev-a301c34.log`.
+4. **Smoke run of that build** (25 Nov 2026 14:57–15:00 UTC, single local player plus bots, log `D:\RIXE_Builds\evidence-a301c34\smoke-a301c34-fps.log`): 2 victories (blue, red), each followed by `ProcessServerTravel`, so scoring still reaches the victory threshold; 0 `Blueprint Runtime Error`, `Accessed None` or `RIXE S1 dropped` lines; quit through `QUITTER`, log ends with `LogExit: Exiting.`; the same 24 pre-existing D3D12 PSO errors.
+
+### Not verified / limits
+
+- A real self-grenade death and a real bullet kill by a human were not performed; the hooks were exercised directly with real projectiles.
+- Observation: `BP_ShooterCharacter` `Die` has no `DoOnce` guard (`BP_ShooterNPC` has one). In play, `AnyDamage` only calls `Die` while HP > 0, but a second direct call on a dying pawn scores again. Recorded for a later hardening.
+- Single machine.
+
+**Next verifiable action:** audit section 6 item 14 (L1 + M6 + M7: server-driven shot event, authority-only weapon spawning, server aim). The audit marks it as the larger refactor needing a 2-client trace test first. The decided rules for ADS time (L2), sprint (L13) and respawn delay stay queued as separate items.
