@@ -1,12 +1,14 @@
 # RIXE — Suivi vérifiable des phases
 
-**Dernière mise à jour :** 24 novembre 2026  
+**Dernière mise à jour :** 25 novembre 2026  
 **Dépôt :** `zallyx62/fps-`  
 **Référence fonctionnelle :** dernière version approuvée de `CAHIER_DES_CHARGES_RIXE.md`.
 
 Ce document enregistre l'avancement réellement démontré et les preuves associées. Il ne remplace ni le cahier des charges, ni les consignes de travail de `CLAUDE.md`, ni le journal d'implémentation Unreal, ni le registre spécialisé des licences.
 
 ## 1. État de référence GitHub — audit du 24 novembre 2026
+
+> **Historical snapshot, superseded.** Current state verified on 25 November 2026: `main` = `jeu-unreal` = `19c4ab5` (merge of PR #31), then PR #32 (M5 + L8) merged as `40270b4`; 25 remote branches (`main`, `jeu-unreal`, 10 `docs/*`, 4 `maintenance/*`, 9 `phase1/*`/`phase2/*`). Always re-read the live state before relying on this section.
 
 L'état ci-dessous a été relevé directement sur GitHub avant cette PR de maintenance, au commit `345295ea2ab8d2b6417f1b81f4e3d0d26290cbf1`.
 
@@ -33,6 +35,8 @@ L'arborescence récursive a été récupérée intégralement, sans troncature. 
 
 Les deux branches `maintenance/*` sont divergentes par rapport à `main` selon l'API GitHub. Leurs arbres finaux n'ont pas été certifiés identiques et elles n'ont pas de pull request ouverte. Elles sont conservées : ne pas les supprimer avant d'avoir comparé précisément leurs arbres et récupéré tout changement utile. La suppression des pointeurs de branches n'est pas disponible via l'intégration utilisée pendant cet audit.
 
+**Update 25 November 2026:** the four `maintenance/*` branches were squash-merged through PRs #15, #21, #22 and #23, which is why GitHub reports them as divergent. A per-file comparison shows that `main` contains all of their changes; no unmerged work remains on them. They can be deleted with the owner's approval.
+
 La règle du cahier des charges reste inchangée : `main` est la branche canonique et `jeu-unreal` est un miroir, pas une branche de développement indépendante.
 
 ### Protection GitHub
@@ -57,7 +61,7 @@ Le cahier des charges contient 71 sections principales numérotées à la date d
 |---|---|---|---|
 | 0 — Sécurisation et état des lieux | Sauvegardes vérifiées, audit de l'environnement, état reproductible et blocages identifiés | **Validée** (owner acceptance, 24 Nov 2026) | Evidence recorded in section 8 (verified backup, environment audit, secret scan) |
 | 1 — Première boucle FPS Windows jouable | Build Windows empaquetée et partie complète reproductible sur une carte pilote | **Validée** (owner acceptance, 24 Nov 2026) | Packaged Development build `aeaf808` tested locally with bots (section 8); not distributed, no network test (network tests belong to Phase 2) |
-| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Notes PIE historiques uniquement ; aucun rapport de test du commit courant répondant aux critères complets |
+| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2 and M5 + L8 tested in single-machine PIE (listen server + 1 client) and packaged smoke runs (sections 10–16); M8 refuted (section 13); no multi-machine, LAN or Internet test yet |
 | 3 — EOS et parties privées | Identité, invitations, lobby privé, lancement, retour et reconnexion testés de bout en bout | **Non vérifiée** | Prototype documenté avec OnlineSubsystem Null et connexion IP directe ; aucun parcours EOS validé |
 | 4 — Matchmaking public et contenu de lancement | File publique, lobby, groupes, départs/reconnexion, cartes et modes validés | **Non vérifiée** | Aucun rapport de validation du matchmaking public ou de l'ensemble du contenu de lancement |
 | 5 — Données durables et services communautaires | Progression/statistiques cohérentes, protégées et restaurables | **Non vérifiée** | Aucune preuve de phase enregistrée |
@@ -99,7 +103,7 @@ Mettre à jour ce registre dans le même lot de travail lorsqu'un test réel, un
 - Indiquer explicitement les contrôles non exécutés et leur raison.
 - Ne pas laisser entendre qu'une surveillance automatique continue entre les sessions est en place.
 
-**Prochaine action projet :** vérifier l'espace de travail local et les sauvegardes, ouvrir le projet dans Unreal Engine 5.8, inspecter les plugins et les journaux de l'éditeur, reproduire le démarrage, puis produire et tester une build Windows de développement. Enregistrer les résultats sur le SHA exact du code avant de modifier le statut d'une phase.
+**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: PR #32 (audit M5 + L8) is merged; the next item is audit section 6 item 8 (S1 + L13). The earlier next action of this section (first Windows Development build) was completed in section 8.
 
 
 ## 7. Correctif technique ciblé — 24 novembre 2026
@@ -110,13 +114,14 @@ Mettre à jour ce registre dans le même lot de travail lorsqu'un test réel, un
 - **Validation renforcée :** `Tools/validate_project.py` vérifie désormais l'équilibre des parenthèses et la fermeture des chaînes de caractères dans les scripts de `Tools/dsl/`, puis contrôle la règle de visibilité des armes pour prévenir cette régression.
 - **Commit du correctif DSL :** `3df8b0ddc8707556821c96780e42b5527e10db0e`.
 - **Commit contenant les nouveaux contrôles :** `fa9cacf82941c80f4516fd4cd1b5635a9ace3a83`.
+- **Merge note:** PR #23 was squash-merged into `main` as `d0c3b23`; the two commits above exist only on the PR #23 branch.
 - **CI :** validation GitHub Actions n° 81 réussie — [exécution 45294161509](https://github.com/zallyx62/fps-/actions/runs/45294161509). Les contrôles statiques et tests de génération ont réussi.
 
-**Limite de preuve :** aucun chargement du projet dans Unreal, aucune compilation de Blueprint, aucun test de la visée en jeu et aucune build Windows n'ont été effectués dans cette opération. Le contrôle DSL vérifie la structure et la règle ciblée ; il ne remplace pas le compilateur ni l'exécution Unreal. Les phases 0 à 7 restent donc **Non vérifiées** et aucun critère de phase n'est déclaré franchi.
+**Limite de preuve :** aucun chargement du projet dans Unreal, aucune compilation de Blueprint, aucun test de la visée en jeu et aucune build Windows n'ont été effectués dans cette opération. Le contrôle DSL vérifie la structure et la règle ciblée ; il ne remplace pas le compilateur ni l'exécution Unreal. À la date de la PR #23, les phases 0 à 7 restaient donc **Non vérifiées** et aucun critère de phase n'est déclaré franchi.
 
 ## 8. Phase 0–1 evidence — Windows Development build (24 November 2026)
 
-**Branch:** `phase1/windows-dev-build` (based on `main` @ `d0c3b23`). **Status of phases 0 and 1: still _Non vérifiée_** until the owner explicitly accepts this evidence.
+**Branch:** `phase1/windows-dev-build` (based on `main` @ `d0c3b23`). **Status of phases 0 and 1:** accepted by the owner on 24 November 2026 (see the end of this section).
 
 ### Phase 0 — backup and environment
 
@@ -179,7 +184,7 @@ Map `Lvl_ArenaShooter`, mode `BP_ShooterGameMode`, single local player plus bots
 
 **Limits:** static reading only. Nothing in this audit was executed, so every finding is **not verified at runtime** until it is reproduced in a multi-client test. RPC flags (Run on Server, Reliable) are not visible in the export. Phase 2 stays **Non vérifiée**.
 
-**Next verifiable action:** fix H1 (alive/match-state guard on `ServerRixeAction`, stop firing on death), then test it with a listen server and one client in PIE and on a packaged build.
+**Next verifiable action:** fix H1 (alive/match-state guard on `ServerRixeAction`, stop firing on death), then test it with a listen server and one client in PIE and on a packaged build. (Done: sections 10–11.)
 
 **Owner decisions needed before the related fixes:** suicide and team-kill scoring (S3), sprint/fire exclusivity, ADS time, bot respawn delay, and whether C++ CharacterMovement work is acceptable (S7).
 ## 10. Phase 2 — audit fix H1: server-side guard on `ServerRixeAction` (24 November 2026)
@@ -198,7 +203,7 @@ Scope: specification section 12 (Phase 2, step 2, server authority) and audit `A
    - **Verified:** a live client holding fire reached the server through `ServerRixeAction` (server-side `bFiringRep = true` on the client's pawn, `RemoteRole = AutonomousProxy`).
    - **Not verified:** that the server rejects fire from a dead client or after victory. The editor tooling could not set `Current HP` or `WinningTeam` on PIE actors, and the client's pawn was destroyed/recreated around deaths and match restarts before a read could be taken. One attempt during a victory read `bFiringRep = false`, but the GameState had already been reset, so it is not evidence.
    - Log: 4 `Blueprint Runtime Error` lines in `BP_ShooterCharacter` `Update Health UI` (`OnRep_Current HP` and EventGraph) accessing the remote client's destroyed `BP_ShooterPlayerController` during the first match restart. Not in a graph touched by this change; recorded as a new finding for a later fix.
-2. **Packaged Development Win64 build of `5d7b18e`** (`RunUAT BuildCookRun`, same parameters as section 8; cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:\RIXE_Builds\dev-5d7b18e`, log `D:\RIXE_Builds\build-dev-5d7b18e.log`). As in section 8, the build uses the local working tree, including local `Config/*.ini` changes that are not committed.
+2. **Packaged Development Win64 build of `5d7b18e`** (`RunUAT BuildCookRun`, same parameters as section 8; cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:\RIXE_Builds\dev-5d7b18e`, log `D:\RIXE_Builds\build-dev-5d7b18e.log`). As in section 8, the build uses the local working tree, including local `Config/*.ini` changes that are not committed. (Clarified 25 Nov 2026: those local `Config/*.ini` and `fps.uproject` differences are line endings only, with no content change; see `.gitattributes` `eol=lf`.)
 3. **Smoke run of that build** (17:47–17:52 UTC, single local player plus bots, log copied to `D:\RIXE_Builds\evidence-5d7b18e\smoke-5d7b18e-fps.log`): 3 victories (17:49:13 blue, 17:50:29 red, 17:51:44), each followed about 6 s later by `ProcessServerTravel`. Hands-on (computer use): holding fire empties the ammo bar and `R` refills it. The game was closed with a normal close and the log ends with `LogExit: Exiting.`. No Blueprint runtime error, no ensure, no crash.
 
 ### Limits
@@ -209,7 +214,7 @@ Scope: specification section 12 (Phase 2, step 2, server authority) and audit `A
 
 ### Other observation
 
-- `origin/jeu-unreal` (`d0c3b23`) does not match `origin/main` (`6825461`) at the time of this test; the mirror is out of date.
+- `origin/jeu-unreal` (`d0c3b23`) does not match `origin/main` (`6825461`) at the time of this test; the mirror is out of date. (Resolved: the mirror was verified equal to `main` at `19c4ab5` on 25 November 2026.)
 
 ## 11. Phase 2 — audit fix H1 remainder and S2: stop firing on death (24 November 2026)
 
@@ -323,7 +328,7 @@ All in `BP_ShooterPlayerController`; server-side state only, no new replicated v
    - After a victory and `ProcessServerTravel` (22:47:29) and the client's `Join succeeded`: new controllers again applied the loadout (`LastTime ≈ 0.33` and `≈ 2.68`), same pawn values on both sides.
    - No `Blueprint Runtime Error`, `Accessed None` or script error in the editor log for these runs.
    - **Investigation note:** the empty `RixeLoadoutSrv` reported in the previous handover was read from the client world's copy of the controller (`UEDPIE_1`). These variables are server-only and not replicated, so they are always empty there. The server copy was correct; no defect.
-2. **Packaged Development Win64 build of `29780b3`** (`RunUAT BuildCookRun`, same parameters as section 8): cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:\RIXE_Builds\dev-29780b3`, log `D:\RIXE_Builds\build-dev-29780b3.log`. As before, the build uses the local working tree including uncommitted local `Config/*.ini` changes.
+2. **Packaged Development Win64 build of `29780b3`** (`RunUAT BuildCookRun`, same parameters as section 8): cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:\RIXE_Builds\dev-29780b3`, log `D:\RIXE_Builds\build-dev-29780b3.log`. As before, the build uses the local working tree including uncommitted local `Config/*.ini` changes. (Clarified 25 Nov 2026: those local `Config/*.ini` and `fps.uproject` differences are line endings only, with no content change; see `.gitattributes` `eol=lf`.)
 3. **Unattended smoke run** (23:01–23:04 UTC, single local player plus bots, log `D:\RIXE_Builds\evidence-29780b3\smoke-29780b3-fps.log`): 2 victories (23:02:35 red, 23:03:46 blue), each followed about 6 s later by `ProcessServerTravel`. The game was closed with a normal window close and the log ends with `LogExit: Exiting.`. No Blueprint runtime error, no `Accessed None`, no ensure, no crash.
 
 ### Not verified / limits
@@ -365,7 +370,7 @@ Scope: audit section 6 item 6 (M2). Branch `phase2/m2-server-reload`, based on `
 
 Scope: audit section 6 item 7 (M5 + L8). Branch `phase2/m5-match-phase`, based on `main` @ `19c4ab5`. Phase 2 stays **Non vérifiée**.
 
-### Change (only `BP_ShooterGameMode`, `BP_ShooterPlayerController`, `BP_RixeBotDirector`)
+### Change (code commit `4f509b1`, which also adds this section; only `BP_ShooterGameMode`, `BP_ShooterPlayerController`, `BP_RixeBotDirector`)
 
 - **Match phase source.** The replicated `WinningTeam` in `BP_RixeGameState` (0 = match running) is the match phase; no new variable.
 - **Scoring frozen, victory checked synchronously (M5, L8).** `EventIncrementTeamScore` calls a new `RixeApplyTeamScore`: when `WinningTeam != 0` the score is not changed; otherwise it increments, updates `RedScore`/`BlueScore` and calls `BP_RixeMatchRules.CheckScore` immediately, so the limit is detected on the kill that reaches it (no 0.5 s poll overshoot). The 0.5 s poll stays as a fallback.
