@@ -569,7 +569,7 @@ The weaknesses are in three areas:
 7. **Done** (SUIVI section 16, code `4f509b1`, PR #32). **M5 + L8:** replicated match phase; gate scoring and respawn; check victory synchronously.
 8. **S1 done** (SUIVI section 17, code `af521de`); **L13 open**, waiting for the owner sprint decisions. **S1 (+ L13):** action whitelist, per-action token bucket and cooldowns, Text only for actions 3 and 9, IsValid on the pawn; implement RixeActionSig.
 9. **Done** (SUIVI section 18, code `1c4ae92`). **M3:** replicated absolute weapon index plus a server swap cooldown.
-10. **S6 + L2:** reset ADS/sprint flags on possess and in Die; single ADS source. Server ADS timing waits for the owner's decision on aim time.
+10. **S6 done** (SUIVI section 19, code `829c1a4`); **L2 server ADS time open**. **S6 + L2:** reset ADS/sprint flags on possess and in Die; single ADS source. Server ADS timing waits for the owner's decision on aim time.
 11. **M9 (+ L15):** assign teams once in OnPostLogin onto the smaller team; GetTeam returns TeamByte.
 12. **S4:** respawn through a GameMode RequestRespawn with fallback, validity checks and retry.
 13. **S3:** killer attribution in Die/IncrementTeamScore. Needs the owner's suicide and team-kill rule.

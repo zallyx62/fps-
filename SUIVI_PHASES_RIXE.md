@@ -61,7 +61,7 @@ Le cahier des charges contient 71 sections principales numérotées à la date d
 |---|---|---|---|
 | 0 — Sécurisation et état des lieux | Sauvegardes vérifiées, audit de l'environnement, état reproductible et blocages identifiés | **Validée** (owner acceptance, 24 Nov 2026) | Evidence recorded in section 8 (verified backup, environment audit, secret scan) |
 | 1 — Première boucle FPS Windows jouable | Build Windows empaquetée et partie complète reproductible sur une carte pilote | **Validée** (owner acceptance, 24 Nov 2026) | Packaged Development build `aeaf808` tested locally with bots (section 8); not distributed, no network test (network tests belong to Phase 2) |
-| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2, M5 + L8, S1 and M3 tested in single-machine PIE (listen server + 1 client) and packaged smoke runs (sections 10–18); M8 refuted (section 13); no multi-machine, LAN or Internet test yet |
+| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2, M5 + L8, S1, M3 and S6 tested in single-machine PIE (listen server + 1 client) and packaged smoke runs (sections 10–19); M8 refuted (section 13); no multi-machine, LAN or Internet test yet |
 | 3 — EOS et parties privées | Identité, invitations, lobby privé, lancement, retour et reconnexion testés de bout en bout | **Non vérifiée** | Prototype documenté avec OnlineSubsystem Null et connexion IP directe ; aucun parcours EOS validé |
 | 4 — Matchmaking public et contenu de lancement | File publique, lobby, groupes, départs/reconnexion, cartes et modes validés | **Non vérifiée** | Aucun rapport de validation du matchmaking public ou de l'ensemble du contenu de lancement |
 | 5 — Données durables et services communautaires | Progression/statistiques cohérentes, protégées et restaurables | **Non vérifiée** | Aucune preuve de phase enregistrée |
@@ -103,7 +103,7 @@ Mettre à jour ce registre dans le même lot de travail lorsqu'un test réel, un
 - Indiquer explicitement les contrôles non exécutés et leur raison.
 - Ne pas laisser entendre qu'une surveillance automatique continue entre les sessions est en place.
 
-**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: M3 is done (section 18); the next item is audit section 6 item 10 (S6 + L2), plus the owner decisions that unblock L13, S3 and S6. The earlier next action of this section (first Windows Development build) was completed in section 8.
+**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: S6 is done (section 19); the next item is audit section 6 item 11 (M9 + L15). On 25 November 2026 the owner asked that the four pending decisions (ADS time/quickscoping, suicide and team-kill scoring, sprint rules, bot respawn delay) follow XDefiant, Call of Duty and Apex Legends; the concrete values are being prepared. The earlier next action of this section (first Windows Development build) was completed in section 8.
 
 
 ## 7. Correctif technique ciblé — 24 novembre 2026
@@ -473,3 +473,33 @@ The editor checkout still held five locally modified, never-committed assets of 
 - Bots (`BP_ShooterNPC`) are not affected by this change.
 
 **Next verifiable action:** audit section 6 item 10 (S6 + L2: reset ADS/sprint flags on possess and in Die; single ADS source). The server ADS timing part waits for the owner's decision on aim time.
+
+## 19. Phase 2 — audit fix S6 + L2 (single ADS source): reset server ADS/sprint state (25 November 2026)
+
+Scope: audit section 6 item 10. Branch `phase2/s6-ads-sprint-reset`, based on `main` @ `3c34bbc`. Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `829c1a4`; only `BP_ShooterPlayerController` and `BP_ShooterWeaponBase`)
+
+- New controller function `RixeResetMoveState`: clears `RixeAdsSrv` and `RixeSprintSrv`; when the controlled pawn is a valid `BP_ShooterCharacter`, also clears its `RixeSprinting` and `bRixeADS` and calls `RixeApplySpeed`. It is called at the end of `EventOnPossess` and after `RixeRespawnPawn` in `OnDestroyed_Event` (the validity check avoids `Accessed None` when no pawn is respawned after victory).
+- `RixeIsAds` (weapon): on authority, the controller's `RixeAdsSrv` is the only ADS source (previously `bRixeADS OR RixeAdsSrv`). Non-authority copies and bots keep the local `bRixeADS`, which only drives cosmetic recoil and local spread.
+- **Not in this change:** the server ADS time (L2 remainder). It needs the aim-time rule from the owner decision on ADS time.
+- A stray empty `OnDestroyed_Event_21` custom event created by the editor tooling was deleted before saving.
+
+### Tests
+
+1. Both Blueprints compile with warnings as errors; `RixeResetMoveState`, `RixeIsAds` and the two event chains were read back through the editor MCP.
+2. **PIE, listen server + 1 remote client + bots** (editor, same machine, 25 Nov 2026 13:51–13:53 UTC; helper `Saved/rixe_s6_test.py`, not shipped):
+   - baseline: server copy of the client's controller `AdsSrv=False SprintSrv=False`, walk speed 570, `RixeIsAds=False`;
+   - armed (server body of `RixeServerAction2` for actions 7 then 4, as if the client was aiming and sprinting): `AdsSrv=True SprintSrv=True`, walk 399, server `RixeIsAds=True`; the client's own copy is unaffected;
+   - the server destroys the client's pawn: a new pawn is spawned and possessed, `AdsSrv=False SprintSrv=False`, `bRixeADS=False`, walk 570, `RixeIsAds=False` on server and client copies;
+   - one match ended and restarted during the session (13:52:09); no `Blueprint Runtime Error` or `Accessed None`.
+3. **Packaged Development Win64 build of `829c1a4`:** `RunUAT BuildCookRun`, same parameters as section 8; cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:\RIXE_Builds\dev-829c1a4`, log `D:\RIXE_Builds\build-dev-829c1a4.log`. Built from a clean checkout of the branch (no local asset or config differences).
+4. **Smoke run of that build** (25 Nov 2026 14:02–14:07 UTC, single local player plus bots, log `D:\RIXE_Builds\evidence-829c1a4\smoke-829c1a4-fps.log`): 4 victories (red, red, blue, blue), each followed by `ProcessServerTravel`; 0 `Blueprint Runtime Error`, `Accessed None` or `RIXE S1 dropped` lines; closed through the in-game menu `QUITTER`, log ends with `LogExit: Exiting.`. The 24 startup D3D12 `Failed to create pipeline state` errors are the same pre-existing ones.
+
+### Not verified / limits
+
+- `call_method` runs the server body locally; the network RPC path for actions 7/4 was not re-sent in this run. Hold-to-aim with real mouse input was not exercised.
+- Single machine; no LAN, separate-machine or Internet test.
+- Observation: during this smoke run, the window close button and a `WM_CLOSE` sent to the process did not quit the game; the in-game `QUITTER` button did. Recorded for a later check (earlier smoke runs closed with the window close button).
+
+**Next verifiable action:** audit section 6 item 11 (M9 + L15: assign teams once on login onto the smaller human team; `GetTeam` on the character returns its team).
