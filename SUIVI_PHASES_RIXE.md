@@ -61,7 +61,7 @@ Le cahier des charges contient 71 sections principales numérotées à la date d
 |---|---|---|---|
 | 0 — Sécurisation et état des lieux | Sauvegardes vérifiées, audit de l'environnement, état reproductible et blocages identifiés | **Validée** (owner acceptance, 24 Nov 2026) | Evidence recorded in section 8 (verified backup, environment audit, secret scan) |
 | 1 — Première boucle FPS Windows jouable | Build Windows empaquetée et partie complète reproductible sur une carte pilote | **Validée** (owner acceptance, 24 Nov 2026) | Packaged Development build `aeaf808` tested locally with bots (section 8); not distributed, no network test (network tests belong to Phase 2) |
-| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2, M5 + L8, S1, M3, S6, M9 + L15, S4 and S3 tested in single-machine PIE (listen server + 1 to 3 clients) and packaged smoke runs (sections 10–22); M8 refuted (section 13); no multi-machine, LAN or Internet test yet |
+| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2, M5 + L8, S1, M3, S6, M9 + L15, S4, S3 and item 14 (L1 + M7, M6 projectile part) tested in single-machine PIE (listen server + 1 to 3 clients) and packaged smoke runs (sections 10–23); M8 refuted (section 13); M6 weapon-actor part open (item 14b); no multi-machine, LAN or Internet test yet |
 | 3 — EOS et parties privées | Identité, invitations, lobby privé, lancement, retour et reconnexion testés de bout en bout | **Non vérifiée** | Prototype documenté avec OnlineSubsystem Null et connexion IP directe ; aucun parcours EOS validé |
 | 4 — Matchmaking public et contenu de lancement | File publique, lobby, groupes, départs/reconnexion, cartes et modes validés | **Non vérifiée** | Aucun rapport de validation du matchmaking public ou de l'ensemble du contenu de lancement |
 | 5 — Données durables et services communautaires | Progression/statistiques cohérentes, protégées et restaurables | **Non vérifiée** | Aucune preuve de phase enregistrée |
@@ -103,7 +103,7 @@ Mettre à jour ce registre dans le même lot de travail lorsqu'un test réel, un
 - Indiquer explicitement les contrôles non exécutés et leur raison.
 - Ne pas laisser entendre qu'une surveillance automatique continue entre les sessions est en place.
 
-**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: S3 is done (section 22); the next item is audit section 6 item 14 (L1 + M6 + M7). The four pending owner decisions are settled by the decision record `DECISIONS_GAMEPLAY_2026-11-25.md` (owner direction: follow XDefiant, Call of Duty and Apex Legends). The earlier next action of this section (first Windows Development build) was completed in section 8.
+**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: audit item 14 is done except its M6 weapon-actor part (section 23); the next item is audit item 14b (replicated authority-only weapons) or item 15 (L14), as the owner prefers. The four pending owner decisions are settled by the decision record `DECISIONS_GAMEPLAY_2026-11-25.md` (owner direction: follow XDefiant, Call of Duty and Apex Legends). The earlier next action of this section (first Windows Development build) was completed in section 8.
 
 
 ## 7. Correctif technique ciblé — 24 novembre 2026
@@ -610,3 +610,60 @@ Scope: audit section 6 item 13, with the scoring rule of `DECISIONS_GAMEPLAY_202
 - Single machine.
 
 **Next verifiable action:** audit section 6 item 14 (L1 + M6 + M7: server-driven shot event, authority-only weapon spawning, server aim). The audit marks it as the larger refactor needing a 2-client trace test first. The decided rules for ADS time (L2), sprint (L13) and respawn delay stay queued as separate items.
+
+## 23. Phase 2 — audit item 14 (L1 + M7, M6 projectile part): server-driven shot event and server aim (25 November 2026)
+
+Scope: audit section 6 item 14 and findings L1, M6, M7. Branch `phase2/item14-server-shot`, based on `main` @ `52e8875`. Phase 2 stays **Non vérifiée**.
+
+### Trace test before any change (PIE, listen server + 2 clients + bots, `main` @ `52e8875`)
+
+Helper `Saved/rixe_i14_test.py` (not shipped; modes `census`, `aim`, `fire`, `ammo`, `watch`):
+
+- **M6 confirmed.** Every machine spawns its own weapons. On each of the 3 worlds: 2 per player and 1 per bot, 23 in total, all with `replicates=False`. Projectile classes are not replicated either.
+- **L1 confirmed.** `ServerRixeAction` 1 then 0 in the same server frame: the server weapon fired (ammo 30 → 29). The other client's copy of that weapon never fired (ammo stayed 30), so the shot was invisible there.
+- **M7, spread desync confirmed.** During a 30-tick hold the server spawned 28 projectiles and the proxy client spawned 28 of its own, with its own spread (positions up to ~50 uu apart).
+- **M7, "server camera lacks pitch" refuted in PIE.** At control pitch +30° and −40°, the server copy of each remote pawn had the same `FirstPersonCamera` pitch, `GetBaseAimRotation` and target point as the client. In one later run the server camera read p = −2° while the control rotation was +2°, so the camera component is not a reliable aim source.
+
+### Change (code commit `2339dec`; only `BP_ShooterWeaponBase`, `BP_ShooterCharacter`, `BP_ShooterNPC`)
+
+- `BP_ShooterWeaponBase.RixeFire`:
+  - The pellet loop that spawns projectiles now runs only when `IsServer`. `HasAuthority` cannot be used here: weapons are local, non-replicated actors, so a client's copy of a weapon has local authority.
+  - The server stores each pellet transform in the new `RixeShotXfs` array and calls the new `RixeSendShot`, which multicasts the array on the owning pawn.
+  - Montage, recoil, ammo, HUD and reload are unchanged on every machine.
+- `BP_ShooterCharacter` and `BP_ShooterNPC`:
+  - New `RixeShotMC(Xfs)`, an **unreliable NetMulticast** event, that calls the new `RixeShowShot`.
+  - On clients only, `RixeShowShot` calls the new `BP_ShooterWeaponBase.RixeCosmeticShots`, which spawns cosmetic projectiles from the pawn's local weapon copy at the server's exact transforms. Damage stays server-only through the existing `ProcessHit` `IsServer` gate.
+- `BP_ShooterCharacter.Get Weapon Target Location`: the trace direction is now `GetForwardVector(GetBaseAimRotation())` instead of the `FirstPersonCamera` forward vector. The trace still starts at the camera location.
+- A first version put the multicast on `BP_RixeGameState`. It delivered only 7 of 20 shots: the GameState updates at 10 Hz and shares one unreliable RPC budget across every shooter. The multicast was moved to the pawns, which update at 100 Hz, and the GameState change was reverted.
+- Workflow note: the tooling cannot set RPC flags or typed parameters on custom events, so the two `RixeShotMC` nodes were pasted as editor node text with `FunctionFlags` = Public | BlueprintCallable | BlueprintEvent | Net | NetMulticast. Both read back in the Details panel as Multicast, not Reliable, Public, with `Xfs: Transform[]`.
+
+### Tests
+
+1. All three Blueprints compile with warnings as errors. `RixeFire`, `RixeSendShot`, `RixeCosmeticShots`, both `RixeShowShot` and `Get Weapon Target Location` were read back through the editor MCP.
+2. **PIE re-run after the change** (listen server + 2 clients + bots, 25 Nov 2026 19:08–19:16 UTC):
+   - **30-tick hold by remote client P257 (driven by the helper):** the server spawned 20; the owning client and the proxy each drew 19 cosmetics. Every delivered shot had the same position and rotation on all three machines. The proxy no longer spawns its own bullets. The one shot not drawn on clients was fired inside the Python call itself.
+   - **Real mouse taps by the host:** 4 of 4 shots appeared on both clients with identical transforms.
+   - **Real mouse taps by remote client P269:** the server spawned 9; the owning client and the proxy each drew 9, all identical.
+   - **Aim:** `GetBaseAimRotation` matched the client control rotation on the server.
+   - No `Blueprint Runtime Error`, `Accessed None` or `RIXE S1 dropped` lines in the editor log.
+3. **Packaged Development Win64 build of `2339dec`:** `RunUAT BuildCookRun`, same parameters as section 8; cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB. Output `D:\RIXE_Builds\dev-2339dec`, log `D:\RIXE_Builds\build-dev-2339dec.log`.
+4. **Smoke run of that build** (25 Nov 2026 19:20–19:25 UTC, single local player plus bots; log `D:\RIXE_Builds\evidence-2339dec\smoke-2339dec-fps.log`):
+   - 3 victories (blue, red, red), each followed by `ProcessServerTravel`;
+   - 0 `Blueprint Runtime Error`, `Accessed None` or `RIXE S1 dropped` lines;
+   - quit through `QUITTER`; the log ends with `LogExit: Exiting.`;
+   - the same 24 pre-existing D3D12 PSO errors and the same `LogRHI` error set as the `a301c34` smoke log.
+   - During the run a second game instance was started by mistake by the desktop automation. It had no window, was ended with Stop-Process, and its log is kept as `stray-instance-2339dec-fps_2.log`. It is not part of the evidence.
+
+### Not verified / limits
+
+- **M6 weapon-actor part not done (audit item 14b).** Weapons are still spawned on every machine and are not replicated. The owning client's HUD ammo is still predicted locally: after one real-tap run the server had 20 and the owner showed 21.
+- **The same-frame tap (L1) was not reproduced with real input.** Driven from Python, the server fired but neither client drew the cosmetic. Real taps from a remote client (9 of 9) and from the host (4 of 4) were all delivered. Python-issued RPCs outside the PIE world tick may explain this, but that is not proven.
+- Owning clients now see their own tracers one round trip late, because there is no local prediction. Sending origin, direction and a seed in the fire RPC (the audit's "later" step) is not done.
+- Unreliable multicast: under heavy load the budget is up to 2 RPCs per pawn net update, so some cosmetics may be dropped. Damage is not affected.
+- The harness misses projectiles that hit a wall within one frame (~8 fps PIE with 3 windows), so counts were taken while aiming at the open sky.
+- Single machine; no Internet or latency test; no dedicated server.
+- Editor incidents:
+  - At session start, 6 assets that differed from `main` after a save were backed up to `D:\RIXE_Backups\dirty-editor-assets-2026-11-25-item14\` (with SHA256SUMS), restored from git and reloaded. Graph reads through the MCP mark Blueprints dirty, which is the likely cause.
+  - The editor crashed once ("pure virtual function call") when a package was reloaded while its Blueprint editor was open. The crash report was not sent. No saved work was lost.
+
+**Next verifiable action:** audit item 14b (authority-only replicated weapons), or item 15 (L14), as the owner prefers. The queued owner-decision items (L2, L13, respawn delay) are unchanged.
