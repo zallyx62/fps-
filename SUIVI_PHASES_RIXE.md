@@ -365,7 +365,7 @@ Scope: audit section 6 item 6 (M2). Branch `phase2/m2-server-reload`, based on `
 
 Scope: audit section 6 item 7 (M5 + L8). Branch `phase2/m5-match-phase`, based on `main` @ `19c4ab5`. Phase 2 stays **Non vérifiée**.
 
-### Change (only `BP_ShooterGameMode`, `BP_ShooterPlayerController`, `BP_RixeBotDirector`)
+### Change (code commit `4f509b1`, which also adds this section; only `BP_ShooterGameMode`, `BP_ShooterPlayerController`, `BP_RixeBotDirector`)
 
 - **Match phase source.** The replicated `WinningTeam` in `BP_RixeGameState` (0 = match running) is the match phase; no new variable.
 - **Scoring frozen, victory checked synchronously (M5, L8).** `EventIncrementTeamScore` calls a new `RixeApplyTeamScore`: when `WinningTeam != 0` the score is not changed; otherwise it increments, updates `RedScore`/`BlueScore` and calls `BP_RixeMatchRules.CheckScore` immediately, so the limit is detected on the kill that reaches it (no 0.5 s poll overshoot). The 0.5 s poll stays as a fallback.
