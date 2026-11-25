@@ -360,3 +360,30 @@ Scope: audit section 6 item 6 (M2). Branch `phase2/m2-server-reload`, based on `
 - Timings were measured with the editor in the background at a throttled tick rate; they show the order of magnitude, not frame-accurate values.
 - No packaged build of this commit; single machine only, not a network or Internet test.
 - Other locally modified assets (`BP_ShooterCharacter`, `BP_ShooterNPC`, `BP_RixeGameInstance`, `WBP_RixeMenu`, `BP_ShooterProjectileBase`) and the `Config/*.ini` / `fps.uproject` line-ending-only changes are **not part of this commit**; their origin is unverified and they stay uncommitted.
+
+## 16. Phase 2 — audit fix M5 + L8: play freezes after victory (25 November 2026)
+
+Scope: audit section 6 item 7 (M5 + L8). Branch `phase2/m5-match-phase`, based on `main` @ `19c4ab5`. Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `4f509b1`, which also adds this section; only `BP_ShooterGameMode`, `BP_ShooterPlayerController`, `BP_RixeBotDirector`)
+
+- **Match phase source.** The replicated `WinningTeam` in `BP_RixeGameState` (0 = match running) is the match phase; no new variable.
+- **Scoring frozen, victory checked synchronously (M5, L8).** `EventIncrementTeamScore` calls a new `RixeApplyTeamScore`: when `WinningTeam != 0` the score is not changed; otherwise it increments, updates `RedScore`/`BlueScore` and calls `BP_RixeMatchRules.CheckScore` immediately, so the limit is detected on the kill that reaches it (no 0.5 s poll overshoot). The 0.5 s poll stays as a fallback.
+- **Player respawn gated.** The pawn `OnDestroyed_Event` now calls `RixeRespawnPawn`, which respawns (via `RixeSpawnAtTeamStart`, same PlayerStart-tag logic as before) only while `WinningTeam == 0`.
+- **Bot refill gated.** The director timer now calls `RixeGatedDirectorTick`, which runs `DirectorTick` only while `WinningTeam == 0`.
+- `ServerRixeAction` was already gated on `WinningTeam` by `RixeCanAct` (H1).
+
+### Tests
+
+1. All three Blueprints compile and were saved without compile error.
+2. **PIE, listen server + 1 client + bots** (editor, same machine, 25 Nov 2026 09:12–09:13 UTC), `ScoreLimit` lowered at runtime on the server `BP_RixeMatchRules` instance:
+   - Run 1 (limit 6): victory logged 09:12:36.3; server state read during the window: Red 6, Blue 3, `WinningTeam` 1 while bots kept fighting (pawns fell to 1, no new pawn spawned). `servertravel` at 09:12:42.3, then scores 0/0 and pawns refilled.
+   - Run 2 (limit 3): victory 09:13:11.0 with Red 3, Blue 1 (exactly the limit); during the window no new pawn index appeared; `servertravel` at 09:13:17.0.
+   - No `Blueprint Runtime Error`, `Accessed None` or script error for these runs (the two `GetCurrentLevel` errors come from the editor tooling during PIE).
+
+### Not verified / limits
+
+- One state read per window (editor tooling latency); the freeze is inferred from the exact-limit scores despite continued deaths and from the absence of new pawns.
+- Remote client respawn and HUD display of the frozen state were not checked visually.
+- No packaged build of this commit; single machine only, not a network or Internet test.
+- The other locally modified assets and `Config/*.ini` / `fps.uproject` changes listed in section 15 remain uncommitted and are not part of this change.
