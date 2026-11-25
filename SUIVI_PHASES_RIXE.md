@@ -61,7 +61,7 @@ Le cahier des charges contient 71 sections principales numérotées à la date d
 |---|---|---|---|
 | 0 — Sécurisation et état des lieux | Sauvegardes vérifiées, audit de l'environnement, état reproductible et blocages identifiés | **Validée** (owner acceptance, 24 Nov 2026) | Evidence recorded in section 8 (verified backup, environment audit, secret scan) |
 | 1 — Première boucle FPS Windows jouable | Build Windows empaquetée et partie complète reproductible sur une carte pilote | **Validée** (owner acceptance, 24 Nov 2026) | Packaged Development build `aeaf808` tested locally with bots (section 8); not distributed, no network test (network tests belong to Phase 2) |
-| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2, M5 + L8 and S1 tested in single-machine PIE (listen server + 1 client) and packaged smoke runs (sections 10–17); M8 refuted (section 13); no multi-machine, LAN or Internet test yet |
+| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2, M5 + L8, S1 and M3 tested in single-machine PIE (listen server + 1 client) and packaged smoke runs (sections 10–18); M8 refuted (section 13); no multi-machine, LAN or Internet test yet |
 | 3 — EOS et parties privées | Identité, invitations, lobby privé, lancement, retour et reconnexion testés de bout en bout | **Non vérifiée** | Prototype documenté avec OnlineSubsystem Null et connexion IP directe ; aucun parcours EOS validé |
 | 4 — Matchmaking public et contenu de lancement | File publique, lobby, groupes, départs/reconnexion, cartes et modes validés | **Non vérifiée** | Aucun rapport de validation du matchmaking public ou de l'ensemble du contenu de lancement |
 | 5 — Données durables et services communautaires | Progression/statistiques cohérentes, protégées et restaurables | **Non vérifiée** | Aucune preuve de phase enregistrée |
@@ -103,7 +103,7 @@ Mettre à jour ce registre dans le même lot de travail lorsqu'un test réel, un
 - Indiquer explicitement les contrôles non exécutés et leur raison.
 - Ne pas laisser entendre qu'une surveillance automatique continue entre les sessions est en place.
 
-**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: S1 is done (section 17); the next item is audit section 6 item 9 (M3), plus the owner decisions that unblock L13, S3 and S6. The earlier next action of this section (first Windows Development build) was completed in section 8.
+**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: M3 is done (section 18); the next item is audit section 6 item 10 (S6 + L2), plus the owner decisions that unblock L13, S3 and S6. The earlier next action of this section (first Windows Development build) was completed in section 8.
 
 
 ## 7. Correctif technique ciblé — 24 novembre 2026
@@ -433,3 +433,43 @@ Scope: audit section 6 item 8 (S1). L13 (sprint rules) is **not** in this change
 - The other locally modified assets and the untracked `RixeSource/` folder are not part of this change.
 
 **Next verifiable action:** audit section 6 item 9 (M3: replicated absolute weapon index plus a server swap cooldown), or the owner decisions that unblock L13, S3 and S6.
+
+## 18. Phase 2 — audit fix M3: replicated absolute weapon index (25 November 2026)
+
+Scope: audit section 6 item 9 (M3). Branch `phase2/m3-weapon-index`, based on `main` @ `9bece55`. Phase 2 stays **Non vérifiée**.
+
+### Working-tree decision before this change
+
+The editor checkout still held five locally modified, never-committed assets of unverified origin (`BP_ShooterCharacter`, `BP_ShooterNPC`, `BP_RixeGameInstance`, `WBP_RixeMenu`, `BP_ShooterProjectileBase`, saved 25 Nov 2026 00:24; see sections 15–17). M3 must edit `BP_ShooterCharacter`, and binary assets cannot separate those unknown edits from new work. They were backed up with checksums to `D:\RIXE_Backups\uncommitted-assets-2026-11-25\` (copies verified byte-identical), and the checkout was reset to `main`. A string comparison of the binaries showed that the local `BP_ShooterCharacter` had lost the `Event Tick` that drives aim, scope and HUD bars (`ReceiveTick` present on `main`, absent locally); the committed version, which was already tested in build `29780b3`, is the baseline. The backup lets the owner restore them if they were intended.
+
+### Change (code commit `1c4ae92`; only `BP_ShooterCharacter` and `BP_ShooterPlayerController`)
+
+- **Absolute index.** New replicated RepNotify int `RixeWeaponIdxRep` on `BP_ShooterCharacter` (class default 1 = primary, which `RixeBuildLoadout` equips: index 0 is the secondary, index 1 the primary).
+- **Server swap.** `ServerRixeAction` action 2 now calls `RixeServerSwap` on the pawn instead of incrementing the `SwapCountRep` toggle counter. After the existing S1 and `RixeCanAct` gates (valid action, alive, match running), the server sets `RixeWeaponIdxRep = (RixeWeaponIdxRep + 1) % weapons` with a 0.15 s server cooldown. The next index is computed from the replicated index, not from `CurrentWeapon`, because a listen-server host has already swapped locally before the server code runs.
+- **Apply.** `OnRep_RixeWeaponIdxRep` calls `RixeApplyWeaponIdx` (deactivate current, set and activate `OwnedWeapons[index]`, no-op when already equipped or index invalid) on every non-locally-controlled copy: proxies and the server copy of remote pawns. Initial replication gives late joiners the right weapon.
+- **Owner reconciliation.** The owning player keeps its instant local swap (input graphs unchanged). `RixeOnWeaponActivated` records `RixeLocalSwapTime`; `RixeWeaponReconcile`, called from the existing locally-controlled `Event Tick` branch, applies the server index 0.5 s after the last local activation. This corrects swaps the server refused (cooldown, dead, match over) instead of leaving the client on a different weapon.
+- **Loadout rebuild.** `RixeAfterLoadout`, called at the end of `RixeBuildLoadout`, resets the server index to 1 so a server-side rebuild and the clients' rebuilds agree.
+- `SwapCountRep` / `OnRep_SwapCountRep` / `RepSwap` are left in place but no longer driven by the server.
+- Swapping during a reload stays allowed (it cancels the reload, section 15).
+
+### Tests
+
+1. Both Blueprints compile and save without error; the new graphs and the `ServerRixeAction` action 2 branch were read back through the editor MCP.
+2. **PIE, listen server + 1 remote client + bots** (editor, same machine, 25 Nov 2026 10:21–10:25 UTC). The helper logs, for every `BP_ShooterCharacter` in both worlds, the owned weapons, the current weapon and its index, and `RixeWeaponIdxRep`:
+   - start: all copies AR (index 1), `rep = 1`;
+   - **server cooldown:** 5 `RixeServerSwap` calls in one frame on the server copy of the client's pawn → one accepted (`rep` 1 → 0), four refused; the owning client, which had not swapped locally, converged to Revolver (index 0) within the 0.5 s window, so all copies agree;
+   - **real client swap** (mouse wheel in the client window): server copy and owning client both Revolver, `rep = 0`; the host's pawn stays AR on both sides;
+   - **5 fast real swaps** (mouse wheel burst): server copy and owning client agree (Revolver, `rep = 0`);
+   - **host swap** (mouse wheel in the listen-server window): host pawn Revolver, `rep = 0`, on the server and on the client's proxy (no double swap);
+   - two matches ended and restarted during the session; no `Blueprint Runtime Error`, `Accessed None` or script error from the game.
+3. **Packaged Development Win64 build of `1c4ae92`:** `RunUAT BuildCookRun`, same parameters as section 8; cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:RIXE_Buildsdev-1c4ae92`, log `D:RIXE_Buildsuild-dev-1c4ae92.log`. Built from a clean checkout of the branch (no local asset or config differences).
+4. **Unattended smoke run of that build** (25 Nov 2026 13:31–13:34 UTC, single local player plus bots, log `D:RIXE_Buildsevidence-1c4ae92smoke-1c4ae92-fps.log`): 2 victories, each followed by `ProcessServerTravel` (13:33:16, 13:34:21); no `Blueprint Runtime Error` or `Accessed None`; 0 `RIXE S1 dropped` lines; closed with a normal window close. The 24 startup D3D12 `Failed to create pipeline state` errors are the same pre-existing ones as in every earlier smoke log.
+
+### Not verified / limits
+
+- Synthetic keyboard input does not reach the PIE windows in this setup (the `1` / `2` weapon keys were not exercised); the mouse wheel uses the same swap chain (`ServerRixeAction 2` then local next-weapon swap).
+- No emulated latency or packet loss, and no late-join client test (late join relies on the initial replication of `RixeWeaponIdxRep`).
+- Single machine; no LAN, separate-machine or Internet test.
+- Bots (`BP_ShooterNPC`) are not affected by this change.
+
+**Next verifiable action:** audit section 6 item 10 (S6 + L2: reset ADS/sprint flags on possess and in Die; single ADS source). The server ADS timing part waits for the owner's decision on aim time.

@@ -106,6 +106,9 @@ Modèle réseau actuel : **serveur d'écoute** (un joueur héberge, les autres l
 - **Visée** : clic droit maintenu → champ de vision × 0,7 (variable `bRixeADS` lue par la fonction `Aim` de
   `BP_FirstPersonCharacter`, appelée à l'appui et au relâchement).
 - **Armes** : 1 = fusil (principale), 2 = pistolet (secondaire), molette = alterner ; Maj ne change plus d'arme.
+  Server side (SUIVI section 18): action 2 advances the replicated absolute index `RixeWeaponIdxRep`
+  (0.15 s server cooldown); other machines apply it in `OnRep_RixeWeaponIdxRep`, and the owning player
+  snaps to it 0.5 s after its last local swap if the server refused the swap.
   Sur un clavier AZERTY, Unreal lit la touche « 1 » comme « & » et « 2 » comme « é » : les deux sont reliées.
 - **Rechargement** : R sends action 6. The server clears `bFiringRep` and calls `RixeServerReload`, which calls
   `RixeReload` on the server copy of the current weapon; the weapon's own `RixeReloadTime` applies (minimum 0.5 s),
