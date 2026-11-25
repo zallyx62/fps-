@@ -333,3 +333,30 @@ All in `BP_ShooterPlayerController`; server-side state only, no new replicated v
 - The possession rebuild does not start the 1 s cooldown, so a spawn can rebuild weapons twice within 1 s (nit, no refill: weapons are unused).
 - `Lvl_RixeRange` still allows one rebuild per second with no weapon-use check, as the audit allows for the solo range.
 - Single machine only; not a network or Internet test.
+
+## 15. Phase 2 — audit fix M2: action 6 reload runs on the server weapon (25 November 2026)
+
+Scope: audit section 6 item 6 (M2). Branch `phase2/m2-server-reload`, based on `main` @ `d9b8363`. Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `38f298e`; only `BP_ShooterPlayerController` and `BP_ShooterWeaponBase`)
+
+- **Single reload path.** `ServerRixeAction` action 6 now clears `bFiringRep` and calls `RixeServerReload`, which calls `RixeReload` on the server copy of the pawn's current weapon. The fixed 1.6 s `Delay` + refill block is removed, so the weapon's own `RixeReloadTime` (minimum 0.5 s) applies to host and remote clients alike, and the existing guard (not already reloading, magazine not full) applies to forged action 6 calls.
+- **Cancel on swap.** `RixeCancelReload` (clears `RixeReloading` and the `RixeReloadDone` timer) runs in the weapon's `DeactivateWeapon` event, so the weapon swapped to is never refilled by an earlier reload.
+- **No fire while reloading.** For actions 1/other, `RixeSyncReloading` copies the current weapon's `RixeReloading` to the controller, and `bFiringRep` is only set when not reloading. `RixeFire` also refuses to fire while `RixeReloading`.
+- A temporary debug function (`RixeDbgReload`, PrintString on reload completion) left by the previous session was removed before commit.
+
+### Tests
+
+1. Both Blueprints compile; `BP_ShooterWeaponBase` saved without compile error in the editor log.
+2. **PIE, listen server + 1 remote client + bots** (editor, same machine, 25 Nov 2026 08:46–08:50 UTC): two complete rounds, each followed by `ProcessServerTravel` (08:48:11 and 08:49:52). Server-side weapon instances read through the editor tooling showed per-class values (e.g. AR `RixeReloadTime = 2.1`, magazine 30; revolver 2.6, magazine 6) and `RixeReloading = false` at rest. No `Blueprint Runtime Error`, `Accessed None` or script error in the editor log for the run.
+3. **PIE input test, remote client** (25 Nov 2026 08:53–08:58 UTC; input sent to the `NetMode: Client 1` window through the editor Slate automation tooling; state read on the server copy of the client pawn's weapon):
+   - Fire then R with the AR (`RixeReloadTime = 2.1`): server magazine 30 → 20, `RixeReloading` true about 0.4–0.7 s after R (RPC plus throttled background tick), refilled to 30 about 2.3 s later, so the weapon's reload time applies, not the old fixed 1.6 s.
+   - Fire, R, then swap (Gamepad face button top, mapped to `IA_SwapWeapon`) while reloading: current weapon becomes the revolver, the AR stays at 21 with `RixeReloading` false and is not refilled 3 s later; the revolver is untouched (6/6). Cancel-on-swap works.
+   - No `Blueprint Runtime Error`, `Accessed None` or script error in the editor log for these runs.
+
+### Not verified / limits
+
+- A forged action 6 (modified client) was not sent; the editor tooling cannot send raw RPCs. The server guard (not reloading, magazine not full) is checked statically.
+- Timings were measured with the editor in the background at a throttled tick rate; they show the order of magnitude, not frame-accurate values.
+- No packaged build of this commit; single machine only, not a network or Internet test.
+- Other locally modified assets (`BP_ShooterCharacter`, `BP_ShooterNPC`, `BP_RixeGameInstance`, `WBP_RixeMenu`, `BP_ShooterProjectileBase`) and the `Config/*.ini` / `fps.uproject` line-ending-only changes are **not part of this commit**; their origin is unverified and they stay uncommitted.
