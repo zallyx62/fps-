@@ -61,7 +61,7 @@ Le cahier des charges contient 71 sections principales numérotées à la date d
 |---|---|---|---|
 | 0 — Sécurisation et état des lieux | Sauvegardes vérifiées, audit de l'environnement, état reproductible et blocages identifiés | **Validée** (owner acceptance, 24 Nov 2026) | Evidence recorded in section 8 (verified backup, environment audit, secret scan) |
 | 1 — Première boucle FPS Windows jouable | Build Windows empaquetée et partie complète reproductible sur une carte pilote | **Validée** (owner acceptance, 24 Nov 2026) | Packaged Development build `aeaf808` tested locally with bots (section 8); not distributed, no network test (network tests belong to Phase 2) |
-| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2, M5 + L8, S1, M3, S6 and M9 + L15 tested in single-machine PIE (listen server + 1 to 3 clients) and packaged smoke runs (sections 10–20); M8 refuted (section 13); no multi-machine, LAN or Internet test yet |
+| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2, M5 + L8, S1, M3, S6, M9 + L15 and S4 tested in single-machine PIE (listen server + 1 to 3 clients) and packaged smoke runs (sections 10–21); M8 refuted (section 13); no multi-machine, LAN or Internet test yet |
 | 3 — EOS et parties privées | Identité, invitations, lobby privé, lancement, retour et reconnexion testés de bout en bout | **Non vérifiée** | Prototype documenté avec OnlineSubsystem Null et connexion IP directe ; aucun parcours EOS validé |
 | 4 — Matchmaking public et contenu de lancement | File publique, lobby, groupes, départs/reconnexion, cartes et modes validés | **Non vérifiée** | Aucun rapport de validation du matchmaking public ou de l'ensemble du contenu de lancement |
 | 5 — Données durables et services communautaires | Progression/statistiques cohérentes, protégées et restaurables | **Non vérifiée** | Aucune preuve de phase enregistrée |
@@ -103,7 +103,7 @@ Mettre à jour ce registre dans le même lot de travail lorsqu'un test réel, un
 - Indiquer explicitement les contrôles non exécutés et leur raison.
 - Ne pas laisser entendre qu'une surveillance automatique continue entre les sessions est en place.
 
-**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: M9 is done (section 20); the next item is audit section 6 item 12 (S4). The four pending owner decisions are settled by the decision record `DECISIONS_GAMEPLAY_2026-11-25.md` (owner direction: follow XDefiant, Call of Duty and Apex Legends). The earlier next action of this section (first Windows Development build) was completed in section 8.
+**Prochaine action projet :** the current next action is the one stated in the most recent numbered section below. As of 25 November 2026: S4 is done (section 21); the next item is audit section 6 item 13 (S3). The four pending owner decisions are settled by the decision record `DECISIONS_GAMEPLAY_2026-11-25.md` (owner direction: follow XDefiant, Call of Duty and Apex Legends). The earlier next action of this section (first Windows Development build) was completed in section 8.
 
 
 ## 7. Correctif technique ciblé — 24 novembre 2026
@@ -538,3 +538,38 @@ Scope: audit section 6 item 11. Branch `phase2/m9-team-assign`, based on `main` 
 - The team-switch case (a player changing team voluntarily) does not exist in the game yet and was not tested.
 
 **Next verifiable action:** audit section 6 item 12 (S4: respawn through a GameMode request with fallback, validity checks and retry). The owner direction for the four pending decisions is recorded in `DECISIONS_GAMEPLAY_2026-11-25.md` (PR #40); it unblocks L2 (server ADS time), L13 (sprint rules), S3 (suicide and team-kill scoring) and the bot respawn delay, which follow in the audit order.
+
+## 21. Phase 2 — audit fix S4: respawn through a GameMode request (25 November 2026)
+
+Scope: audit section 6 item 12. Branch `phase2/s4-respawn-request`, based on `main` @ `72f744d`. Phase 2 stays **Non vérifiée**.
+
+### Change (code commit `d3c5f54`; only `BP_ShooterGameMode` and `BP_ShooterPlayerController`)
+
+- `BP_ShooterGameMode`:
+  - `RixeRequestRespawn(PC) -> Result` returns 1 (not allowed) for an invalid controller, a controller that is being destroyed (logout), or a finished match (`WinningTeam != 0`). Otherwise it calls `RixeSpawnFor`.
+  - `RixeSpawnFor(PC)` returns 0 if the controller already has a pawn. Otherwise it picks a random team-tagged `PlayerStart` (same team → tag mapping as before), falls back to any `PlayerStart`, and returns 2 (retry) if there is none.
+  - `RixeSpawnAt(PC, Start)` spawns `BP_ShooterCharacter` with `AdjustIfPossibleButAlwaysSpawn` and possesses it only if the spawn is valid (0), otherwise returns 2.
+  - New `EventOnLogout`: destroys the exiting controller's pawn, if any.
+- `BP_ShooterPlayerController` `RixeRespawnPawn` calls `RixeRequestRespawn`. On result 2 it retries every 0.5 s, at most 10 times (new `RixeRespawnTries`). `RixeSpawnAtTeamStart` is no longer called; it is left in place.
+- The respawn delay chosen in `DECISIONS_GAMEPLAY_2026-11-25.md` (TDM 3.0 s) is **not** part of this change; it belongs to the bot/player respawn-delay item.
+
+### Tests
+
+1. Both Blueprints compile with warnings as errors; the four functions and the two events were read back through the editor MCP.
+2. **PIE, listen server + 1 remote client + bots** (editor, same machine, 25 Nov 2026 14:28–14:38 UTC; helper `Saved/rixe_s4_test.py`, not shipped; the server destroys the client's pawn to trigger `OnDestroyed` → `RixeRespawnPawn`):
+   - **normal:** a new pawn is possessed at a tagged start in the same frame, tries 0;
+   - **no tagged start** (tags removed from the 6 `PlayerStart`s): the new pawn appears at an untagged start (`-800,-1050,98` and `-232,-1350,298`), not at the origin;
+   - **no start at all** (all `PlayerStart`s destroyed): no pawn is spawned; `RixeRespawnTries` goes 1 → 5 → back to 0 after the 10 retries (about 5 s); no runtime error;
+   - **after victory** (a real victory, caught by a tick callback when `WinningTeam` becomes 1): the client's pawn is destroyed and no pawn is respawned (`pawn=None`, tries 0, logged in the same frame);
+   - **client disconnects while alive:** first run, without the logout check: the server kept the leaving client's controller and gave it a new pawn (orphan). This was a regression of the first version of this change, since the old spawn code did not show it in the M9 run. With the `IsActorBeingDestroyed` check and `EventOnLogout`: only the host's pawn remains, no orphan, the leaving controller is gone.
+   - No `Blueprint Runtime Error` or `Accessed None` in the editor log between 14:28 and 14:38.
+3. **Packaged Development Win64 build of `d3c5f54`:** `RunUAT BuildCookRun`, same parameters as section 8; cook `Success - 0 error(s), 0 warning(s)`, `BUILD SUCCESSFUL`, ~965 MB, output `D:\RIXE_Builds\dev-d3c5f54`, log `D:\RIXE_Builds\build-dev-d3c5f54.log`.
+4. **Smoke run of that build** (25 Nov 2026 14:40–14:43 UTC, single local player plus bots, log `D:\RIXE_Builds\evidence-d3c5f54\smoke-d3c5f54-fps.log`): 2 victories (blue, red), each followed by `ProcessServerTravel`; 0 `Blueprint Runtime Error`, `Accessed None` or `RIXE S1 dropped` lines; quit through `QUITTER`, log ends with `LogExit: Exiting.`; the same 24 pre-existing D3D12 PSO errors.
+
+### Not verified / limits
+
+- `WinningTeam` cannot be written from editor Python, so the victory case used a real victory; only one victory was observed with the final version.
+- The bot director's own respawn path (`BP_RixeBotDirector`) is not changed by this item.
+- Single machine; disconnects were driven by the `disconnect` console command in the PIE client world.
+
+**Next verifiable action:** audit section 6 item 13 (S3: killer attribution and the suicide / team-kill scoring rules of `DECISIONS_GAMEPLAY_2026-11-25.md`).
