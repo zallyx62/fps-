@@ -572,7 +572,7 @@ The weaknesses are in three areas:
 10. **S6 done** (SUIVI section 19, code `829c1a4`); **L2 server ADS time open**. **S6 + L2:** reset ADS/sprint flags on possess and in Die; single ADS source. Server ADS timing waits for the owner's decision on aim time.
 11. **Done** (SUIVI section 20, code `9aeeb98`). **M9 (+ L15):** assign teams once in OnPostLogin onto the smaller team; GetTeam returns TeamByte.
 12. **Done** (SUIVI section 21, code `d3c5f54`). **S4:** respawn through a GameMode RequestRespawn with fallback, validity checks and retry.
-13. **S3:** killer attribution in Die/IncrementTeamScore. Needs the owner's suicide and team-kill rule.
+13. **Done** (SUIVI section 22, code `a301c34`). **S3:** killer attribution in Die/IncrementTeamScore. Needs the owner's suicide and team-kill rule.
 14. **L1 + M6 + M7:** server-driven shot event; authority-only weapon spawning; server aim from GetBaseAimRotation. This is the larger refactor and needs a 2-client trace test first.
 15. **L14:** GameNetworkManager movement discrepancy settings in DefaultGame.ini. Only after the uncommitted Config changes are reviewed and committed separately.
 16. **The rest:** S5, S7, S8 (runtime check first), L3, L4, L5, L7, L9, L10, L11, L12, L16, L17, L18.
