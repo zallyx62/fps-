@@ -10,7 +10,7 @@
 - The owner can independently grant a separate commercial licence for rights they actually own. PolyForm does not itself transfer ownership to the owner or make third-party contributions the owner's property.
 - Existing clones received under the earlier GPL remain under the GPL for the versions already distributed; changing the current repository does not revoke those prior grants.
 - **Still open:** obtain written Epic clarification or qualified legal review on the actual combination under Unreal EULA section 6(c); prove the provenance of template files; complete asset/plugin inventory; validate packaged-game EULA and notices.
-- Do not claim Epic has expressly approved PolyForm. It is not named in the current EULA clause.
+- Do not claim Epic has expressly approved PolyForm or CC BY-NC. Neither is named in the current EULA examples clause.
 
 ## 2. Field of view
 
