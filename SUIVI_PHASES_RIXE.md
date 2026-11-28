@@ -1,6 +1,6 @@
 # RIXE — Suivi vérifiable des phases
 
-**Dernière mise à jour :** 26 novembre 2026  
+**Dernière mise à jour :** 28 novembre 2026  
 **Dépôt :** `zallyx62/fps-`  
 **Référence fonctionnelle :** dernière version approuvée de `CAHIER_DES_CHARGES_RIXE.md`.
 
@@ -45,7 +45,7 @@ GitHub renvoie `protected=false` pour les deux branches et aucun ruleset n'est p
 
 ## 2. Autorité du cahier des charges
 
-Le cahier des charges contient 71 sections principales numérotées à la date de cet audit. La section 71 est le dernier ajout approuvé connu à cette date.
+Le cahier des charges contient 72 sections principales numérotées au 28 novembre 2026. La section 72, ajoutée le 27 novembre 2026, est le dernier ajout approuvé connu à cette date.
 
 - Le cahier des charges reste l'unique autorité pour les fonctionnalités approuvées, exclusions, décisions, priorités, dépendances et critères d'acceptation.
 - Aucune exigence approuvée ne peut être supprimée, rétrogradée ou rendue facultative sans décision explicite du propriétaire.
@@ -61,7 +61,7 @@ Le cahier des charges contient 71 sections principales numérotées à la date d
 |---|---|---|---|
 | 0 — Sécurisation et état des lieux | Sauvegardes vérifiées, audit de l'environnement, état reproductible et blocages identifiés | **Validée** (owner acceptance, 24 Nov 2026) | Evidence recorded in section 8 (verified backup, environment audit, secret scan) |
 | 1 — Première boucle FPS Windows jouable | Build Windows empaquetée et partie complète reproductible sur une carte pilote | **Validée** (owner acceptance, 24 Nov 2026) | Packaged Development build `aeaf808` tested locally with bots (section 8); not distributed, no network test (network tests belong to Phase 2) |
-| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Audit fixes H1/S2, M4 + L6, M1, M2, M5 + L8, S1, M3, S6, M9 + L15, S4, S3 and item 14 (L1 + M7, M6 projectile part) tested in single-machine PIE (listen server + 1 to 3 clients) and packaged smoke runs (sections 10–23); M8 refuted (section 13); M6 weapon-actor part open (item 14b); no multi-machine, LAN or Internet test yet |
+| 2 — Fondations FPS, combat, réseau et carte pilote | Combat stable, autorité serveur testée, bots, tests réseau progressifs et régressions critiques corrigées | **Non vérifiée** | Corrections H1/S2, M4 + L6, M1, M2, M5 + L8, S1, M3, S6, M9 + L15, S4, S3 et item 14 (L1 + M7 + M6) documentées en sections 10–24, avec essais PIE et builds Development empaquetées. M8 réfuté (section 13). La partie M6 « armes répliquées » est traitée en section 24, mais la phase reste bloquée : défaut de travel du serveur d'écoute après la première victoire (section 24), HUD propriétaire encore décalé d'un aller-retour, ramassage non protégé par autorité, pas de test d'arrivée tardive, et aucun test sur machines/réseaux distincts ni sur Internet. Les décisions ADS, sprint, scoring et délai de réapparition sont consignées dans `DECISIONS_GAMEPLAY_2026-11-25.md`; leur implémentation et validation restent à faire. |
 | 3 — EOS et parties privées | Identité, invitations, lobby privé, lancement, retour et reconnexion testés de bout en bout | **Non vérifiée** | Prototype documenté avec OnlineSubsystem Null et connexion IP directe ; aucun parcours EOS validé |
 | 4 — Matchmaking public et contenu de lancement | File publique, lobby, groupes, départs/reconnexion, cartes et modes validés | **Non vérifiée** | Aucun rapport de validation du matchmaking public ou de l'ensemble du contenu de lancement |
 | 5 — Données durables et services communautaires | Progression/statistiques cohérentes, protégées et restaurables | **Non vérifiée** | Aucune preuve de phase enregistrée |
@@ -738,4 +738,4 @@ Scope: audit section 6 item 14b (finding M6, weapon-actor part). Branch `phase2/
 - **Single machine:** PIE and loopback only. No separate machines, no Internet latency, no dedicated server.
 - Python `call_method` drives the fire, swap and loadout tests on the server copies. Real input was used only for the packaged client burst.
 
-**Next verifiable action:** the packaged listen-host travel defect above (it breaks every online match at the first victory), then audit item 15 (L14), as the owner prefers. The queued owner-decision items (L2, L13, respawn delay) are unchanged.
+**Next verifiable action:** reproduce and fix the packaged listen-host travel defect documented above. Test both command-line `?listen` hosting and the in-game « Héberger » path; verify that the host remains in listen mode after `ProcessServerTravel` and that clients reconnect. Then continue with audit item 15 (L14). ADS timing, sprint rules, scoring and respawn delays are already decided in `DECISIONS_GAMEPLAY_2026-11-25.md`; implementation and validation remain queued as separate tasks.

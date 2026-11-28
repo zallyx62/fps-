@@ -6,11 +6,12 @@ This file defines the agent workflow, not the product specification. Keep produc
 
 - `CAHIER_DES_CHARGES_RIXE.md`: approved features, decisions, exclusions, dependencies, priorities, roadmap and acceptance criteria.
 - `UNREAL.md`: implementation and technical state actually observed in Unreal.
+- `DECISIONS_GAMEPLAY_2026-11-25.md`: approved gameplay decisions and provisional tuning values; read it whenever combat, scoring, sprint, ADS or respawn behaviour is involved.
 - `SUIVI_PHASES_RIXE.md`: verified progress, evidence, blockers and repository audit.
 - `LICENCE_DISTRIBUTION.md`: third-party rights and distribution blockers.
 - This file: session workflow, change control, safety and working conventions.
 
-Historical notes are not proof of current implementation. If approved sources conflict, identify the exact passages and dates; ask the owner unless a clear, approved newer decision resolves the conflict.
+The gameplay decision record supplements the specification for approved rules and provisional tuning; it does not prove implementation. Historical notes are not proof of current implementation. If approved sources conflict, identify the exact passages and dates; ask the owner unless a clear, approved newer decision resolves the conflict.
 
 ## 2. Resume from verified state
 
@@ -18,7 +19,7 @@ At each new session:
 
 1. Inspect the actual workspace: repository, branch, HEAD, `git status`, untracked/local changes, available tools and Unreal version. Never discard or overwrite work you do not understand.
 2. Fetch current remote state. Verify `main`, the task branch, open PRs, relevant CI runs and whether `jeu-unreal` matches `main`.
-3. Read this file and `SUIVI_PHASES_RIXE.md`. Consult `UNREAL.md` and the licence register when relevant.
+3. Read this file and `SUIVI_PHASES_RIXE.md`. Consult `UNREAL.md`, `DECISIONS_GAMEPLAY_2026-11-25.md` and the licence register whenever relevant. The decision record resolves the Phase 2 gameplay questions it explicitly covers; do not ask the owner to decide them again unless a genuine conflict or new scope question exists.
 4. Search the current specification for the task; read the complete relevant sections, dependencies and acceptance criteria. Do not load the whole specification or a fixed section range by default.
 5. Briefly report the verified handoff: phase, last code commit actually tested, changes since that evidence, blockers and next verifiable action.
 

@@ -1,5 +1,7 @@
 # RIXE: Phase 2 combat-authority audit (Blueprint DSL)
 
+> **Audit snapshot, not current status.** This report is the original static inspection. Runtime corrections and later findings are recorded in `SUIVI_PHASES_RIXE.md` sections 10–24. For current completion status, use that follow-up; do not treat this report's initial fix queue or owner-decision list as current.
+
 ## 1. Summary
 
 This audit read the exported Blueprint DSL statically and checked it against spec section 5 (server authority, which is critical priority) and spec 12.2 phase 2 step 2 (desyncs, double events, abusable RPCs, replication inconsistencies). Nothing was run.
@@ -573,18 +575,18 @@ The weaknesses are in three areas:
 11. **Done** (SUIVI section 20, code `9aeeb98`). **M9 (+ L15):** assign teams once in OnPostLogin onto the smaller team; GetTeam returns TeamByte.
 12. **Done** (SUIVI section 21, code `d3c5f54`). **S4:** respawn through a GameMode RequestRespawn with fallback, validity checks and retry.
 13. **Done** (SUIVI section 22, code `a301c34`). **S3:** killer attribution in Die/IncrementTeamScore. Needs the owner's suicide and team-kill rule.
-14. **Done** (L1 + M7 + M6 projectile part: SUIVI section 23, code `2339dec`; M6 weapon-actor part, item 14b: SUIVI section 24, code `fed4266`). **L1 + M6 + M7:** server-driven shot event; authority-only weapon spawning; server aim from GetBaseAimRotation. This is the larger refactor and needs a 2-client trace test first.
+14. **Done** (L1 + M7 + M6 projectile and weapon-actor parts: SUIVI sections 23–24, code `2339dec` / `fed4266`). The server drives shot events and aim; weapons are spawned authoritatively as replicated actors, with replicated ownership, current-weapon state and one server-authoritative ammo source for the HUD. The original 2-client trace test and subsequent packaged loopback test are recorded in SUIVI sections 23–24.
     - Trace test result: the M7 sub-point "a remote pawn's server camera lacks pitch" is refuted in listen-server PIE (server camera pitch = client pitch at +30° and −40°).
-    - 14b (done, SUIVI section 24): spawn weapons only on the server as replicated actors (replicated OwnedWeapons / CurrentWeapon, attachments and skin replicated, one ammo source for the HUD). It touches loadout, swap (M3), reload (M2) and HUD, so it is a separate change.
-15. **L14:** GameNetworkManager movement discrepancy settings in DefaultGame.ini. Only after the uncommitted Config changes are reviewed and committed separately.
-16. **The rest:** S5, S7, S8 (runtime check first), L3, L4, L5, L7, L9, L10, L11, L12, L16, L17, L18.
+    - Remaining limitations are not phase completion: owner HUD ammo is one round trip late, cosmetic multicast delivery can drop under load, and no separate-machine, Internet-latency or dedicated-server test has been completed (SUIVI section 24).
+15. **Packaged listen-host travel regression (new, SUIVI section 24):** reproduce on the exact packaged commit; test command-line `?listen` and the in-game « Héberger » path; fix the server travel so the host remains in listen mode and clients reconnect; add a repeatable packaged host/client regression test.
+16. **L14:** GameNetworkManager movement discrepancy settings in DefaultGame.ini, after reviewing the actual current Config state.
+17. **The rest:** S5, S7, S8 (runtime check first), L3, L4, L5, L7, L9, L10, L11, L12, L16, L17, L18.
 
-**Decisions needed from the owner (scope):**
-- Suicide and team-kill scoring. (Settled 25 Nov 2026 by `DECISIONS_GAMEPLAY_2026-11-25.md`, like the three items below.)
-- Sprint/fire exclusivity and forward-only sprint.
-- ADS time and quickscoping.
-- Bot respawn delay.
-- Any C++ CharacterMovement work (S7).
+**Decision status (updated 28 Nov 2026):**
+- Suicide/team-kill scoring, sprint rules, ADS timing/quickscoping and respawn delays are settled as approved direction with provisional tuning values in `DECISIONS_GAMEPLAY_2026-11-25.md`. They are no longer questions awaiting owner input; implementation and validation remain separate Phase 2 work.
+- S7 may require C++ CharacterMovement work. Do not start that scope change without checking the current implementation, defining the smallest viable fix and obtaining explicit owner approval if new C++ work or scope expansion is required.
+
+**Subsequent packaged regression:** `SUIVI_PHASES_RIXE.md` section 24 records that a packaged listen host launched with `?listen` loses listen-server mode after `ProcessServerTravel` and drops its client at the first victory. This was not covered by the original static audit. Treat it as the immediate Phase 2 blocker; test the in-game « Héberger » route separately before concluding whether both hosting paths are affected.
 
 ## 7. Limits of this audit
 
