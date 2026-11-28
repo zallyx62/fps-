@@ -10,7 +10,7 @@ This file defines the agent workflow, not the product specification. Keep produc
 - `DECISIONS_GAMEPLAY_2026-11-25.md`: approved gameplay decisions and provisional tuning values; read it whenever combat, scoring, sprint, ADS or respawn behaviour is involved.
 - `DECISIONS_SETTINGS_LICENSE_2026-11-28.md`: owner-approved licence and content-parity decisions.
 - `SUIVI_PHASES_RIXE.md`: verified progress, evidence, blockers and repository audit.
-- `LICENCE_DISTRIBUTION.md` and `THIRD_PARTY_NOTICES.md`: authoritative licence scope, asset provenance and release blockers.
+- `LICENSE`, `LICENSE-ARTWORK.md`, `LICENCE_DISTRIBUTION.md` and `THIRD_PARTY_NOTICES.md`: authoritative software/artwork licence texts, scope, asset provenance and release blockers.
 - This file: session workflow, change control, safety and working conventions.
 
 The gameplay decision record supplements the specification for approved rules and provisional tuning; it does not prove implementation. Historical notes are not proof of current implementation. If approved sources conflict, identify the exact passages and dates; ask the owner unless a clear, approved newer decision resolves the conflict.
