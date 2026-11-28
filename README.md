@@ -15,7 +15,7 @@ fourni avec le moteur, puis est adapté : arène, règles de match par équipes,
 
 ## Validation automatique du dépôt
 
-Le workflow GitHub Actions vérifie la configuration JSON du projet, les références des assets de démarrage, la syntaxe Python, les métadonnées des armes et l'existence de leurs Blueprints, la désactivation du ray tracing matériel, la structure des scripts `Tools/dsl/` et la règle de visibilité des armes de la lunette, ainsi que les sorties des générateurs OBJ et PNG. La liste de référence est `Tools/validate_project.py`. **Ces contrôles statiques ne lancent pas Unreal Engine, ne compilent pas les Blueprints ou les shaders, ne testent pas le réseau et ne remplacent pas une build Windows.**
+Le workflow GitHub Actions vérifie la cohérence du cahier agrégé avec les fichiers `spec/`, la configuration JSON du projet, les références des assets de démarrage, la syntaxe Python, les métadonnées des armes et l'existence de leurs Blueprints, la désactivation du ray tracing matériel, la structure des scripts `Tools/dsl/` et la règle de visibilité des armes de la lunette, ainsi que les sorties des générateurs OBJ et PNG. La liste de référence est `Tools/validate_project.py`. **Ces contrôles statiques ne lancent pas Unreal Engine, ne compilent pas les Blueprints ou les shaders, ne testent pas le réseau et ne remplacent pas une build Windows.**
 
 ## Ouvrir le projet
 
