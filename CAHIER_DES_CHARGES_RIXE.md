@@ -1,6 +1,6 @@
 # RIXE — Cahier des charges consolidé
 
-**Version :** 28 novembre 2026 — mise à jour documentaire (aucun changement de périmètre fonctionnel)  
+**Version :** 28 novembre 2026 — mise à jour des décisions de licence et de parité du contenu ; aucune implémentation Unreal n'est incluse dans cette mise à jour.  
 **Dépôt :** https://github.com/zallyx62/fps-  
 **Branche de référence documentaire :** `main`  
 **Moteur :** Unreal Engine 5.8 — projet principalement Blueprint.
@@ -20,10 +20,11 @@
 
 ## 1. Vision et principes
 
-RIXE est un FPS d'arène en équipes, gratuit et communautaire, avec une ambition open source pour les éléments originaux dont les licences le permettent. Il doit accueillir des joueurs internationaux. L'expérience officielle par défaut repose sur le matchmaking et les lobbies publics automatiques inspirés de Black Ops II ; les invitations, parties privées et serveurs communautaires restent des voies complémentaires.
+RIXE est un FPS d'arène en équipes, gratuit et communautaire, dont les créations originales sont publiées en **source disponible** sous une licence non commerciale. Les joueurs peuvent consulter, étudier, modifier et redistribuer le contenu original dans les limites de cette licence ; les usages commerciaux restent réservés au titulaire des droits ou aux personnes bénéficiant d'une licence commerciale écrite distincte. RIXE n'est pas présenté comme open source au sens de l'OSI. Le jeu doit accueillir des joueurs internationaux. L'expérience officielle par défaut repose sur le matchmaking et les lobbies publics automatiques inspirés de Black Ops II ; les invitations, parties privées et serveurs communautaires restent des voies complémentaires.
 
 Principes :
 - Jeu de base gratuit, sans avantage compétitif payant.
+- Même contenu officiel et même catalogue de skins/cosmétiques pour tous les joueurs, avec les mêmes règles d'accès et de déblocage.
 - Parties hébergées par les joueurs autant que possible.
 - Matchmaking officiel et lobby public automatiques comme parcours principal ; conserver en complément les invitations, salons privés et la découverte de serveurs communautaires.
 - Score valorisant objectifs, assistance, défense et soutien, pas uniquement les éliminations.
@@ -334,10 +335,14 @@ La chronologie est un ordre de dépendances, pas une promesse de durée. Toute e
 ## 13. Distribution et modèle économique — zéro budget
 
 ### Décision
-- Le jeu de base RIXE doit être gratuit sur toutes les plateformes.
+- Le jeu de base RIXE doit être gratuit sur toutes les plateformes officielles prises en charge.
 - Aucun achat ne doit donner un avantage de gameplay.
+- Tous les joueurs doivent disposer du même jeu officiel et du même catalogue de cosmétiques/skins, avec les mêmes règles d'accès et de déblocage.
+- Aucun skin exclusif payant, pack cosmétique payant qui retire une partie du catalogue aux autres joueurs, exclusivité officielle par plateforme/région ou contenu de gameplay payant.
+- Les nouveaux cosmétiques officiels doivent être inclus dans les mises à jour communes. Le propriétaire peut utiliser une progression non payante pour rythmer les déblocages, à condition que les mêmes règles et le même catalogue s'appliquent à tous.
+- Les options graphiques peuvent adapter localement la qualité de rendu aux capacités matérielles, mais elles ne doivent pas retirer du contenu, changer les règles de gameplay ou fournir un avantage compétitif.
 - Le propriétaire dispose actuellement d'un budget de **0 €** : aucune dépense de publication, d'hébergement, d'outil, de publicité ou de sous-traitance ne doit être engagée sans accord explicite et financement préalable.
-- Claude / les agents de développement peuvent préparer les cosmétiques, éléments de présentation et tâches de développement dans la mesure permise par les outils, licences et quotas déjà disponibles. Ne pas supposer que l'utilisation d'un agent, de services cloud ou de génération d'assets est sans coût.
+- Claude / les agents de développement peuvent préparer les tâches de développement dans la mesure permise par les outils, licences et quotas déjà disponibles. Ne pas supposer que l'utilisation d'un agent, de services cloud ou de génération d'assets est sans coût.
 
 ### Ordre de publication sans avance de frais
 1. **itch.io en premier** : publier gratuitement une version prototype/alpha. Un compte créateur est gratuit et la page peut être configurée en téléchargement gratuit, avec dons facultatifs ou sans paiements. La part de revenus itch.io est configurable ; les frais des prestataires de paiement s'appliquent si des transactions ont lieu.
@@ -346,9 +351,7 @@ La chronologie est un ordre de dépendances, pas une promesse de durée. Toute e
 4. Ne pas promettre une sortie simultanée sur toutes les boutiques. Priorité à la stabilité, au coût zéro et à la validation communautaire.
 
 ### Financement facultatif sans rendre le jeu payant
-- Dons volontaires et soutien communautaire, sans contrepartie qui affecte le gameplay.
-- Cosmétiques purement visuels créés pour RIXE : apparences, couleurs, emblèmes, poses ou effets non avantageux, seulement après validation des licences et de la qualité.
-- Packs cosmétiques facultatifs, sans armes plus puissantes, bonus d'expérience, accès prioritaire compétitif ni contenu qui fragmente la communauté.
+- Dons volontaires et soutien communautaire, sans contrepartie qui affecte le gameplay ou l'accès au catalogue cosmétique officiel.
 - Soutien participatif / financement communautaire, uniquement avec une présentation transparente de l'objectif, du budget et des risques.
 - Éventuellement partenariats ou mécénat, sans céder le contrôle du gameplay ni les données des joueurs.
 - Sur itch.io, activer « $0 or Donate » ou « No payments » selon le choix du propriétaire. Les dons restent facultatifs.
@@ -360,25 +363,41 @@ La chronologie est un ordre de dépendances, pas une promesse de durée. Toute e
 - Utiliser en priorité les outils, logiciels, services et assets gratuits dont les licences autorisent réellement l'usage et la redistribution du jeu.
 - Tenir un registre des coûts réels, y compris frais de paiement, taxes, commissions, coûts d'IA et éventuelles redevances.
 - Avant toute sortie commerciale ou collecte de dons, vérifier les obligations légales, fiscales, de protection des consommateurs et de propriété intellectuelle applicables en France et dans les pays ciblés.
-- Les dons et cosmétiques sont des pistes possibles, pas des revenus garantis. Le développement ne doit pas présumer qu'ils financeront le projet.
 
 ## 14. Licence — audit indispensable
 
-Le dépôt contient actuellement une `LICENSE` GPL-3.0. Les conditions officielles d'Unreal Engine et de certains contenus Epic citent explicitement la GPL parmi les licences incompatibles avec la combinaison/distribution de la technologie ou du contenu licencié.
+### Objectif approuvé
+RIXE doit rester publiquement consultable, étudiable, modifiable et partageable pour des usages non commerciaux, sans donner aux tiers le droit de revendre le jeu ou d'en tirer un avantage commercial sans autorisation écrite du titulaire des droits. La décision du propriétaire du 28 novembre 2026 retient **PolyForm Noncommercial License 1.0.0** pour les seules créations originales RIXE dont les droits sont détenus ou contrôlés par le propriétaire.
 
-Ne pas considérer la GPL-3.0 actuelle comme validée pour le projet Unreal complet. Auditer séparément :
-1. Code et contenu originaux de RIXE.
-2. Code et contenu du modèle Unreal.
-3. Ressources Epic / Marketplace / Quixel.
-4. Plugins, bibliothèques et ressources tierces.
+Ce modèle est **source disponible**, et non open source au sens de l'OSI : une licence qui interdit les usages commerciaux ne respecte pas la définition OSI de l'open source. Ne pas présenter RIXE comme « open source » sans cette réserve.
 
-Piste à étudier : MIT pour les seuls éléments originaux de code RIXE, avec exclusions et notices claires ; licence distincte pour les créations artistiques originales ; licences propres pour les contenus Epic et tiers. Ne pas appliquer une licence globale aux ressources Epic ou tierces. Faire confirmer la licence définitive après inventaire des droits détenus.
+### Périmètre et séparation
+- Le périmètre exact est défini par `THIRD_PARTY_NOTICES.md` : contenu original `Content/Rixe/**` sous réserve de provenance, outils RIXE, prototype web, documentation racine et `spec/**`.
+- Ne jamais étendre PolyForm à Unreal Engine, aux Examples/Starter Content Epic, au contenu Fab/Learn/Quixel, aux plugins ou à toute ressource tierce.
+- Le fait qu'un fichier soit rangé sous `Content/Rixe` ne prouve pas à lui seul que ses droits appartiennent au propriétaire ; les ressources non vérifiées restent exclues.
+- Les utilisateurs disposent de droits non commerciaux selon PolyForm. Les usages commerciaux exigent une licence écrite distincte du titulaire des droits. Le titulaire peut exploiter commercialement les seuls droits qu'il possède ou contrôle ; la licence ne lui transfère pas automatiquement les droits des contributeurs.
 
-Références officielles :
-- Unreal Engine EULA : https://www.unrealengine.com/eula/unreal
-- Epic Content License Agreement : https://www.unrealengine.com/eula/content
-- Options de licence Unreal Engine : https://www.unrealengine.com/license
+### Compatibilité Unreal / Epic
+- L'EULA Unreal (§6(c)) interdit les licences qui imposeraient directement ou indirectement que la technologie Epic soit gouvernée par des conditions différentes. Cette clause cite GPL, LGPL (sauf liaison dynamique d'une bibliothèque partagée) et CC BY-SA comme exemples ; elle ne cite pas PolyForm Noncommercial.
+- L'absence de PolyForm dans cette liste n'est **pas** une validation ou autorisation expresse d'Epic. La séparation des périmètres vise à maintenir la technologie Epic sous les conditions Epic et les créations originales RIXE sous PolyForm. La compatibilité de l'ensemble concret doit encore être confirmée par Epic par écrit ou par une revue juridique qualifiée.
+- L'EULA définit les « Examples » comme les ressources des dossiers Samples et Templates de l'installation. Sa section 5(b) permet de redistribuer ces Examples, y compris modifiés, en source ou en objet à des tiers. Cette exception s'applique seulement aux fichiers dont la provenance et le statut d'Example sont vérifiés pour la version d'Unreal utilisée.
+- Les contenus Fab/Marketplace/Learn/Quixel ont des régimes distincts. L'accord Marketplace d'Epic définit notamment comme « Prohibited License » une licence limitée à des usages non commerciaux et interdit les contenus soumis à cette catégorie dans les éléments présentés au Marketplace. Ne pas soumettre du contenu PolyForm à Fab sans autorisation écrite d'Epic et examen juridique.
+- Pour les builds distribuées, respecter le format objet et les conditions de l'EULA/Content License Agreement, l'accord utilisateur final, les notices et les crédits applicables.
 
+### Contrôles obligatoires avant distribution
+1. Inventorier auteur, source, version, titulaire des droits et licence de chaque ressource originale, Epic, Fab, plugin, bibliothèque, police, son, texture, animation, carte et outil.
+2. Prouver la provenance des fichiers du modèle First Person / Arena Shooter et des dossiers `__ExternalActors__` / `__ExternalObjects__`; vérifier qu'ils relèvent bien de la permission §5(b) des Examples.
+3. Vérifier séparément les droits sur les assets originaux de `Content/Rixe` et les contributions externes.
+4. Contrôler les plugins de `fps.uproject`, leurs modules Editor/Runtime et leurs conditions d'inclusion dans un package.
+5. Examiner l'artefact exact de build : aucun Engine Code ou contenu Epic ne doit être redistribué en source hors permission expresse ; conserver les avis et utiliser un EULA utilisateur final conforme.
+6. Obtenir une confirmation écrite d'Epic ou une revue juridique qualifiée sur la séparation des licences et l'application de §6(c).
+7. Refaire le contrôle des conditions Epic au moment de toute release.
+
+### Gouvernance des contributions
+Ne pas traiter une PR comme une cession de droits. Aucune contribution externe ne doit être incluse dans une release commerciale avant la signature d'un accord séparé, examiné juridiquement, qui donne au propriétaire les droits commerciaux nécessaires et délimite précisément les droits, territoires, supports et durées concernés. Vérifier aussi les apports déjà intégrés. En France, les transmissions de droits d'auteur sont soumises à des exigences écrites et de précision (Code de la propriété intellectuelle, articles L131-2 et L131-3).
+
+### État
+L'utilisation privée et le développement peuvent se poursuivre dans les limites des licences applicables. Le dépôt source public ne constitue pas une preuve de conformité de l'ensemble des actifs ni une autorisation de distribuer une build. Ne pas annoncer une release juridiquement validée avant la clôture des contrôles ci-dessus.
 ## 15. Conditions minimales d'une alpha publique
 
 - Hébergement et connexion documentés et testés sur plusieurs réseaux.
@@ -803,30 +822,43 @@ La livraison n'est validée que si :
 Ne jamais qualifier cette étape de jeu complet ou de produit final. Employer le statut exact démontré : prototype jouable, build de test ou alpha.
 
 
-## 25. Audit de licence Unreal Engine / Epic — point bloquant à résoudre avant distribution
+## 25. Audit de licence Unreal Engine / Epic — contrôle bloquant avant distribution
 
-### Constat vérifié dans le dépôt et les conditions Epic consultées le 19 novembre 2026
-- Le dépôt contient un fichier `LICENSE` intégralement rédigé sous GNU GPL version 3.
-- Le `README.md` indique seulement que le dépôt contient un fichier `LICENSE` GNU GPL-3.0 et que la compatibilité avec Unreal/Epic reste à auditer ; il ne fournit pas, à lui seul, un inventaire d'attribution de licence par fichier ou dossier. Ne pas en déduire que chaque élément de `Content/Rixe` est effectivement détenu ou licencié par le propriétaire sous GPL-3.0.
-- Le projet `fps.uproject` déclare Unreal Engine 5.8 et active plusieurs plugins ; chaque plugin, module, contenu et dépendance doit être inventorié avec sa version et sa licence.
-- La version actuelle de l'Unreal Engine EULA publiée par Epic contient une clause « Non-Compatible Licenses » (section 6(c)) qui cite explicitement GNU GPL et LGPL (sauf simple liaison dynamique d'une bibliothèque partagée) parmi les licences incompatibles avec la Licensed Technology. L'accord limite aussi la redistribution du moteur et du contenu Epic ; les produits intégrant le moteur doivent respecter les conditions de distribution applicables.
-- Ce constat crée un risque sérieux de compatibilité entre la GPL-3.0 annoncée pour le projet et l'utilisation/intégration d'Unreal Engine. Il ne permet pas, à lui seul, de conclure que chaque fichier du dépôt est soumis à la même licence ou que le propriétaire détient les droits nécessaires pour relicencier tous les éléments.
+### Constat actualisé au 28 novembre 2026
 
-### Consignes obligatoires
-- **Ne pas remplacer, supprimer ou réécrire le fichier `LICENSE` automatiquement.** Ne pas annoncer que le problème est réglé par un simple changement global vers MIT, BSD ou Apache.
-- Auditer fichier par fichier et dossier par dossier : code original, Blueprints et assets originaux, modèle First Person/Arena Shooter, Starter Content, exemples Epic, contenus Fab/Quixel, plugins, bibliothèques, sons, polices, textures, animations, outils et prototype web.
-- Pour chaque élément, relever auteur/source, version, propriétaire des droits, licence exacte, preuve d'acquisition, droits de modification, redistribution, usage commercial et restrictions de plateforme/source.
-- Séparer clairement les éléments originaux RIXE des éléments Epic et des tiers. Ne pas appliquer une licence open source au contenu Epic ou tiers sans autorisation expresse.
-- Vérifier si les fichiers originaux placés dans le même projet Unreal et distribués avec le moteur peuvent légalement rester sous GPL au regard de la clause 6(c). Examiner une architecture de licences séparées ou une licence permissive pour les seuls éléments originaux, uniquement si le propriétaire possède les droits nécessaires et après validation juridique.
-- Ne pas présumer que MIT résout toutes les obligations : conserver les notices tierces, respecter les licences des plugins/assets et les règles de redistribution d'Epic.
-- Produire un rapport de compatibilité, les éléments incertains, les options de remédiation et leurs conséquences sur l'ouverture du code, la distribution des sources et les builds binaires.
-- Si la compatibilité ne peut pas être établie, suspendre la publication/distribution publique des éléments concernés jusqu'à décision du propriétaire après avis juridique adapté. Le travail privé de développement ne doit pas être confondu avec une autorisation de redistribuer.
-- Consigner la version et la date de l'EULA examinée ; revérifier les conditions Epic au moment de toute distribution.
+- Le fichier racine `LICENSE` contient désormais la **PolyForm Noncommercial License 1.0.0**, à la suite de la décision explicite du propriétaire du 28 novembre 2026. La licence ne s'applique qu'aux créations originales RIXE effectivement détenues/contrôlées par le propriétaire et listées dans `THIRD_PARTY_NOTICES.md`. Elle ne couvre pas tout le contenu du dépôt.
+- La licence autorise les usages, modifications et redistributions non commerciaux de son périmètre. Elle ne donne pas aux tiers de droits commerciaux. Ce régime est source-available, pas OSI open source.
+- Le projet utilise Unreal Engine 5.8 et déclare plusieurs plugins dans `fps.uproject`. Chaque plugin doit être vérifié selon son origine, sa version, sa licence et ses modules Editor/Runtime.
+- L'EULA Unreal définit les « Examples » comme le code, l'art et les autres ressources fournis dans les dossiers Samples et Templates de l'installation (§1). Son §5(b) autorise la redistribution des Examples, y compris modifiés, en source ou objet à tout tiers.
+- Le dépôt indique partir du modèle officiel « First Person / Arena Shooter », mais la seule mention de ce modèle ne prouve pas que chaque fichier présent, notamment les ressources sous `Content/Characters`, `Content/Weapons`, `Content/Variant_Shooter`, `Content/__ExternalActors__` et `Content/__ExternalObjects__`, provienne exactement des dossiers Samples/Templates. Il faut établir cette provenance fichier par fichier ou par lot homogène.
+- L'EULA §6(c) interdit d'associer la Licensed Technology à un code ou contenu dont la licence imposerait que tout ou partie de la technologie Epic soit gouvernée par d'autres conditions. La clause cite explicitement GPL, LGPL (sauf simple liaison dynamique de bibliothèque partagée) et CC BY-SA. PolyForm Noncommercial n'est pas nommée. Cela ne constitue pas une approbation expresse d'Epic.
+- L'Epic Content License Agreement s'applique aux contenus distribués via Marketplace, Learn tab, Quixel et autres canaux couverts. Il limite généralement la redistribution de Licensed Content à l'objet, intégré de manière inséparable dans un projet, et interdit la distribution source publique hors exceptions prévues.
+- L'accord Marketplace d'Epic définit une « Prohibited License » qui inclut une licence exigeant que des contenus soient redistribuables sans frais/minimalement ou uniquement à des fins non commerciales. Il interdit de soumettre du contenu contenant de tels éléments ou leurs dérivés (§2(c), §11). PolyForm Noncommercial ne doit donc pas être utilisée pour une soumission Fab/Marketplace sans permission écrite ou structure différente juridiquement validée.
 
-### Décision de licence
-Aucune modification de licence n'est autorisée sans inventaire complet, preuve des droits du propriétaire sur chaque élément concerné et approbation explicite du propriétaire. Toute modification doit être ciblée, documentée et vérifiée dans toutes les branches et tous les fichiers de notices concernés.
+### Architecture de licence retenue
 
+1. Garder PolyForm Noncommercial 1.0.0 pour les créations originales RIXE, dans le périmètre strict de `THIRD_PARTY_NOTICES.md`.
+2. Garder les fichiers Epic sous les conditions Epic, sans les placer sous PolyForm ni prétendre en détenir les droits.
+3. Garder les contenus tiers sous leurs licences respectives ; ne pas publier les fichiers sources bruts de contenus dont la licence l'interdit.
+4. Pour une build de jeu, distribuer la technologie Epic dans les formats autorisés, notamment en code objet comme partie inséparable du jeu, avec les conditions utilisateur et crédits requis.
+5. Ne pas soumettre de contenu PolyForm à Fab sans autorisation écrite d'Epic et validation juridique.
+6. Pour les contributeurs, exiger un accord distinct signé avant d'inclure leur travail dans la version officielle/commerciale ; une PR ne transfère pas automatiquement les droits.
 
+### Contrôles à terminer
+
+- [ ] Prouver la provenance de chaque lot de fichiers du modèle First Person / Arena Shooter installé avec Unreal 5.8.
+- [ ] Distinguer les « Examples » (§5(b)) du Starter Content et de toute ressource Epic/Fab issue d'autres canaux.
+- [ ] Vérifier chaque actif de `Content/Rixe`, les polices, sons, textures, animations et fichiers importés.
+- [ ] Auditer les cinq plugins activés dans `fps.uproject`, leur licence et leur inclusion éventuelle dans un package.
+- [ ] Vérifier les dépendances Python et les licences avant leur éventuelle redistribution avec les outils.
+- [ ] Faire vérifier le package final : formats d'actifs Epic, avis, crédits et EULA utilisateur final.
+- [ ] Obtenir une réponse écrite d'Epic ou une revue juridique qualifiée sur la compatibilité effective de PolyForm et de l'EULA §6(c).
+- [ ] Faire préparer/revoir un accord de contribution conforme au droit applicable ; auditer les contributions déjà intégrées.
+- [ ] Refaire les vérifications au moment de chaque publication.
+
+### Conclusion
+
+La séparation entre les créations RIXE et la Licensed Technology d'Epic est une approche plausible, et l'EULA autorise explicitement la redistribution source des Examples officiels sous §5(b). Cependant, la provenance des fichiers et la compatibilité de la combinaison réelle ne sont pas entièrement démontrées ; PolyForm n'est pas nommée par Epic comme licence approuvée. Le projet ne peut donc pas être déclaré définitivement « sans risque juridique » à ce stade. Le développement peut continuer, mais ne pas annoncer une build publique ou commerciale comme validée avant la clôture des contrôles.
 ## 26. Lobby public, continuité des parties, identité sonore et modes Chaos — ajouts approuvés
 
 ### Lobby public à lancement automatique, inspiré de Black Ops II
