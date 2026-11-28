@@ -5,11 +5,11 @@ Ce registre est un outil de suivi technique ; il ne constitue pas un avis juridi
 
 ## État constaté
 
-- Le dépôt contient un fichier LICENSE sous GNU GPL-3.0.
+- **Updated 28 Nov 2026:** the owner approved replacing the GNU GPL-3.0 `LICENSE` with the PolyForm Noncommercial License 1.0.0, limited to the original RIXE material defined in `THIRD_PARTY_NOTICES.md` (see `DECISIONS_SETTINGS_LICENSE_2026-11-28.md`). The GPL conflicted with the Unreal Engine EULA (non-compatible licences clause, specification sections 14 and 25). Copies already cloned under the GPL stay under the GPL.
 - Le projet Unreal 5.8 est issu du modèle First Person / Arena Shooter et contient des assets binaires Unreal.
 - Le projet déclare des plugins Unreal et des plugins/outils MCP ; leurs versions, licences et conditions de redistribution doivent être vérifiées individuellement.
 - La présence de la GPL dans le dépôt ne prouve pas que tous les assets, plugins, exemples Epic ou dépendances peuvent être redistribués sous cette licence.
-- Aucun changement automatique de licence ne doit être fait avant d'avoir déterminé le périmètre et les droits applicables.
+- The licence change above is explicit and owner-approved. It does not clear distribution: the checks below are still open, and a qualified person must still validate that the licence is compatible with the Unreal Engine EULA.
 
 ## Inventaire à compléter avant toute distribution
 
