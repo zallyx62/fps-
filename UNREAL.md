@@ -165,6 +165,8 @@ Le prototype compte les éliminations de chaque équipe (`TeamScores`) : le scor
 À la victoire, la bannière « VICTOIRE DE L'ÉQUIPE … » s'affiche chez tous les joueurs, puis le serveur
 relance l'arène (`servertravel`) et les clients se reconnectent tout seuls.
 
+**Régression connue en build empaquetée (SUIVI section 24, 25 Nov 2026) :** avec un hôte lancé en ligne de commande via `?listen`, le `ProcessServerTravel` après la première victoire recharge l'arène en `NetMode = Standalone` ; le client est déconnecté et poursuit une partie locale séparée. Le parcours du bouton « Héberger » n'a pas encore été testé dans ce scénario. Ne pas considérer le redémarrage multijoueur comme validé en build empaquetée avant correction et test des deux chemins.
+
 ## Interface de jeu (`Content/Rixe/UI/WBP_RixeHUD`)
 
 Score Rouge | Bleu en haut, bannière de victoire, chat en bas à gauche, aide des touches, voyant du micro.
