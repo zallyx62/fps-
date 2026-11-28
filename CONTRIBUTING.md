@@ -1,17 +1,21 @@
 # Contributing to RIXE
 
-RIXE's original material is source-available under the PolyForm Noncommercial License 1.0.0 (see `LICENSE`). Only the owner may sell or commercially exploit it.
+RIXE's rights-cleared original material is source-available under the PolyForm Noncommercial License 1.0.0 (see `LICENSE` and `THIRD_PARTY_NOTICES.md`). This public licence does not grant commercial rights.
 
-## Contribution terms
+## Important: external contributions and commercial rights
 
-By submitting a pull request, patch or any other contribution, you agree that:
+The project owner wants to retain the ability to be the only party authorized to commercially exploit the official RIXE project. A standard pull request, a GitHub account, or the act of submitting code does **not** by itself transfer copyright or establish the exclusive commercial rights the owner needs.
 
-1. You wrote it yourself, or you have the right to submit it, and you did not copy Epic Games content, Fab assets or other third-party material into it (list any third-party material you used in the PR description).
-2. You grant the owner (zallyx62) a perpetual, worldwide, irrevocable, royalty-free, sublicensable licence to use, modify, distribute, **relicense and sell** your contribution, including commercially. Where the law allows, you assign your copyright to the owner instead.
-3. Your contribution is also available to everyone else under the PolyForm Noncommercial License 1.0.0, like the rest of the original material.
-4. You keep the right to reuse your own work elsewhere.
+Until a separate contributor agreement has been drafted and reviewed for the applicable jurisdictions:
 
-These terms exist so the owner can keep selling the game. They are a simple grant, not legal advice; the owner may replace them with a formal contributor agreement before accepting large external contributions.
+- Do not merge an external contribution into the official game or a release candidate.
+- Do not submit Epic, Fab, Quixel, Marketplace, or other third-party files unless the exact licence and redistribution permission are documented.
+- A proposed contribution may be discussed or tested separately, but it must not be treated as cleared for commercial distribution.
+- Preserve the contributor's identity, authorship statement, source, and the exact files they provide.
+
+Before accepting external work into the official project, the owner must obtain a separate written agreement that clearly describes the rights granted for the specific contribution, including the commercial exploitation rights, media/methods, territory, duration, and other terms required by applicable law. In France, transfers of author's rights are subject to written-form and specificity requirements; a qualified French intellectual-property lawyer should prepare or review the document. See Code de la propriété intellectuelle, Articles L131-2 and L131-3.
+
+Do not use the former blanket sentence saying that a PR automatically assigns all rights to the owner. Do not claim that the owner owns a contribution unless the valid signed agreement establishes that result.
 
 ## Workflow
 
