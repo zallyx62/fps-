@@ -48,11 +48,15 @@ Toutes les touches se changent dans **Menu > Touches** (clic sur la case, puis a
 elles sont enregistrées et rechargées au prochain lancement. La visée peut se faire en maintenant ou en
 basculant (Menu > Commandes).
 
-## Licence
+## Licence et droits commerciaux
 
-L'original RIXE (code, outils, documentation et contenu `Content/Rixe`) est « source disponible » sous la [PolyForm Noncommercial License 1.0.0](LICENSE) : tout le monde peut lire, étudier, modifier et partager ces éléments pour un usage **non commercial** ; les vendre ou les exploiter commercialement requiert l'accord écrit du propriétaire. Ce n'est pas une licence « open source » au sens de l'OSI.
+Le contenu original de RIXE dont le propriétaire détient effectivement les droits est mis à disposition en **source disponible** sous la [PolyForm Noncommercial License 1.0.0](LICENSE), dans le périmètre décrit par [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Tout le monde peut le consulter, l'étudier, le modifier et le redistribuer pour des usages non commerciaux, sous les conditions de cette licence. **La revente et toute exploitation commerciale ne sont pas autorisées aux utilisateurs sans licence commerciale écrite distincte accordée par le titulaire des droits.** Le propriétaire peut accorder cette licence commerciale séparément pour les droits qu'il détient. Ce régime n'est pas une licence « open source » au sens de l'OSI.
 
-The licence covers only the original RIXE material listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Epic Games content, Unreal Engine code, plugins and other third-party material are **not** covered and remain under their own terms. Public distribution of builds or Epic-derived assets stays blocked until the register in [LICENCE_DISTRIBUTION.md](LICENCE_DISTRIBUTION.md) is closed. Contribution terms: [CONTRIBUTING.md](CONTRIBUTING.md). Owner decisions: [DECISIONS_SETTINGS_LICENSE_2026-11-28.md](DECISIONS_SETTINGS_LICENSE_2026-11-28.md).
+La licence RIXE ne couvre jamais Unreal Engine, les éléments Epic, les plugins ou les autres contenus tiers : ceux-ci restent sous leurs licences propres. La redistribution des exemples officiels Unreal n'est permise que si leur provenance depuis les dossiers Samples/Templates de l'installation et leur statut d'« Examples » au sens de l'EULA sont confirmés. Les contenus Fab/Marketplace, Learn et Quixel nécessitent un contrôle distinct. Voir [LICENCE_DISTRIBUTION.md](LICENCE_DISTRIBUTION.md). Aucun contenu placé sous PolyForm Noncommercial ne doit être soumis à Fab sans validation écrite d'Epic.
+
+**Parité du contenu :** le jeu officiel doit proposer à tous les joueurs le même contenu de base et le même catalogue de skins/cosmétiques, sans skin payant exclusif, avantage payant ou catalogue différent selon la plateforme ou la région. Les cosmétiques officiels suivent les mêmes règles de disponibilité et de déblocage pour tous. Les réglages graphiques locaux peuvent adapter le rendu aux performances de chaque machine ; ils ne doivent pas retirer de contenu, modifier le gameplay ou procurer un avantage compétitif. Cela ne promet pas un rendu pixel pour pixel identique sur des matériels différents.
+
+Les contributions externes ne seront intégrées à une version officielle ou commerciale qu'après accord écrit distinct, vérifié juridiquement, donnant au propriétaire les droits commerciaux nécessaires sur la contribution. Voir [CONTRIBUTING.md](CONTRIBUTING.md). Les apports déjà présents doivent être audités individuellement.
 
 ## Dossier `prototype-web`
 
