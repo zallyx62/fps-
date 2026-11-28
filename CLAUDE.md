@@ -53,9 +53,9 @@ Follow section 24 of the specification for build and delivery requirements. Neve
 Follow the autonomy, budget, security and licensing rules in specification sections 11 and 13–15, 25, plus `LICENCE_DISTRIBUTION.md` and `THIRD_PARTY_NOTICES.md`.
 
 - The approved budget is €0. No spending, public release/distribution, destructive or irreversible operation, data deletion or licence change without explicit owner approval.
-- The PolyForm Noncommercial licence applies only to rights-cleared original RIXE material. Never apply it to Unreal Engine, Epic Examples/Starter Content, Fab/Learn/Quixel assets, plugins, or third-party dependencies.
+- PolyForm Noncommercial applies only to rights-cleared original RIXE software; CC BY-NC 4.0 applies only to rights-cleared original RIXE artwork and documentation. Never apply either RIXE licence to Unreal Engine, Epic Examples/Starter Content, Fab/Learn/Quixel assets, plugins, or third-party dependencies.
 - Never claim Epic has approved PolyForm. Verify template provenance, asset licences, plugin terms, and packaged-build requirements before release.
-- Do not submit PolyForm-covered RIXE content to Fab without written Epic permission and a separate legal review.
+- Do not submit PolyForm- or CC BY-NC-covered RIXE content to Fab without written Epic permission and a separate legal review.
 - Do not merge external contributions into an official or commercial release until a separate signed contributor agreement has been reviewed and grants the owner the required commercial rights. A pull request is not an assignment.
 - The official game must preserve content/cosmetic parity: same official catalogue and access rules for all players; no paid-exclusive or platform-exclusive skins. Local graphics presets may adapt rendering only.
 - Protect credentials and private data; back up affected data before risky operations and verify recovery. Stop if impact or rollback is unclear.
