@@ -8,7 +8,7 @@ Voir [UNREAL.md](UNREAL.md) pour le détail des modifications faites dans Unreal
 
 ## Reprendre le projet avec Claude
 
-À chaque nouvelle session, Claude doit commencer par lire [CLAUDE.md](CLAUDE.md), puis suivre sa procédure obligatoire de reprise. Le cahier des charges [CAHIER_DES_CHARGES_RIXE.md](CAHIER_DES_CHARGES_RIXE.md) est la référence fonctionnelle unique ; [DECISIONS_GAMEPLAY_2026-11-25.md](DECISIONS_GAMEPLAY_2026-11-25.md) consigne les règles de gameplay approuvées et leurs valeurs de réglage provisoires ; [SUIVI_PHASES_RIXE.md](SUIVI_PHASES_RIXE.md) indique uniquement les phases et preuves réellement vérifiées. Ne pas reprendre une ancienne branche documentaire ni se fier à un ancien résumé de conversation.
+À chaque nouvelle session, Claude doit commencer par lire [CLAUDE.md](CLAUDE.md), puis suivre sa procédure obligatoire de reprise. La référence fonctionnelle est découpée dans [spec/INDEX.md](spec/INDEX.md) et les fichiers de section `spec/*.md` ; [CAHIER_DES_CHARGES_RIXE.md](CAHIER_DES_CHARGES_RIXE.md) est le miroir agrégé généré. [DECISIONS_GAMEPLAY_2026-11-25.md](DECISIONS_GAMEPLAY_2026-11-25.md) consigne les règles de gameplay approuvées et leurs valeurs de réglage provisoires ; [SUIVI_PHASES_RIXE.md](SUIVI_PHASES_RIXE.md) indique uniquement les phases et preuves réellement vérifiées. Ne pas reprendre une ancienne branche documentaire ni se fier à un ancien résumé de conversation.
 
 Le dépôt accueille le projet Unreal du jeu. Le projet part du modèle « First Person / Arena Shooter »
 fourni avec le moteur, puis est adapté : arène, règles de match par équipes, bots, interface, réglages.
@@ -50,9 +50,9 @@ basculant (Menu > Commandes).
 
 ## Licence
 
-Le dépôt contient actuellement un fichier [LICENSE](LICENSE) rédigé sous GNU GPL-3.0. **La compatibilité de cette licence avec l'intégration à Unreal Engine et aux contenus Epic n'est pas encore établie** ; elle fait l'objet de l'audit décrit à la section 25 de `CAHIER_DES_CHARGES_RIXE.md` et du registre [LICENCE_DISTRIBUTION.md](LICENCE_DISTRIBUTION.md).
+L'original RIXE (code, outils, documentation et contenu `Content/Rixe`) est « source disponible » sous la [PolyForm Noncommercial License 1.0.0](LICENSE) : tout le monde peut lire, étudier, modifier et partager ces éléments pour un usage **non commercial** ; les vendre ou les exploiter commercialement requiert l'accord écrit du propriétaire. Ce n'est pas une licence « open source » au sens de l'OSI.
 
-Ne pas considérer la présence du fichier `LICENSE` comme une validation juridique de la redistribution du projet. Les contenus Epic, plugins et ressources tierces restent soumis à leurs propres conditions. Aucune publication ou distribution publique ne doit être faite avant la clôture de cet audit et une décision explicite du propriétaire.
+The licence covers only the original RIXE material listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Epic Games content, Unreal Engine code, plugins and other third-party material are **not** covered and remain under their own terms. Public distribution of builds or Epic-derived assets stays blocked until the register in [LICENCE_DISTRIBUTION.md](LICENCE_DISTRIBUTION.md) is closed. Contribution terms: [CONTRIBUTING.md](CONTRIBUTING.md). Owner decisions: [DECISIONS_SETTINGS_LICENSE_2026-11-28.md](DECISIONS_SETTINGS_LICENSE_2026-11-28.md).
 
 ## Dossier `prototype-web`
 
