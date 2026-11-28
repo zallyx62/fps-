@@ -20,7 +20,7 @@
 
 ## 1. Vision et principes
 
-RIXE est un FPS d'arène en équipes, gratuit et communautaire, dont les créations originales sont publiées en **source disponible** sous une licence non commerciale. Les joueurs peuvent consulter, étudier, modifier et redistribuer le contenu original dans les limites de cette licence ; les usages commerciaux restent réservés au titulaire des droits ou aux personnes bénéficiant d'une licence commerciale écrite distincte. RIXE n'est pas présenté comme open source au sens de l'OSI. Le jeu doit accueillir des joueurs internationaux. L'expérience officielle par défaut repose sur le matchmaking et les lobbies publics automatiques inspirés de Black Ops II ; les invitations, parties privées et serveurs communautaires restent des voies complémentaires.
+RIXE est un FPS d'arène en équipes, gratuit et communautaire, dont les logiciels originaux sont publiés en **source disponible** sous PolyForm Noncommercial 1.0.0 et les œuvres artistiques/documentaires originales sous CC BY-NC 4.0. Les joueurs peuvent consulter, étudier, modifier et redistribuer le contenu original dans les limites de cette licence ; les usages commerciaux restent réservés au titulaire des droits ou aux personnes bénéficiant d'une licence commerciale écrite distincte. RIXE n'est pas présenté comme open source au sens de l'OSI. Le jeu doit accueillir des joueurs internationaux. L'expérience officielle par défaut repose sur le matchmaking et les lobbies publics automatiques inspirés de Black Ops II ; les invitations, parties privées et serveurs communautaires restent des voies complémentaires.
 
 Principes :
 - Jeu de base gratuit, sans avantage compétitif payant.
@@ -367,31 +367,33 @@ La chronologie est un ordre de dépendances, pas une promesse de durée. Toute e
 ## 14. Licence — audit indispensable
 
 ### Objectif approuvé
-RIXE doit rester publiquement consultable, étudiable, modifiable et partageable pour des usages non commerciaux, sans donner aux tiers le droit de revendre le jeu ou d'en tirer un avantage commercial sans autorisation écrite du titulaire des droits. La décision du propriétaire du 28 novembre 2026 retient **PolyForm Noncommercial License 1.0.0** pour les seules créations originales RIXE dont les droits sont détenus ou contrôlés par le propriétaire.
+RIXE doit rester publiquement consultable, étudiable, modifiable et partageable pour des usages non commerciaux, sans donner aux tiers le droit de revendre le jeu ou d'en tirer un avantage commercial sans autorisation écrite du titulaire des droits. La décision du propriétaire retient deux licences selon la nature de l'œuvre : **PolyForm Noncommercial 1.0.0 pour le logiciel/code source**, et **CC BY-NC 4.0 pour les créations artistiques et la documentation originales**, dans les périmètres définis par `THIRD_PARTY_NOTICES.md`.
 
-Ce modèle est **source disponible**, et non open source au sens de l'OSI : une licence qui interdit les usages commerciaux ne respecte pas la définition OSI de l'open source. Ne pas présenter RIXE comme « open source » sans cette réserve.
+Ce modèle est **source disponible**, et non open source au sens de l'OSI : ces licences limitent les usages commerciaux. La définition OSI interdit les restrictions de domaine d'activité, y compris commerciales. Ne pas présenter RIXE comme « open source » sans cette réserve.
 
-### Périmètre et séparation
-- Le périmètre exact est défini par `THIRD_PARTY_NOTICES.md` : contenu original `Content/Rixe/**` sous réserve de provenance, outils RIXE, prototype web, documentation racine et `spec/**`.
-- Ne jamais étendre PolyForm à Unreal Engine, aux Examples/Starter Content Epic, au contenu Fab/Learn/Quixel, aux plugins ou à toute ressource tierce.
-- Le fait qu'un fichier soit rangé sous `Content/Rixe` ne prouve pas à lui seul que ses droits appartiennent au propriétaire ; les ressources non vérifiées restent exclues.
-- Les utilisateurs disposent de droits non commerciaux selon PolyForm. Les usages commerciaux exigent une licence écrite distincte du titulaire des droits. Le titulaire peut exploiter commercialement les seuls droits qu'il possède ou contrôle ; la licence ne lui transfère pas automatiquement les droits des contributeurs.
+### Périmètres et séparation
+- PolyForm s'applique uniquement au code, outils, Blueprints et autres fichiers logiciels originaux identifiés dans `THIRD_PARTY_NOTICES.md`.
+- CC BY-NC 4.0 s'applique uniquement aux œuvres artistiques et écrites originales clairement identifiées : modèles, meshes, textures, matériaux visuels, skins, sons, musiques, animations, illustrations, UI textures et documentation.
+- Le texte officiel PolyForm parle du « software ». Creative Commons recommande des licences logicielles pour le code, mais indique que CC peut être utilisé pour les œuvres artistiques séparées comme les graphismes et musiques de jeux et pour la documentation. Cette séparation évite de traiter automatiquement un modèle 3D ou une texture comme du code.
+- Un chemin de dossier n'est pas une preuve de propriété ou d'origine. Les fichiers de carte, données mixtes, assets externes, contributions non vérifiées et tout fichier non classé restent exclus des licences RIXE jusqu'à examen.
+- Les deux licences permettent la redistribution et les adaptations non commerciales dans leurs périmètres ; elles n'accordent aucun droit commercial aux utilisateurs. Le titulaire peut accorder séparément une licence commerciale écrite sur les droits qu'il possède ou contrôle.
 
 ### Compatibilité Unreal / Epic
-- L'EULA Unreal (§6(c)) interdit les licences qui imposeraient directement ou indirectement que la technologie Epic soit gouvernée par des conditions différentes. Cette clause cite GPL, LGPL (sauf liaison dynamique d'une bibliothèque partagée) et CC BY-SA comme exemples ; elle ne cite pas PolyForm Noncommercial.
-- L'absence de PolyForm dans cette liste n'est **pas** une validation ou autorisation expresse d'Epic. La séparation des périmètres vise à maintenir la technologie Epic sous les conditions Epic et les créations originales RIXE sous PolyForm. La compatibilité de l'ensemble concret doit encore être confirmée par Epic par écrit ou par une revue juridique qualifiée.
+- L'EULA Unreal (§6(c)) interdit les licences qui imposeraient directement ou indirectement que la technologie Epic soit gouvernée par des conditions différentes. Cette clause cite GPL, LGPL (sauf liaison dynamique d'une bibliothèque partagée) et CC BY-SA comme exemples ; elle ne cite ni PolyForm Noncommercial ni CC BY-NC 4.0.
+- L'absence de ces deux licences dans la liste n'est **pas** une validation ou autorisation expresse d'Epic. La séparation des périmètres vise à maintenir la technologie Epic sous les conditions Epic, le code RIXE sous PolyForm et les œuvres artistiques/documentaires RIXE sous CC BY-NC. La compatibilité de l'ensemble concret doit encore être confirmée par Epic par écrit ou par une revue juridique qualifiée.
 - L'EULA définit les « Examples » comme les ressources des dossiers Samples et Templates de l'installation. Sa section 5(b) permet de redistribuer ces Examples, y compris modifiés, en source ou en objet à des tiers. Cette exception s'applique seulement aux fichiers dont la provenance et le statut d'Example sont vérifiés pour la version d'Unreal utilisée.
-- Les contenus Fab/Marketplace/Learn/Quixel ont des régimes distincts. L'accord Marketplace d'Epic définit notamment comme « Prohibited License » une licence limitée à des usages non commerciaux et interdit les contenus soumis à cette catégorie dans les éléments présentés au Marketplace. Ne pas soumettre du contenu PolyForm à Fab sans autorisation écrite d'Epic et examen juridique.
+- Les contenus Fab/Marketplace/Learn/Quixel ont des régimes distincts. L'accord Marketplace d'Epic définit notamment comme « Prohibited License » une licence limitée à des usages non commerciaux et interdit les contenus soumis à cette catégorie dans les éléments présentés au Marketplace. Ne pas soumettre de contenu PolyForm ou CC BY-NC à Fab sans autorisation écrite d'Epic et examen juridique.
 - Pour les builds distribuées, respecter le format objet et les conditions de l'EULA/Content License Agreement, l'accord utilisateur final, les notices et les crédits applicables.
 
 ### Contrôles obligatoires avant distribution
-1. Inventorier auteur, source, version, titulaire des droits et licence de chaque ressource originale, Epic, Fab, plugin, bibliothèque, police, son, texture, animation, carte et outil.
+1. Inventorier auteur, source, version, titulaire des droits et licence de chaque ressource logicielle, artistique, Epic, Fab, plugin, bibliothèque, police, son, texture, animation, carte et outil.
 2. Prouver la provenance des fichiers du modèle First Person / Arena Shooter et des dossiers `__ExternalActors__` / `__ExternalObjects__`; vérifier qu'ils relèvent bien de la permission §5(b) des Examples.
-3. Vérifier séparément les droits sur les assets originaux de `Content/Rixe` et les contributions externes.
+3. Vérifier séparément les droits sur les fichiers logiciels sous PolyForm et les œuvres artistiques/documentaires sous CC BY-NC, avec les attributions requises.
 4. Contrôler les plugins de `fps.uproject`, leurs modules Editor/Runtime et leurs conditions d'inclusion dans un package.
 5. Examiner l'artefact exact de build : aucun Engine Code ou contenu Epic ne doit être redistribué en source hors permission expresse ; conserver les avis et utiliser un EULA utilisateur final conforme.
 6. Obtenir une confirmation écrite d'Epic ou une revue juridique qualifiée sur la séparation des licences et l'application de §6(c).
-7. Refaire le contrôle des conditions Epic au moment de toute release.
+7. Faire préparer/revoir un accord de contribution conforme au droit applicable ; auditer les contributions déjà intégrées.
+8. Refaire le contrôle des conditions Epic au moment de toute release.
 
 ### Gouvernance des contributions
 Ne pas traiter une PR comme une cession de droits. Aucune contribution externe ne doit être incluse dans une release commerciale avant la signature d'un accord séparé, examiné juridiquement, qui donne au propriétaire les droits commerciaux nécessaires et délimite précisément les droits, territoires, supports et durées concernés. Vérifier aussi les apports déjà intégrés. En France, les transmissions de droits d'auteur sont soumises à des exigences écrites et de précision (Code de la propriété intellectuelle, articles L131-2 et L131-3).
@@ -826,39 +828,42 @@ Ne jamais qualifier cette étape de jeu complet ou de produit final. Employer le
 
 ### Constat actualisé au 28 novembre 2026
 
-- Le fichier racine `LICENSE` contient désormais la **PolyForm Noncommercial License 1.0.0**, à la suite de la décision explicite du propriétaire du 28 novembre 2026. La licence ne s'applique qu'aux créations originales RIXE effectivement détenues/contrôlées par le propriétaire et listées dans `THIRD_PARTY_NOTICES.md`. Elle ne couvre pas tout le contenu du dépôt.
-- La licence autorise les usages, modifications et redistributions non commerciaux de son périmètre. Elle ne donne pas aux tiers de droits commerciaux. Ce régime est source-available, pas OSI open source.
+- Le code/source logiciel original RIXE identifié dans `THIRD_PARTY_NOTICES.md` est couvert par la **PolyForm Noncommercial License 1.0.0** (fichier `LICENSE`).
+- Les créations artistiques et la documentation RIXE originales identifiées dans `THIRD_PARTY_NOTICES.md` sont couvertes par **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)** (fichier `LICENSE-ARTWORK.md`).
+- Les deux licences accordent des droits non commerciaux et ne confèrent pas aux utilisateurs de droits commerciaux. Ce régime est source-available, pas OSI open source. Le titulaire peut accorder une licence commerciale distincte pour les seuls droits qu'il possède ou contrôle.
+- La distinction est fondée sur le fait que PolyForm se définit comme une licence pour le « software », tandis que Creative Commons recommande les licences logicielles pour le code et reconnaît l'usage de CC pour les éléments artistiques distincts (art de jeu, musique) et la documentation. Les fichiers mixtes restent exclus jusqu'à classification.
 - Le projet utilise Unreal Engine 5.8 et déclare plusieurs plugins dans `fps.uproject`. Chaque plugin doit être vérifié selon son origine, sa version, sa licence et ses modules Editor/Runtime.
 - L'EULA Unreal définit les « Examples » comme le code, l'art et les autres ressources fournis dans les dossiers Samples et Templates de l'installation (§1). Son §5(b) autorise la redistribution des Examples, y compris modifiés, en source ou objet à tout tiers.
 - Le dépôt indique partir du modèle officiel « First Person / Arena Shooter », mais la seule mention de ce modèle ne prouve pas que chaque fichier présent, notamment les ressources sous `Content/Characters`, `Content/Weapons`, `Content/Variant_Shooter`, `Content/__ExternalActors__` et `Content/__ExternalObjects__`, provienne exactement des dossiers Samples/Templates. Il faut établir cette provenance fichier par fichier ou par lot homogène.
-- L'EULA §6(c) interdit d'associer la Licensed Technology à un code ou contenu dont la licence imposerait que tout ou partie de la technologie Epic soit gouvernée par d'autres conditions. La clause cite explicitement GPL, LGPL (sauf simple liaison dynamique de bibliothèque partagée) et CC BY-SA. PolyForm Noncommercial n'est pas nommée. Cela ne constitue pas une approbation expresse d'Epic.
+- L'EULA §6(c) interdit d'associer la Licensed Technology à un code ou contenu dont la licence imposerait que tout ou partie de la technologie Epic soit gouvernée par d'autres conditions. La clause cite explicitement GPL, LGPL (sauf simple liaison dynamique de bibliothèque partagée) et CC BY-SA. Ni PolyForm Noncommercial ni CC BY-NC 4.0 ne sont nommées. Cela ne constitue pas une approbation expresse d'Epic.
 - L'Epic Content License Agreement s'applique aux contenus distribués via Marketplace, Learn tab, Quixel et autres canaux couverts. Il limite généralement la redistribution de Licensed Content à l'objet, intégré de manière inséparable dans un projet, et interdit la distribution source publique hors exceptions prévues.
-- L'accord Marketplace d'Epic définit une « Prohibited License » qui inclut une licence exigeant que des contenus soient redistribuables sans frais/minimalement ou uniquement à des fins non commerciales. Il interdit de soumettre du contenu contenant de tels éléments ou leurs dérivés (§2(c), §11). PolyForm Noncommercial ne doit donc pas être utilisée pour une soumission Fab/Marketplace sans permission écrite ou structure différente juridiquement validée.
+- L'accord Marketplace d'Epic définit une « Prohibited License » qui inclut une licence exigeant que des contenus soient redistribuables sans frais/minimalement ou uniquement à des fins non commerciales. Il interdit de soumettre du contenu contenant de tels éléments ou leurs dérivés (§2(c), §11). Ne soumettre ni les éléments PolyForm ni les éléments CC BY-NC à Fab sans permission écrite ou structure différente juridiquement validée.
 
 ### Architecture de licence retenue
 
-1. Garder PolyForm Noncommercial 1.0.0 pour les créations originales RIXE, dans le périmètre strict de `THIRD_PARTY_NOTICES.md`.
-2. Garder les fichiers Epic sous les conditions Epic, sans les placer sous PolyForm ni prétendre en détenir les droits.
-3. Garder les contenus tiers sous leurs licences respectives ; ne pas publier les fichiers sources bruts de contenus dont la licence l'interdit.
-4. Pour une build de jeu, distribuer la technologie Epic dans les formats autorisés, notamment en code objet comme partie inséparable du jeu, avec les conditions utilisateur et crédits requis.
-5. Ne pas soumettre de contenu PolyForm à Fab sans autorisation écrite d'Epic et validation juridique.
-6. Pour les contributeurs, exiger un accord distinct signé avant d'inclure leur travail dans la version officielle/commerciale ; une PR ne transfère pas automatiquement les droits.
+1. Garder PolyForm Noncommercial 1.0.0 pour le logiciel/source code RIXE original, dans le périmètre strict de `THIRD_PARTY_NOTICES.md`.
+2. Garder CC BY-NC 4.0 pour les œuvres artistiques et la documentation écrite RIXE originales, dans le périmètre strict de `THIRD_PARTY_NOTICES.md`.
+3. Garder les fichiers Epic sous les conditions Epic, sans les placer sous une licence RIXE ni prétendre en détenir les droits.
+4. Garder les contenus tiers sous leurs licences respectives ; ne pas publier les fichiers sources bruts de contenus dont la licence l'interdit.
+5. Pour une build de jeu, distribuer la technologie Epic dans les formats autorisés, avec les conditions utilisateur et crédits requis.
+6. Ne pas soumettre de contenu PolyForm ou CC BY-NC à Fab sans autorisation écrite d'Epic et validation juridique.
+7. Pour les contributeurs, exiger un accord distinct signé avant d'inclure leur travail dans la version officielle/commerciale ; une PR ne transfère pas automatiquement les droits.
 
 ### Contrôles à terminer
 
 - [ ] Prouver la provenance de chaque lot de fichiers du modèle First Person / Arena Shooter installé avec Unreal 5.8.
 - [ ] Distinguer les « Examples » (§5(b)) du Starter Content et de toute ressource Epic/Fab issue d'autres canaux.
-- [ ] Vérifier chaque actif de `Content/Rixe`, les polices, sons, textures, animations et fichiers importés.
+- [ ] Vérifier chaque actif sous PolyForm et CC BY-NC, les polices, sons, textures, animations et fichiers importés.
 - [ ] Auditer les cinq plugins activés dans `fps.uproject`, leur licence et leur inclusion éventuelle dans un package.
 - [ ] Vérifier les dépendances Python et les licences avant leur éventuelle redistribution avec les outils.
 - [ ] Faire vérifier le package final : formats d'actifs Epic, avis, crédits et EULA utilisateur final.
-- [ ] Obtenir une réponse écrite d'Epic ou une revue juridique qualifiée sur la compatibilité effective de PolyForm et de l'EULA §6(c).
+- [ ] Obtenir une réponse écrite d'Epic ou une revue juridique qualifiée sur la compatibilité effective des deux licences avec l'EULA §6(c).
 - [ ] Faire préparer/revoir un accord de contribution conforme au droit applicable ; auditer les contributions déjà intégrées.
 - [ ] Refaire les vérifications au moment de chaque publication.
 
 ### Conclusion
 
-La séparation entre les créations RIXE et la Licensed Technology d'Epic est une approche plausible, et l'EULA autorise explicitement la redistribution source des Examples officiels sous §5(b). Cependant, la provenance des fichiers et la compatibilité de la combinaison réelle ne sont pas entièrement démontrées ; PolyForm n'est pas nommée par Epic comme licence approuvée. Le projet ne peut donc pas être déclaré définitivement « sans risque juridique » à ce stade. Le développement peut continuer, mais ne pas annoncer une build publique ou commerciale comme validée avant la clôture des contrôles.
+La séparation entre le logiciel RIXE (PolyForm), les œuvres artistiques/documentaires (CC BY-NC) et la technologie Epic (conditions Epic) est une architecture plus claire. Creative Commons précise que CC convient aux œuvres artistiques séparées comme les graphismes et musiques de jeux, mais déconseille son usage pour les logiciels. Toutefois, la provenance des fichiers et la compatibilité de la combinaison réelle ne sont pas entièrement démontrées ; aucune de ces licences n'est nommée par Epic comme licence approuvée. Le projet ne peut donc pas être déclaré définitivement « sans risque juridique » à ce stade. Ne pas annoncer une build publique ou commerciale comme validée avant la clôture des contrôles.
 ## 26. Lobby public, continuité des parties, identité sonore et modes Chaos — ajouts approuvés
 
 ### Lobby public à lancement automatique, inspiré de Black Ops II
