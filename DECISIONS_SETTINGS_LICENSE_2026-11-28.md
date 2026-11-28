@@ -1,15 +1,16 @@
-# RIXE — owner decisions: licence, FOV, graphics presets, health (28 November 2026)
+# RIXE — owner decisions: licence, FOV, graphics presets, health, content parity (28 November 2026)
 
-**Status:** owner-approved direction (28 Nov 2026). Recorded as a decision record, like `DECISIONS_GAMEPLAY_2026-11-25.md`. It does not change specification phases or scope.
+**Status:** owner-approved direction (28 Nov 2026). Recorded as a decision record, like `DECISIONS_GAMEPLAY_2026-11-25.md`. It does not change specification phases or scope beyond the explicit decisions below.
 
 ## 1. Licence
 
-- The owner explicitly approved replacing the GPL-3.0 `LICENSE` with the **PolyForm Noncommercial License 1.0.0**. This is the explicit decision that specification section 25 and `CLAUDE.md` require.
-- Goal: the code stays readable and modifiable by anyone for noncommercial use; only the owner may sell or commercially exploit it. This is "source-available", not OSI open source.
-- The licence applies only to the original RIXE material defined in `THIRD_PARTY_NOTICES.md`. Epic and third-party content is excluded.
-- Existing clones made under the GPL stay under the GPL for the versions they received.
-- Contributors grant the owner the right to relicense and sell their work (`CONTRIBUTING.md`).
-- **Still open:** validation by a qualified person (compatibility with the Unreal EULA "Non-Compatible Licenses" clause; public posting of Epic-derived assets). Public distribution of builds stays blocked.
+- The owner explicitly approved replacing the GPL-3.0 `LICENSE` with the **PolyForm Noncommercial License 1.0.0**.
+- Goal: the original RIXE source stays publicly readable, modifiable and distributable for noncommercial purposes only; third parties may not sell it or commercially exploit it without a separate written commercial licence from the rights holder. This is **source-available**, not OSI open source.
+- The licence applies only to original, rights-cleared RIXE material precisely listed in `THIRD_PARTY_NOTICES.md`. It does not apply to Unreal Engine, Epic Examples/Starter Content, Fab/Learn/Quixel material, plugins, or other third-party works.
+- The owner can independently grant a separate commercial licence for rights they actually own. PolyForm does not itself transfer ownership to the owner or make third-party contributions the owner's property.
+- Existing clones received under the earlier GPL remain under the GPL for the versions already distributed; changing the current repository does not revoke those prior grants.
+- **Still open:** obtain written Epic clarification or qualified legal review on the actual combination under Unreal EULA section 6(c); prove the provenance of template files; complete asset/plugin inventory; validate packaged-game EULA and notices.
+- Do not claim Epic has expressly approved PolyForm. It is not named in the current EULA clause.
 
 ## 2. Field of view
 
@@ -30,9 +31,11 @@
 - Use a single source of truth (a data table). Players and bots read the same value; the server logs a warning if a spawned pawn differs from the table.
 - The intended value is still to be chosen by the owner.
 
-## 5. Inconsistencies in `UNREAL.md` (reconciled on 28 Nov 2026; `UNREAL.md` is now English only)
+## 5. Shared official game and cosmetics
 
-- FOV range stated twice with different minimums (section 3 above).
-- Quality level names stated twice (section 3 above).
-- Sprint measured at about 1.3 times walking, while the decision record targets 1.5 (900 against 600). Re-measure the same way as walking before retuning.
-- The document mixes French and English; new text should follow `CLAUDE.md` (English).
+- Every player of the official RIXE release must have access to the same base-game content and the same official cosmetic catalogue: weapons, maps, character content, skins, visual effects and other included content.
+- No paid-exclusive skin, cosmetic DLC that fragments the catalogue, platform-exclusive or region-exclusive official cosmetic, or paid gameplay advantage.
+- Official cosmetics must follow the same availability and unlock rules for everyone. The owner may choose non-paid progression/unlock conditions, but must not sell exclusive access to part of the official catalogue.
+- All players receive the same official content updates. Do not withhold higher-quality official models, textures or visual effects behind payment.
+- Local graphics options may scale rendering for hardware capability and performance. They must not change gameplay, hitboxes, information available to players, or competitive fairness. Identical pixel output cannot be guaranteed across different GPUs, screens and settings.
+- This decision describes the official game. It does not grant third parties permission to commercially redistribute RIXE or its content.
