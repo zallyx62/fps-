@@ -738,4 +738,4 @@ Scope: audit section 6 item 14b (finding M6, weapon-actor part). Branch `phase2/
 - **Single machine:** PIE and loopback only. No separate machines, no Internet latency, no dedicated server.
 - Python `call_method` drives the fire, swap and loadout tests on the server copies. Real input was used only for the packaged client burst.
 
-**Next verifiable action:** the packaged listen-host travel defect above (it breaks every online match at the first victory), then audit item 15 (L14), as the owner prefers. The queued owner-decision items (L2, L13, respawn delay) are unchanged.
+**Next verifiable action:** reproduce and fix the packaged listen-host travel defect documented above. Test both command-line `?listen` hosting and the in-game « Héberger » path; verify that the host remains in listen mode after `ProcessServerTravel` and that clients reconnect. Then continue with audit item 15 (L14). ADS timing, sprint rules, scoring and respawn delays are already decided in `DECISIONS_GAMEPLAY_2026-11-25.md`; implementation and validation remain queued as separate tasks.
