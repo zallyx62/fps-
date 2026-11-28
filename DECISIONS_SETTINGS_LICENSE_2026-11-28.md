@@ -4,13 +4,13 @@
 
 ## 1. Licence
 
-- The owner explicitly approved replacing the GPL-3.0 `LICENSE` with the **PolyForm Noncommercial License 1.0.0**.
+- The owner explicitly approved replacing the GPL-3.0 software `LICENSE` with **PolyForm Noncommercial License 1.0.0**. Following a further scope review, original artistic assets and written documentation are separately licensed under **CC BY-NC 4.0** in `LICENSE-ARTWORK.md`; this distinction is recorded in PR #49.
 - Goal: the original RIXE source stays publicly readable, modifiable and distributable for noncommercial purposes only; third parties may not sell it or commercially exploit it without a separate written commercial licence from the rights holder. This is **source-available**, not OSI open source.
-- The licence applies only to original, rights-cleared RIXE material precisely listed in `THIRD_PARTY_NOTICES.md`. It does not apply to Unreal Engine, Epic Examples/Starter Content, Fab/Learn/Quixel material, plugins, or other third-party works.
+- PolyForm applies only to original software; CC BY-NC applies only to original artwork and written documentation. Their exact rights-cleared scopes are listed in `THIRD_PARTY_NOTICES.md`. It does not apply to Unreal Engine, Epic Examples/Starter Content, Fab/Learn/Quixel material, plugins, or other third-party works.
 - The owner can independently grant a separate commercial licence for rights they actually own. PolyForm does not itself transfer ownership to the owner or make third-party contributions the owner's property.
 - Existing clones received under the earlier GPL remain under the GPL for the versions already distributed; changing the current repository does not revoke those prior grants.
 - **Still open:** obtain written Epic clarification or qualified legal review on the actual combination under Unreal EULA section 6(c); prove the provenance of template files; complete asset/plugin inventory; validate packaged-game EULA and notices.
-- Do not claim Epic has expressly approved PolyForm. It is not named in the current EULA clause.
+- Do not claim Epic has expressly approved PolyForm or CC BY-NC. Neither is named in the current EULA examples clause.
 
 ## 2. Field of view
 
