@@ -398,7 +398,6 @@ Ne pas traiter une PR comme une cession de droits. Aucune contribution externe n
 
 ### État
 L'utilisation privée et le développement peuvent se poursuivre dans les limites des licences applicables. Le dépôt source public ne constitue pas une preuve de conformité de l'ensemble des actifs ni une autorisation de distribuer une build. Ne pas annoncer une release juridiquement validée avant la clôture des contrôles ci-dessus.
-
 ## 15. Conditions minimales d'une alpha publique
 
 - Hébergement et connexion documentés et testés sur plusieurs réseaux.
@@ -860,7 +859,6 @@ Ne jamais qualifier cette étape de jeu complet ou de produit final. Employer le
 ### Conclusion
 
 La séparation entre les créations RIXE et la Licensed Technology d'Epic est une approche plausible, et l'EULA autorise explicitement la redistribution source des Examples officiels sous §5(b). Cependant, la provenance des fichiers et la compatibilité de la combinaison réelle ne sont pas entièrement démontrées ; PolyForm n'est pas nommée par Epic comme licence approuvée. Le projet ne peut donc pas être déclaré définitivement « sans risque juridique » à ce stade. Le développement peut continuer, mais ne pas annoncer une build publique ou commerciale comme validée avant la clôture des contrôles.
-
 ## 26. Lobby public, continuité des parties, identité sonore et modes Chaos — ajouts approuvés
 
 ### Lobby public à lancement automatique, inspiré de Black Ops II
